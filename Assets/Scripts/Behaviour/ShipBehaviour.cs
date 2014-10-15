@@ -49,7 +49,7 @@ namespace Assets.Scripts.Behaviour
             if (_ship.State == ShipState.InFlight && Location.Name != null)
             {
                 FindObjectOfType<RouteView>().Close();
-                _ship.State = ShipState.Landed;
+                _ship.State = ShipState.Ready;
             }
 
             if (ViewBase.Current is SystemView && Location.System != SelectManager.System)

@@ -69,6 +69,11 @@ namespace Assets.Scripts
             return Instantiate("RouteFirefly", parent);
         }
 
+        public static GameObject InstantiateShipSelector(Transform parent)
+        {
+            return Instantiate("ShipSelector", parent);
+        }
+
         private static GameObject Instantiate(string name, Transform parent)
         {
             try

@@ -43,7 +43,7 @@ namespace Assets.Scripts.Data
         public ShipId Id;
         public ShipState State;
         public List<RouteNode> Route;
-        public List<RouteNode> Trace; // TODO: Disable serialize
+        public List<RouteNode> Trace;
         public List<MemoGoods> Goods;
         public List<MemoEquipment> Equipment;
         public List<MemoInstalledEquipment> InstalledEquipment;

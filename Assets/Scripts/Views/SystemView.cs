@@ -21,6 +21,8 @@ namespace Assets.Scripts.Views
 
             PrefabsHelper.InstantiateStar(Panel).GetComponent<StarButton>().Initialize(Env.Galaxy[system]);
 
+            ShipsView.Open();
+
             foreach (var location in Env.Systems[system].Select(i => i.Value))
             {
                 var orbit = false;
@@ -37,7 +39,7 @@ namespace Assets.Scripts.Views
                 }
                 else if (location is Asteroid)
                 {
-                    PrefabsHelper.InstantiateAsteroid(Panel).GetComponent<AsteroidButton>().Initialize(location);
+                    PrefabsHelper.InstantiateAsteroid(Panel).GetComponent<LocationButton>().Initialize(location);
                 }
                 else  if (location is Gates)
                 {
@@ -53,7 +55,6 @@ namespace Assets.Scripts.Views
             GetComponent<TweenMap>().Set(Vector2.zero);
             Background.enabled = true;
             CargoView.Open();
-            ShipsView.Open();
             RouteView.Open();
         }
 

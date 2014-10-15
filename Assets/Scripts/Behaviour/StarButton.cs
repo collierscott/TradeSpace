@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Common;
 using Assets.Scripts.Data;
-using Assets.Scripts.Views;
+using Assets.Scripts.Engine;
 using UnityEngine;
 
 namespace Assets.Scripts.Behaviour
@@ -17,7 +17,7 @@ namespace Assets.Scripts.Behaviour
             Name.text = location.System;
             Halo.color = location.Color;
             Button.ColorDown = location.Color.SetAlpha(1);
-            Button.Confirmed += FindObjectOfType<GalaxyView>().Open;
+            Button.Confirmed += FindObjectOfType<ActionManager>().CloseScreen;
         }
     }
 }

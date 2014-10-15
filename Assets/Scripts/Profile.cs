@@ -11,7 +11,8 @@ namespace Assets.Scripts
     public class Profile
     {
         public ProtectedValue Credits;
-        public MemoShip Ship;
+        public List<MemoShip> Ships;
+        public int SelectedShip;
         public List<MemoShop> Shops;
         public List<MemoAsteroid> Asteroids;
         public ProtectedValue InitShopsTime;
@@ -45,11 +46,11 @@ namespace Assets.Scripts
 
             if (PlayerPrefs.HasKey(ProfileKey))
             {
-                var profile = PlayerPrefs.GetString(ProfileKey);
+                //var profile = PlayerPrefs.GetString(ProfileKey);
 
-                GameLog.Write("Serialized profile: {0}", profile);
+                //GameLog.Write("Serialized profile: {0}", profile);
 
-                _instance = Serializer.Deserialize<Profile>(profile);
+                //_instance = Serializer.Deserialize<Profile>(profile);
             }
             else
             {
@@ -57,26 +58,44 @@ namespace Assets.Scripts
                 {
                     Credits = new ProtectedValue(2000),
                     InitShopsTime = DateTime.UtcNow.Encrypt(),
-                    Ship = new MemoShip { Id = ShipId.Rhino },
+                    Ships = new List<MemoShip>
+                    {
+                        new MemoShip { Id = ShipId.Rhino },
+                        new MemoShip { Id = ShipId.Rhino }
+                    },
                     Shops = new List<MemoShop>(),
                     Asteroids = new List<MemoAsteroid>()
                 };
-                _instance.Ship.Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Fobos"].ToRouteNode() };
-                _instance.Ship.Goods = new List<MemoGoods>
+
+                _instance.Ships[0].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Fobos"].ToRouteNode() };
+                _instance.Ships[0].Goods = new List<MemoGoods>
                 {
                     new MemoGoods { Id = GoodsId.Water, Quantity = 10.Encrypt() },
                     new MemoGoods { Id = GoodsId.Fish, Quantity = 5.Encrypt() }
                 };
-                _instance.Ship.Equipment = new List<MemoEquipment>
+                _instance.Ships[0].Equipment = new List<MemoEquipment>
                 {
                     new MemoEquipment { Id = EquipmentId.Armor, Quantity = 5.Encrypt() }
                 };
-                _instance.Ship.InstalledEquipment = new List<MemoInstalledEquipment>
+                _instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>
                 {
                     new MemoInstalledEquipment { Id = EquipmentId.EngineReactive, Quantity = 1.Encrypt(), Index = 0 },
                     new MemoInstalledEquipment { Id = EquipmentId.Armor, Quantity = 1.Encrypt(), Index = 1 }
                 };
+
+                _instance.Ships[1].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };
+                _instance.Ships[1].Goods = new List<MemoGoods>
+                {
+                    new MemoGoods { Id = GoodsId.Water, Quantity = 8.Encrypt() },
+                };
+                _instance.Ships[0].Equipment = new List<MemoEquipment>();
+                _instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>();
             }
+        }
+
+        public MemoShip Ship
+        {
+            get { return Ships[SelectedShip]; }
         }
 
         public void Save()

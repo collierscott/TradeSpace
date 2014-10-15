@@ -15,15 +15,15 @@ namespace Assets.Scripts.Behaviour
 
         public void Initialize(Location location)
         {
-            var connected = Env.Galaxy[location.ToGates().ConnectedSystem];
+            var connectedSystem = Env.Galaxy[location.ToGates().ConnectedSystem];
         
-            Name.text = string.Format("Gate to {0}", connected.System);
-            Image.color = connected.Color;
+            Name.text = string.Format("Gate to {0}", connectedSystem.System);
+            Image.color = connectedSystem.Color;
             transform.localPosition = location.Position;
 
             Button.Confirmed += () =>
             {
-                SelectManager.SelectSystem(connected.System);
+                SelectManager.SelectSystem(connectedSystem.System);
                 FindObjectOfType<SystemView>().Open();
             };
         }

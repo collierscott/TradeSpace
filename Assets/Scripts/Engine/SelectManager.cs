@@ -9,26 +9,36 @@ namespace Assets.Scripts.Engine
     {
         public static string System { get; private set; }
         public static Location Location { get; private set; }
-        public static ShipBehaviour Ship { get; private set; }
 
-        public static void SelectShip(ShipBehaviour ship)
+        public static ShipBehaviour Ship
         {
-            GameLog.Write("Select ship: {0}", ship.Name.text); 
-            Ship = ship;
+            get
+            {
+                return ShipsView.Ships[Profile.Instance.SelectedShip];
+            }
+        }
+
+        public static void SelectShip(int index)
+        {
+            GameLog.Write("Select ship: {0}", index);
+            Profile.Instance.SelectedShip = index;
+            FindObjectOfType<IngameMenu>().Refresh();
+            FindObjectOfType<CargoView>().Refresh();
+            FindObjectOfType<RouteView>().Refresh();
         }
 
         public static void SelectSystem(string system)
         {
             GameLog.Write("Select system: {0}", system); 
             System = system;
-            FindObjectOfType<IngameMenu>().Refresh();
+            FindObjectOfType<IngameMenu>().Reset();
         }
 
         public static void SelectLocation(Location location)
         {
             GameLog.Write("Select location: {0}", location.Name); 
             Location = location;
-            FindObjectOfType<IngameMenu>().Refresh();
+            FindObjectOfType<IngameMenu>().Reset();
         }
     }
 }

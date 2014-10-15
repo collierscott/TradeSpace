@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
@@ -77,11 +76,11 @@ namespace Assets.Scripts.Environment
             #region Food
 
             new Goods { Id = GoodsId.Water, Type = GoodsType.Food, TechLevel = 0,
-                Name = "Питевая вода", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                Name = "Питевая вода", Description = "", Mass = 1, Volume = 2, Price = 0 },
             new Goods { Id = GoodsId.Grain, Type = GoodsType.Food, TechLevel = 0,
                 Name = "Зерно", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Fish, Type = GoodsType.Food, TechLevel = 0,
-                Name = "Рыба", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                Name = "Рыба", Description = "", Mass = 2, Volume = 2, Price = 0 },
             new Goods { Id = GoodsId.Meat, Type = GoodsType.Food, TechLevel = 0,
                 Name = "Мясо", Description = "", Mass = 0, Volume = 0, Price = 0 },
             

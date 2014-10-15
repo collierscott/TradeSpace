@@ -32,13 +32,16 @@ namespace Assets.Scripts.Views
 
                 Previous = Current;
                 Current = this;
-
-                GetComponent<IngameMenu>().Refresh();
             }
 
             Initialize();
             Panel.gameObject.SetActive(true);
             enabled = true;
+
+            if (this is IScreenView)
+            {
+                GetComponent<IngameMenu>().Reset();
+            }
         }
 
         public void Close()

@@ -11,8 +11,6 @@ namespace Assets.Scripts.Common
         {
             message = string.Format(message, args);
 
-            //Debug.Log(message);
-
             if (!PlayerPrefs.HasKey(LogKey))
             {
                 PlayerPrefs.SetString(LogKey, "");

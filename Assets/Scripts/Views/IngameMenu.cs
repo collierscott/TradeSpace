@@ -60,10 +60,10 @@ namespace Assets.Scripts.Views
             EquipmentShopButton.Up += () => GetComponent<EquipmentShopView>().Open();
             HangarButton.Up += () => GetComponent<HangarView>().Open();
 
-            Refresh();
+            Reset();
         }
 
-        public void Refresh()
+        public void Reset()
         {
             foreach (var button in new[] { InfoButton, OpenButton, MoveButton, ReturnButton, ShopButton, EquipmentShopButton, HangarButton })
             {
@@ -75,36 +75,10 @@ namespace Assets.Scripts.Views
             if (Current is GalaxyView)
             {
                 buttons = GalaxyButtons;
-                OpenButton.Enabled = SelectManager.System != null;
             }
             else if (Current is SystemView)
             {
                 buttons = SystemButtons;
-                InfoButton.Enabled = SelectManager.Location != null;
-
-                if (SelectManager.Ship != null && SelectManager.Location != null)
-                {
-                    MoveButton.Enabled = SelectManager.Ship.State != ShipState.InFlight && SelectManager.Location.Name != SelectManager.Ship.Location.Name;
-                    OpenButton.Enabled = SelectManager.Ship.Location.Name == SelectManager.Location.Name;
-                    
-                    if (MoveButton.Enabled)
-                    {
-                        if (SelectManager.Ship.State == ShipState.Ready
-                            && SelectManager.Ship.Trace.Last().LocationName == SelectManager.Location.Name)
-                        {
-                            MoveButton.ChangeColor(Colors.Green, 0.25f);
-                        }
-
-                        else
-                        {
-                            MoveButton.ChangeColor(Colors.Blue, 0.25f);
-                        }
-                    }
-                }
-                else
-                {
-                    MoveButton.Enabled = OpenButton.Enabled = false;
-                }
             }
             else if (Current is PlanetView)
             {
@@ -121,24 +95,60 @@ namespace Assets.Scripts.Views
 
             buttons.Add(ReturnButton);
 
-
             for (var i = 0; i < buttons.Count; i++)
             {
                 buttons[i].gameObject.SetActive(true);
                 buttons[i].transform.localPosition = new Vector3(40, 130 * ((buttons.Count - 1) / 2f) - 130 * i);
             }
+
+            Refresh();
+        }
+
+        public void Refresh()
+        {
+            if (Current is GalaxyView)
+            {
+                OpenButton.Enabled = SelectManager.System != null;
+            }
+            else if (Current is SystemView)
+            {
+                InfoButton.Enabled = SelectManager.Location != null;
+
+                if (SelectManager.Ship != null && SelectManager.Location != null)
+                {
+                    MoveButton.Enabled = SelectManager.Ship.State != ShipState.InFlight && SelectManager.Location.Name != SelectManager.Ship.Location.Name;
+                    OpenButton.Enabled = SelectManager.Ship.Location.Name == SelectManager.Location.Name;
+
+                    if (MoveButton.Enabled)
+                    {
+                        MoveButton.ChangeColor(ShipReady ? Colors.Green : Colors.Blue, 0.25f);
+                    }
+                }
+                else
+                {
+                    MoveButton.Enabled = OpenButton.Enabled = false;
+                }
+            }
         }
 
         private static void MoveButtonPressed()
         {
-            if (SelectManager.Ship.State == ShipState.Ready
-                && SelectManager.Ship.Trace.Last().LocationName == SelectManager.Location.Name)
+            if (ShipReady)
             {
                 ActionManager.MoveShip(SelectManager.Location);
             }
             else
             {
                 ActionManager.TraceRoute(SelectManager.Location);
+            }
+        }
+
+        private static bool ShipReady
+        {
+            get
+            {
+                return SelectManager.Ship.State == ShipState.Ready && SelectManager.Ship.Trace != null
+                    && SelectManager.Ship.Trace.Last().LocationName == SelectManager.Location.Name;
             }
         }
     }

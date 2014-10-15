@@ -36,21 +36,21 @@ namespace Assets.Scripts.Views
             //TweenScale.Begin(MassSprite.gameObject, delay, new Vector2((float) ship.GoodsMass / ship.Mass, 1));
             //TweenScale.Begin(VolumeSprite.gameObject, delay, new Vector2((float) ship.GoodsVolume / ship.Volume, 1));
 
-            foreach (var sprite in new[] { MassSprite, VolumeSprite })
-            {
-                var color = Color.green;
+            //foreach (var sprite in new[] { MassSprite, VolumeSprite })
+            //{
+            //    var color = Color.green;
 
-                if (sprite.transform.localScale.x > 0.8)
-                {
-                    color = Color.red;
-                }
-                else if (sprite.transform.localScale.x > 0.5)
-                {
-                    color = Color.yellow;
-                }
+            //    if (sprite.transform.localScale.x > 0.8)
+            //    {
+            //        color = Color.red;
+            //    }
+            //    else if (sprite.transform.localScale.x > 0.5)
+            //    {
+            //        color = Color.yellow;
+            //    }
 
-                TweenColor.Begin(sprite.gameObject, delay, color);
-            }
+            //    TweenColor.Begin(sprite.gameObject, delay, color);
+            //}
         }
     }
 }

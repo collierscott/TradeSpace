@@ -8,6 +8,7 @@ namespace Assets.Scripts.Behaviour
     {
         public UITexture Texture;
         public UITexture Effect;
+
         public override void Initialize(Location location)
         {
             base.Initialize(location);
@@ -20,7 +21,7 @@ namespace Assets.Scripts.Behaviour
             Texture.transform.localScale *= location.Scale;
             Effect.transform.localScale *= location.Scale;
 
-            //Effect.color = location.Color;
+            Effect.color = Color.white;
         }
     }
 }

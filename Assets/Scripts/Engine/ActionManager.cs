@@ -37,13 +37,13 @@ namespace Assets.Scripts.Engine
         {
             SelectManager.Ship.BuildTrace(location);
             GetComponent<RouteView>().Refresh();
-            GetComponent<IngameMenu>().Refresh();
+            GetComponent<IngameMenu>().Reset();
         }
 
         public void MoveShip(Location location)
         {
             SelectManager.Ship.Move(location);
-            GetComponent<IngameMenu>().Refresh();
+            GetComponent<IngameMenu>().Reset();
         }
 
         public void OpenView(string view)

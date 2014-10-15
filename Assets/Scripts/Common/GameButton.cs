@@ -55,7 +55,6 @@ namespace Assets.Scripts.Common
         {
             _color = color;
             TweenColor.Begin(gameObject, duration, _color);
-            Debug.Log(_color);
         }
 
         protected virtual void OnPress(bool down)

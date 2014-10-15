@@ -2,7 +2,6 @@
 {
     public enum ShipState
     {
-        Landed,
         Ready,
         InFlight,
     }
