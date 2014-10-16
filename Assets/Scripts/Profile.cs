@@ -75,21 +75,25 @@ namespace Assets.Scripts
                 };
                 _instance.Ships[0].Equipment = new List<MemoEquipment>
                 {
-                    new MemoEquipment { Id = EquipmentId.Armor, Quantity = 5.Encrypt() }
+                    new MemoEquipment { Id = EquipmentId.MassKit100, Quantity = 5.Encrypt() }
                 };
                 _instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>
                 {
-                    new MemoInstalledEquipment { Id = EquipmentId.EngineReactive, Quantity = 1.Encrypt(), Index = 0 },
-                    new MemoInstalledEquipment { Id = EquipmentId.Armor, Quantity = 1.Encrypt(), Index = 1 }
+                    new MemoInstalledEquipment { Id = EquipmentId.EngineReactive100, Index = 0 },
+                    new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 }
                 };
 
                 _instance.Ships[1].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };
                 _instance.Ships[1].Goods = new List<MemoGoods>
                 {
-                    new MemoGoods { Id = GoodsId.Water, Quantity = 8.Encrypt() },
+                    new MemoGoods { Id = GoodsId.Ferrum, Quantity = 10.Encrypt() },
                 };
-                _instance.Ships[0].Equipment = new List<MemoEquipment>();
-                _instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>();
+                _instance.Ships[1].Equipment = new List<MemoEquipment>();
+                _instance.Ships[1].InstalledEquipment = new List<MemoInstalledEquipment>
+                {
+                    new MemoInstalledEquipment { Id = EquipmentId.EngineReactive100, Index = 0 },
+                    new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 1 }
+                };
             }
         }
 

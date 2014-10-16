@@ -25,6 +25,11 @@ namespace Assets.Scripts.Behaviour
             {
                 Button.Pressed = true;
             }
+
+            var ship = new PlayerShip(Profile.Instance.Ships[_index]);
+
+            Mass.transform.localScale = new Vector2(1, (float) ship.GoodsMass / ship.Mass);
+            Volume.transform.localScale = new Vector2(1, (float) ship.GoodsVolume / ship.Volume);
         }
 
         public void Update()
@@ -38,11 +43,6 @@ namespace Assets.Scripts.Behaviour
                     State.color = Color.green;
                     break;
             }
-
-            var ship = new PlayerShip(Profile.Instance.Ships[_index]);
-
-            Mass.transform.localScale = new Vector2(1, (float) ship.GoodsMass / ship.Mass);
-            Volume.transform.localScale = new Vector2(1, (float) ship.GoodsVolume / ship.Volume);
         }
     }
 }

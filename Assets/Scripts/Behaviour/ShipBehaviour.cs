@@ -68,14 +68,18 @@ namespace Assets.Scripts.Behaviour
 
         public void Move(Location arrival)
         {
+            var ship = new PlayerShip(_ship);
+
             _ship.Trace = null;
-            _ship.Route = RouteEngine.FindRoute(_ship.Route.Last(), arrival.ToRouteNode(), Env.ShipDatabase[_ship.Id].Speed);
+            _ship.Route = RouteEngine.FindRoute(_ship.Route.Last(), arrival.ToRouteNode(), ship.Speed);
             _ship.State = ShipState.InFlight;
         }
 
         public void BuildTrace(Location arrival)
         {
-            _ship.Trace = RouteEngine.FindRoute(_ship.Route.Last(), arrival.ToRouteNode(), Env.ShipDatabase[_ship.Id].Speed);
+            var ship = new PlayerShip(_ship);
+
+            _ship.Trace = RouteEngine.FindRoute(_ship.Route.Last(), arrival.ToRouteNode(), ship.Speed);
             _ship.State = ShipState.Ready;
         }
 

@@ -89,7 +89,7 @@ namespace Assets.Scripts.Views
                 _index = _ship.FindFreeSlot();
             }
 
-            _installed.Add(new MemoInstalledEquipment { Id = equipment.Id, Quantity = 1.Encrypt(), Index = _index });
+            _installed.Add(new MemoInstalledEquipment { Id = equipment.Id, Index = _index });
 
             Refresh();
             CargoView.Refresh();

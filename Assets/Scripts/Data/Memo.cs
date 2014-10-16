@@ -26,8 +26,9 @@ namespace Assets.Scripts.Data
         public EquipmentId Id;
     }
 
-    public class MemoInstalledEquipment : MemoEquipment
+    public class MemoInstalledEquipment
     {
+        public EquipmentId Id;
         public long Index;
     }
 

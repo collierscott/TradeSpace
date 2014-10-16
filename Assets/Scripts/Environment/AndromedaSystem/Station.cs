@@ -17,8 +17,8 @@ namespace Assets.Scripts.Environment.AndromedaSystem
             Radiation = 0,
             Equipments = new List<ShopEquipment>
             {
-                new ShopEquipment { Id = EquipmentId.Armor, MinPrice = 2, MaxPrice = 2.4f, MinQuantity = 2, MaxQuantity = 4, Availability = 1 },
-                new ShopEquipment { Id = EquipmentId.EngineReactive, MinPrice = 2, MaxPrice = 3f, MinQuantity = 1, MaxQuantity = 2, Availability = 1 }
+                new ShopEquipment { Id = EquipmentId.MassKit100, MinPrice = 2, MaxPrice = 2.4f, MinQuantity = 2, MaxQuantity = 4, Availability = 1 },
+                new ShopEquipment { Id = EquipmentId.EngineReactive100, MinPrice = 2, MaxPrice = 3f, MinQuantity = 1, MaxQuantity = 2, Availability = 1 }
             }
         };
     }

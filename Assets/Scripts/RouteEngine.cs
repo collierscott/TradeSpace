@@ -17,7 +17,7 @@ namespace Assets.Scripts
             public long Distance;
         }
 
-        public static List<RouteNode> FindRoute(RouteNode departure, RouteNode arrival, long speed)
+        public static List<RouteNode> FindRoute(RouteNode departure, RouteNode arrival, float speed)
         {
             departure.Time = DateTime.UtcNow;
 
@@ -63,7 +63,7 @@ namespace Assets.Scripts
             return route;
         }
 
-        private static List<RouteNode> FindSystemRoute(RouteNode departure, RouteNode arrival, long speed)
+        private static List<RouteNode> FindSystemRoute(RouteNode departure, RouteNode arrival, float speed)
         {
             const float radius = 100;
             var route = new List<RouteNode>();

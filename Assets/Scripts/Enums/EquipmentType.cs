@@ -4,8 +4,9 @@
     {
         Engine,
         Hyper,
-        Mass,
-        Volume,
+        MassKit,
+        VolumeKit,
+        EquipmentKit,
         Armor,
         Shield,
         Petrol,

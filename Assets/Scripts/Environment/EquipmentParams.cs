@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment
         {
             switch (equipmentId)
             {
-                case EquipmentId.ImpulseDrill:
+                case EquipmentId.ImpulseDrill100:
                     return new DrillParams
                     {
                         Power = 10,
@@ -18,7 +18,7 @@ namespace Assets.Scripts.Environment
                         Type = DrillType.Impulse,
                         ReloadSeconds = 1
                     };
-                case EquipmentId.LaserDrill:
+                case EquipmentId.LaserDrill100:
                     return new DrillParams
                     {
                         Power = 10,

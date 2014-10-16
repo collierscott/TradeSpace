@@ -9,10 +9,53 @@ namespace Assets.Scripts.Environment
     {
         private static readonly List<Equipment> EquipmentList = new List<Equipment>
         {
-            new Equipment { Id = EquipmentId.Armor, Description = "", Mass = 40, Volume = 40, Price = 1000,
-                Type = EquipmentType.Armor, BonusAdd = 100 },
-            new Equipment { Id = EquipmentId.EngineReactive, Description = "", Mass = 40, Volume = 40, Price = 1000,
-                Type = EquipmentType.Engine, BonusAdd = 200 }
+            #region Engines
+
+            new Equipment
+            {
+                Id = EquipmentId.EngineReactive100,
+                Name = "Реактивный двигатель J100",
+                Description = "Недорогой и экономичный реактивный двигатель, которым оснащаются большинство кораблей начального уровня",
+                Mass = 10,
+                Volume = 10,
+                Price = 1000,
+                Type = EquipmentType.Engine,
+                BonusAdd = 100
+            },
+
+            #endregion
+
+            #region Mass
+
+            new Equipment
+            {
+                Id = EquipmentId.MassKit100,
+                Name = "Комплект для увеличения грузоподъемности корабля",
+                Description = "Модернизация корабля с применением облегченных материалов позволяет увеличить грузоподъемность",
+                Mass = 5,
+                Volume = 5,
+                Price = 1000,
+                Type = EquipmentType.MassKit,
+                BonusAdd = 20
+            },
+
+            #endregion
+
+            #region Volume
+
+            new Equipment
+            {
+                Id = EquipmentId.VolumeKit100,
+                Name = "Комплект для увеличения вместительности грузового отсека",
+                Description = "Модернизация грузового отсека и улучшение эргономики позволяет увеличить вместительность грузового отсека",
+                Mass = 5,
+                Volume = 5,
+                Price = 1000,
+                Type = EquipmentType.VolumeKit,
+                BonusAdd = 20
+            },
+
+            #endregion
         };
 
         public static readonly Dictionary<EquipmentId, Equipment> EquipmentDatabase = EquipmentList.ToDictionary(i => i.Id);
