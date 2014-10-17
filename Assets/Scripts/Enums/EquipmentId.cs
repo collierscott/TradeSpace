@@ -3,7 +3,7 @@
     public enum EquipmentId
     {
         Empty,
-        EngineReactive100,
+        JetEngine100,
         MassKit100,
         VolumeKit100,
         ImpulseDrill100,

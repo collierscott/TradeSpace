@@ -192,7 +192,7 @@ namespace Assets.Scripts.Views
                 {
                     button = PrefabsHelper.InstantiateEquipmentButton(EquipmentTransform).GetComponent<EquipmentButton>();
                     button.transform.localPosition = position - Shift;
-                    TweenAlpha.Begin(button.gameObject, 0, 0);
+                    //TweenAlpha.Begin(button.gameObject, 0, 0);
                 }
 
                 button.Initialize(_equipment[i].Id, _equipment[i].Quantity.Long);

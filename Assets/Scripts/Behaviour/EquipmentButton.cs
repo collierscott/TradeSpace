@@ -1,8 +1,6 @@
 ﻿using Assets.Scripts.Common;
-using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Views;
-using UnityEngine;
 
 namespace Assets.Scripts.Behaviour
 {
@@ -23,14 +21,12 @@ namespace Assets.Scripts.Behaviour
             NameText.SetText(equipmentId.ToString());
             QuantityText.SetText(string.Format("x{0}", quantity));
             Button.Selected += () => FindObjectOfType<HangarView>().SelectEquipmentToInstall(equipmentId);
-            NameText.transform.localPosition -= new Vector3(0, 15);
         }
 
         public void Initialize(EquipmentId equipmentId, long quantity, long price)
         {
             Initialize(equipmentId, quantity);
             PriceText.SetText(price);
-            NameText.transform.localPosition += new Vector3(0, 15);
         }
     }
 }

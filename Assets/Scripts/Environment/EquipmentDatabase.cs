@@ -13,7 +13,7 @@ namespace Assets.Scripts.Environment
 
             new Equipment
             {
-                Id = EquipmentId.EngineReactive100,
+                Id = EquipmentId.JetEngine100,
                 Name = "Реактивный двигатель J100",
                 Description = "Недорогой и экономичный реактивный двигатель, которым оснащаются большинство кораблей начального уровня",
                 Mass = 10,

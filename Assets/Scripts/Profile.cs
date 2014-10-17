@@ -79,7 +79,7 @@ namespace Assets.Scripts
                 };
                 _instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>
                 {
-                    new MemoInstalledEquipment { Id = EquipmentId.EngineReactive100, Index = 0 },
+                    new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
                     new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 }
                 };
 
@@ -91,7 +91,7 @@ namespace Assets.Scripts
                 _instance.Ships[1].Equipment = new List<MemoEquipment>();
                 _instance.Ships[1].InstalledEquipment = new List<MemoInstalledEquipment>
                 {
-                    new MemoInstalledEquipment { Id = EquipmentId.EngineReactive100, Index = 0 },
+                    new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
                     new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 1 }
                 };
             }

@@ -11,6 +11,8 @@ namespace Assets.Scripts.Views
         
         protected override void Initialize()
         {
+            Ships.Clear();
+
             for (var i = 0; i < Profile.Instance.Ships.Count; i++)
             {
                 var ship = PrefabsHelper.InstantiateShip(Panel).GetComponent<ShipBehaviour>();
@@ -27,7 +29,6 @@ namespace Assets.Scripts.Views
         {
             Panel.Clean();
             SelectorPanel.Clean();
-            Ships.Clear();
         }
     }
 }

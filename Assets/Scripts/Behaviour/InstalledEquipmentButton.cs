@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Common;
-using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Views;
 
