@@ -51,5 +51,10 @@ namespace Assets.Scripts
         {
             return equipment.Single(i => i.Id == id);
         }
+
+        public static MemoEquipment SingleOrDefault(this List<MemoEquipment> equipment, EquipmentId id)
+        {
+            return equipment.SingleOrDefault(i => i.Id == id);
+        }
     }
 }

@@ -18,6 +18,8 @@ namespace Assets.Scripts.Views
         public GameButton BuyButton;
         public UISprite SelectedImage;
         public UILabel SelectedName;
+        public UILabel BuyPriceText;
+        public UILabel SellPriceText;
         public CargoView CargoView;
 
         private List<MemoEquipment> _shopEquipment;
@@ -57,6 +59,7 @@ namespace Assets.Scripts.Views
             _shipEquipment.ForEach(i => i.Price.Long = _shopEquipment.Contains(i.Id) ? _shopEquipment.Single(i.Id).Price.Long : (Env.EquipmentDatabase[i.Id].Price * station.PriceRate).RoundToLong());
             RefreshEquipmentButtons(_shopEquipment, ShopTransform, false);
             RefreshEquipmentButtons(_shipEquipment, ShipTransform, true);
+            RefreshPrices();
             RefreshButtons();
         }
 
@@ -65,6 +68,7 @@ namespace Assets.Scripts.Views
             _selected = equipment;
             SelectedImage.spriteName = equipment.ToString();
             SelectedName.SetText(equipment.ToString());
+            RefreshPrices();
             RefreshButtons();
         }
 
@@ -81,17 +85,18 @@ namespace Assets.Scripts.Views
         #region Helpers
 
         private const float AnimationTime = 0.25f;
+        private const float Step = 170;
         private static readonly Vector3 Shift = new Vector3(0, 150);
 
-        private static void RefreshEquipmentButtons(List<MemoEquipment> equipment, Transform parent, bool sell)
+        private static void RefreshEquipmentButtons(List<MemoEquipment> equipment, Transform parent, bool shop)
         {
             var unavailable = equipment.Where(i => i.Quantity.Long == 0).ToList();
             var available = equipment.Where(i => i.Quantity.Long > 0).ToList();
-            var buttons = parent.GetComponentsInChildren<GoodsButton>();
+            var buttons = parent.GetComponentsInChildren<EquipmentButton>();
 
             foreach (var button in buttons.Where(i => available.All(j => j.Id != i.EquipmentId) || unavailable.Any(j => j.Id == i.EquipmentId)))
             {
-                var position = button.transform.localPosition + Shift * (sell ? -1 : 1);
+                var position = button.transform.localPosition + Shift * (shop ? -1 : 1);
 
                 button.Pressed = false;
                 TweenButton(button, position, 0, AnimationTime);
@@ -101,13 +106,13 @@ namespace Assets.Scripts.Views
             for (var i = 0; i < available.Count; i++)
             {
                 var button = buttons.FirstOrDefault(j => j.EquipmentId == available[i].Id);
-                var price = sell ? GetSellPrice(available[i].Price.Long) : available[i].Price.Long;
-                var position = new Vector3(-75 * (available.Count - 1) + 150 * i, 0);
+                var price = shop ? GetShopPrice(available[i].Price.Long) : available[i].Price.Long;
+                var position = new Vector3(-Step / 2 * (available.Count - 1) + Step * i, 0);
 
                 if (button == null)
                 {
-                    button = PrefabsHelper.InstantiateGoodsButton(parent).GetComponent<GoodsButton>();
-                    button.transform.localPosition = position + Shift * (sell ? -1 : 1);
+                    button = PrefabsHelper.InstantiateEquipmentButton(parent).GetComponent<EquipmentButton>();
+                    button.transform.localPosition = position + Shift * (shop ? -1 : 1);
                     TweenAlpha.Begin(button.gameObject, 0, 0);
                 }
 
@@ -120,6 +125,17 @@ namespace Assets.Scripts.Views
         {
             TweenPosition.Begin(component.gameObject, animationTime, position);
             TweenAlpha.Begin(component.gameObject, animationTime, alpha);
+        }
+
+        private void RefreshPrices()
+        {
+            var goods = _shopEquipment.SingleOrDefault(_selected);
+
+            BuyPriceText.text = goods == null ? null : string.Format("{0} $", goods.Price.Long);
+
+            goods = _shipEquipment.SingleOrDefault(_selected);
+
+            SellPriceText.text = goods == null ? null : string.Format("{0} $", GetShopPrice(goods.Price.Long));
         }
 
         private void RefreshButtons()
@@ -140,11 +156,11 @@ namespace Assets.Scripts.Views
                                 && Profile.Instance.Credits.Long >= _shopEquipment.Single(i => i.Id == _selected).Price.Long;
         }
 
-        private void Trade(List<MemoEquipment> source, List<MemoEquipment> destination, EquipmentId equipment, bool sell)
+        private void Trade(List<MemoEquipment> source, List<MemoEquipment> destination, EquipmentId equipment, bool shop)
         {
             var goods = source.Single(equipment);
 
-            if (goods.Quantity.Long == 1 && sell)
+            if (goods.Quantity.Long == 1 && shop)
             {
                 source.Remove(goods);
             }
@@ -162,12 +178,12 @@ namespace Assets.Scripts.Views
                 destination.Add(new MemoEquipment { Id = equipment, Quantity = 1.Encrypt(), Price = goods.Price });
             }
 
-            Profile.Instance.Credits.Long += sell ? GetSellPrice(goods.Price.Long) : -goods.Price.Long;
+            Profile.Instance.Credits.Long += shop ? GetShopPrice(goods.Price.Long) : -goods.Price.Long;
             Refresh();
             CargoView.Refresh();
         }
 
-        private static long GetSellPrice(long price)
+        private static long GetShopPrice(long price)
         {
             return (price * Settings.SellRate).RoundToLong();
         }

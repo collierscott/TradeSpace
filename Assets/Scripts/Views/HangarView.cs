@@ -15,6 +15,8 @@ namespace Assets.Scripts.Views
         public Transform EquipmentTransform;
         public GameButton InstallButton;
         public GameButton RemoveButton;
+        public UISprite SelectedImage;
+        public UILabel SelectedName;
         public CargoView CargoView;
 
         private List<MemoInstalledEquipment> _installed;
@@ -36,11 +38,15 @@ namespace Assets.Scripts.Views
             _installed = Profile.Instance.Ship.InstalledEquipment;
             _equipment = Profile.Instance.Ship.Equipment;
             _ship = new PlayerShip(Profile.Instance.Ship);
-            _index = _ship.FindFreeSlot();
+            _index = _ship.HasFreeSlot() ? _ship.FindFreeSlot() : 0;
             _hangarAction = HangarAction.None;
 
             InstalledTransform.Clean();
             EquipmentTransform.Clean();
+
+            SelectedName.text = null;
+            SelectedImage.spriteName = null;
+
             InitializeEquipmentCellButtons();
             Refresh();
             CargoView.Open();
@@ -55,6 +61,10 @@ namespace Assets.Scripts.Views
         {
             _selectedEquipment = equipment;
             _hangarAction = HangarAction.Install;
+
+            SelectedImage.spriteName = _selectedEquipment.ToString(); // TODO: cp
+            SelectedName.SetText(_selectedEquipment.ToString());
+
             RefreshButtons();
         }
 
@@ -63,6 +73,10 @@ namespace Assets.Scripts.Views
             _selectedEquipment = equipment;
             _index = index;
             _hangarAction = HangarAction.Remove;
+
+            SelectedImage.spriteName = _selectedEquipment.ToString();
+            SelectedName.SetText(_selectedEquipment.ToString());
+
             RefreshButtons();
         }
 
