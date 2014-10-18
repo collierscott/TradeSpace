@@ -218,8 +218,13 @@ namespace Assets.Scripts.Views
             }
             else
             {
-                InstallButton.Enabled = _selectedEquipment != EquipmentId.Empty && _ship.HasFreeSlot() && _hangarAction == HangarAction.Install;
-                RemoveButton.Enabled = _selectedEquipment != EquipmentId.Empty && _hangarAction == HangarAction.Remove;
+                InstallButton.Enabled = _selectedEquipment != EquipmentId.Empty
+                    && _equipment.Count(i => i.Id == _selectedEquipment) > 0
+                    && _ship.HasFreeSlot()
+                    && _hangarAction == HangarAction.Install;
+                RemoveButton.Enabled = _selectedEquipment != EquipmentId.Empty
+                    && _installed.Count(i => i.Id == _selectedEquipment) > 0
+                    && _hangarAction == HangarAction.Remove;
             }
         }
 

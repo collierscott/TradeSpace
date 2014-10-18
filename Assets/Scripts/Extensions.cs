@@ -37,6 +37,11 @@ namespace Assets.Scripts
             return goods.Single(i => i.Id == id);
         }
 
+        public static MemoGoods SingleOrDefault(this List<MemoGoods> goods, GoodsId id)
+        {
+            return goods.SingleOrDefault(i => i.Id == id);
+        }
+
         public static bool Contains(this List<MemoEquipment> equipment, EquipmentId id)
         {
             return equipment.Any(i => i.Id == id);

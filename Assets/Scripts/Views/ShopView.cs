@@ -18,6 +18,8 @@ namespace Assets.Scripts.Views
         public GameButton BuyButton;
         public UISprite SelectedImage;
         public UILabel SelectedName;
+        public UILabel BuyPriceText;
+        public UILabel SellPriceText;
         public CargoView CargoView;
 
         private List<MemoGoods> _shopGoods;
@@ -59,14 +61,16 @@ namespace Assets.Scripts.Views
             _shipGoods.ForEach(i => i.Price.Long = _shopGoods.Contains(i.Id) ? _shopGoods.Single(i.Id).Price.Long : (Env.GoodsDatabase[i.Id].Price * planet.DefaultPriceRate).RoundToLong());
             RefreshGoods(_shopGoods, ShopTransform, false);
             RefreshGoods(_shipGoods, ShipTransform, true);
+            RefreshPrices();
             RefreshButtons();
         }
 
-        public void SelectGoods(GoodsId goods)
+        public void SelectGoods(GoodsId goodsId)
         {
-            _selected = goods;
-            SelectedImage.spriteName = goods.ToString();
-            SelectedName.SetText(goods.ToString());
+            _selected = goodsId;
+            SelectedImage.spriteName = goodsId.ToString();
+            SelectedName.SetText(goodsId.ToString());
+            RefreshPrices();
             RefreshButtons();
         }
 
@@ -84,6 +88,7 @@ namespace Assets.Scripts.Views
 
         private const float AnimationTime = 0.25f;
         private const float Step = 170;
+        private static readonly Vector3 Shift = new Vector3(0, 150);
 
         private static void RefreshGoods(List<MemoGoods> goods, Transform parent, bool shop)
         {
@@ -94,18 +99,20 @@ namespace Assets.Scripts.Views
 
             if (buttonsToDestroy.Count > 0)
             {
-                DestroyGoods(buttonsToDestroy);
+                DestroyGoods(buttonsToDestroy, shop);
             }
 
             ShowGoods(buttons, availableGoods, parent, shop);
         }
 
-        private static void DestroyGoods(IEnumerable<GoodsButton> buttons)
+        private static void DestroyGoods(IEnumerable<GoodsButton> buttons, bool shop)
         {
             foreach (var button in buttons)
             {
+                var position = button.transform.localPosition + Shift * (shop ? -1 : 1);
+
                 button.Pressed = false;
-                TweenButton(button, button.transform.localPosition, 0, AnimationTime);
+                TweenButton(button, position, 0, AnimationTime);
                 Destroy(button.gameObject, AnimationTime);
             }
         }
@@ -121,7 +128,7 @@ namespace Assets.Scripts.Views
                 if (button == null)
                 {
                     button = PrefabsHelper.InstantiateGoodsButton(parent).GetComponent<GoodsButton>();
-                    button.transform.localPosition = position;
+                    button.transform.localPosition = position + Shift * (shop ? -1 : 1);
                     TweenAlpha.Begin(button.gameObject, 0, 0);
                 }
 
@@ -134,6 +141,37 @@ namespace Assets.Scripts.Views
         {
             TweenPosition.Begin(component.gameObject, animationTime, position);
             TweenAlpha.Begin(component.gameObject, animationTime, alpha);
+        }
+
+        private void RefreshPrices()
+        {
+            var goods = _shopGoods.SingleOrDefault(_selected);
+
+            if (goods == null)
+            {
+                BuyPriceText.text = null;
+            }
+            else
+            {
+                var price = goods.Price.Long;
+                var total = goods.Quantity.Long * price;
+
+                BuyPriceText.text = string.Format("{0} $[888888] / {1} $[-]", price, total);
+            }
+
+            goods = _shipGoods.SingleOrDefault(_selected);
+
+            if (goods == null)
+            {
+                SellPriceText.text = null;
+            }
+            else
+            {
+                var price = GetShopPrice(goods.Price.Long);
+                var total = goods.Quantity.Long * price;
+
+                SellPriceText.text = string.Format("{0} $[888888] / {1} $[-]", price, total);
+            }
         }
 
         private void RefreshButtons()
