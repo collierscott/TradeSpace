@@ -7,7 +7,7 @@ namespace Assets.Scripts.Behaviour
     public class GoodsButton : Script
     {
         public UISprite Image;
-        public UILabel NameText;
+        //public UILabel NameText;
         public UILabel QuantityText;
         public UILabel PriceText;
         public SelectButton Button;
@@ -19,16 +19,16 @@ namespace Assets.Scripts.Behaviour
         {
             GoodsId = goodsId;
             Image.spriteName = goodsId.ToString();
-            NameText.SetText(goodsId.ToString());
+            //NameText.SetText(goodsId.ToString());
             QuantityText.SetText(string.Format("x{0}", quantity));
-            PriceText.SetText(price);
+            PriceText.SetText(price + " $");
             Button.Selected += () => FindObjectOfType<ShopView>().SelectGoods(goodsId);
         }
 
         public void Initialize(EquipmentId equipmentId, long quantity, long price)
         {
             Initialize(equipmentId, quantity);
-            PriceText.SetText(price);
+            PriceText.SetText(price + " $");
         }
 
         public void Initialize(EquipmentId equipmentId, long quantity)
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Behaviour
         {
             EquipmentId = equipmentId;
             Image.spriteName = equipmentId.ToString();
-            NameText.SetText(equipmentId.ToString());
+            //NameText.SetText(equipmentId.ToString());
             Button.Selected += () => FindObjectOfType<EquipmentShopView>().SelectEquipment(equipmentId);
         }
 

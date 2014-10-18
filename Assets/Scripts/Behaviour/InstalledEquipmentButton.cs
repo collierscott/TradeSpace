@@ -7,7 +7,7 @@ namespace Assets.Scripts.Behaviour
     public class InstalledEquipmentButton : Script
     {
         public UISprite Image;
-        public UILabel NameText;
+        //public UILabel NameText;
         public SelectButton Button;
 
         public EquipmentId EquipmentId { get; private set; }
@@ -18,7 +18,7 @@ namespace Assets.Scripts.Behaviour
             EquipmentId = equipmentId;
             Index = index;
             Image.spriteName = equipmentId.ToString();
-            NameText.SetText(equipmentId.ToString());
+            //NameText.SetText(equipmentId.ToString());
             Button.Selected += () => FindObjectOfType<HangarView>().SelectEquipmentToRemove(equipmentId, index);
         }
     }

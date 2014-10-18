@@ -37,6 +37,9 @@ namespace Assets.Scripts.Views
             ShopTransform.Clean();
             ShipTransform.Clean();
 
+            SelectedName.text = null;
+            SelectedImage.spriteName = null;
+
             _shopGoods = Profile.Instance.Shops.Single(i => i.Id == planet.Name).Goods;
             _shipGoods = Profile.Instance.Ship.Goods;
 
@@ -54,8 +57,8 @@ namespace Assets.Scripts.Views
             var planet = (Planet) SelectManager.Location;
 
             _shipGoods.ForEach(i => i.Price.Long = _shopGoods.Contains(i.Id) ? _shopGoods.Single(i.Id).Price.Long : (Env.GoodsDatabase[i.Id].Price * planet.DefaultPriceRate).RoundToLong());
-            RefreshGoodsButtons(_shopGoods, ShopTransform, false);
-            RefreshGoodsButtons(_shipGoods, ShipTransform, true);
+            RefreshGoods(_shopGoods, ShopTransform, false);
+            RefreshGoods(_shipGoods, ShipTransform, true);
             RefreshButtons();
         }
 
@@ -80,37 +83,49 @@ namespace Assets.Scripts.Views
         #region Helpers
 
         private const float AnimationTime = 0.25f;
-        private static readonly Vector3 Shift = new Vector3(0, 150);
+        private const float Step = 170;
 
-        private static void RefreshGoodsButtons(List<MemoGoods> goods, Transform parent, bool sell)
+        private static void RefreshGoods(List<MemoGoods> goods, Transform parent, bool shop)
         {
-            var unavailable = goods.Where(i => i.Quantity.Long == 0).ToList();
-            var available = goods.Where(i => i.Quantity.Long > 0).ToList();
+            var unavailableGoods = goods.Where(i => i.Quantity.Long == 0).ToList();
+            var availableGoods = goods.Except(unavailableGoods).ToList();
             var buttons = parent.GetComponentsInChildren<GoodsButton>();
-        
-            foreach (var button in buttons.Where(i => available.All(j => j.Id != i.GoodsId) || unavailable.Any(j => j.Id == i.GoodsId)))
-            {
-                var position = button.transform.localPosition + Shift * (sell ? -1 : 1);
+            var buttonsToDestroy = buttons.Where(i => availableGoods.All(j => j.Id != i.GoodsId) || unavailableGoods.Any(j => j.Id == i.GoodsId)).ToList();
 
-                button.Pressed = false;
-                TweenButton(button, position, 0, AnimationTime);
-                Destroy(button.gameObject, AnimationTime);
+            if (buttonsToDestroy.Count > 0)
+            {
+                DestroyGoods(buttonsToDestroy);
             }
 
-            for (var i = 0; i < available.Count; i++)
+            ShowGoods(buttons, availableGoods, parent, shop);
+        }
+
+        private static void DestroyGoods(IEnumerable<GoodsButton> buttons)
+        {
+            foreach (var button in buttons)
             {
-                var button = buttons.FirstOrDefault(j => j.GoodsId == available[i].Id);
-                var price = sell ? GetSellPrice(available[i].Price.Long) : available[i].Price.Long;
-                var position = new Vector3(-75 * (available.Count - 1) + 150 * i, 0);
+                button.Pressed = false;
+                TweenButton(button, button.transform.localPosition, 0, AnimationTime);
+                Destroy(button.gameObject, AnimationTime);
+            }
+        }
+
+        private static void ShowGoods(GoodsButton[] buttons, IList<MemoGoods> goods, Transform parent, bool shop)
+        {
+            for (var i = 0; i < goods.Count; i++)
+            {
+                var button = buttons.FirstOrDefault(j => j.GoodsId == goods[i].Id);
+                var price = shop ? GetShopPrice(goods[i].Price.Long) : goods[i].Price.Long;
+                var position = new Vector3(-Step / 2 * (goods.Count - 1) + Step * i, 0);
 
                 if (button == null)
                 {
                     button = PrefabsHelper.InstantiateGoodsButton(parent).GetComponent<GoodsButton>();
-                    button.transform.localPosition = position + Shift * (sell ? -1 : 1);
+                    button.transform.localPosition = position;
                     TweenAlpha.Begin(button.gameObject, 0, 0);
                 }
 
-                button.Initialize(available[i].Id, available[i].Quantity.Long, price);
+                button.Initialize(goods[i].Id, goods[i].Quantity.Long, price);
                 TweenButton(button, position, 1, AnimationTime);
             }
         }
@@ -161,12 +176,12 @@ namespace Assets.Scripts.Views
                 destination.Add(new MemoGoods { Id = goodsId, Quantity = 1.Encrypt(), Price = goods.Price });
             }
 
-            Profile.Instance.Credits.Long += sell ? GetSellPrice(goods.Price.Long) : -goods.Price.Long;
+            Profile.Instance.Credits.Long += sell ? GetShopPrice(goods.Price.Long) : -goods.Price.Long;
             Refresh();
             CargoView.Refresh();
         }
 
-        private static long GetSellPrice(long price)
+        private static long GetShopPrice(long price)
         {
             return (price * Settings.SellRate).RoundToLong();
         }

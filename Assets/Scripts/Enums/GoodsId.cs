@@ -51,6 +51,10 @@
         Grain,
         Fish,
         Meat,
+        Fruits,
+        Vegetables,
+        Berries,
+        Spices,
         
         #endregion
 

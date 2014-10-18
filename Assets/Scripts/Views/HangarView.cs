@@ -117,6 +117,7 @@ namespace Assets.Scripts.Views
         #region Helpers
 
         private const float AnimationTime = 0.25f;
+        private const float Step = 170;
         private static readonly Vector3 Shift = new Vector3(0, 150);
 
         private void Refresh()
@@ -132,12 +133,13 @@ namespace Assets.Scripts.Views
         {
             for (var i = 0; i < _ship.EquipmentSlots; i++)
             {
-                var position = new Vector3(-75 * (_ship.EquipmentSlots - 1) + 150 * i, 0);
+                var position = new Vector3(-Step / 2 * (_ship.EquipmentSlots - 1) + Step * i, 0);
                 var cell = PrefabsHelper.InstantiateEquipmentCellButton(InstalledTransform);
                 var index = i;
 
-                cell.GetComponent<SelectButton>().Selected += () => SelectEquipmentCell(index);
+                cell.transform.FindChild("Button").GetComponent<SelectButton>().Selected += () => SelectEquipmentCell(index);
                 cell.transform.localPosition = position;
+                cell.transform.localScale *= 0.8f;
             }
         }
 
@@ -160,7 +162,7 @@ namespace Assets.Scripts.Views
                 if (buttons.Any(i => i.EquipmentId == installed.Id && i.Index == installed.Index)) continue;
 
                 var index = installed.Index;
-                var position = new Vector3(-75* (_ship.EquipmentSlots - 1) + 150 * index, 0);
+                var position = new Vector3(-Step / 2 * (_ship.EquipmentSlots - 1) + Step * index, 0);
                 var button = PrefabsHelper.InstantiateInstalledEquipmentButton(InstalledTransform).GetComponent<InstalledEquipmentButton>();
 
                 button.Initialize(installed.Id, index);
