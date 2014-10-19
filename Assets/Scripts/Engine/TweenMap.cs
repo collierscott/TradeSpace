@@ -59,7 +59,7 @@ namespace Assets.Scripts.Engine
             }
         }
 
-        public void Set(Vector2 position, float scale = 1)
+        public void Set(Vector2 position, float scale)
         {
             Map.transform.localPosition = new Vector3(position.x, position.y, -1);
             Map.transform.localScale = scale * Vector2.one;

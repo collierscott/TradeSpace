@@ -52,7 +52,7 @@ namespace Assets.Scripts.Views
                 }
             }
 
-            GetComponent<TweenMap>().Set(Vector2.zero);
+            GetComponent<TweenMap>().Set(Vector2.zero, 1);
             Background.enabled = true;
             CargoView.Open();
             RouteView.Open();
@@ -65,7 +65,7 @@ namespace Assets.Scripts.Views
             CargoView.Close();
             ShipsView.Close();
             RouteView.Close();
-            GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position);
+            GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position, 1);
         }
     }
 }
