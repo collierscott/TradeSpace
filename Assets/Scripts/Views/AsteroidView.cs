@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Common;
 using Assets.Scripts.Data;
+using Assets.Scripts.Engine;
 using UnityEngine;
 
 namespace Assets.Scripts.Views
@@ -10,8 +12,9 @@ namespace Assets.Scripts.Views
         private class AstPart
         {
             public GameObject GameObject;
-            public int RotationSpeed;
+            public long RotationSpeed;
             public UISprite Sprite;
+            public UIProgressBar Transform;
         }
         private bool _isInit = false;
 
@@ -21,11 +24,9 @@ namespace Assets.Scripts.Views
         private int _userPickSpeed = 1;
         private PlayerShip _ship = null;
 
-        public GameButton PickButton;
         public UIProgressBar Bar;
         public UILabel BarCount;
-        public UISprite AsteroidSprite;
-
+        
         public CargoView CargoView;
         public UISprite Background;
 
@@ -33,56 +34,70 @@ namespace Assets.Scripts.Views
 
         protected override void Initialize()
         {
-            //Show();
+            _ship = new PlayerShip(Profile.Instance.Ship);
 
-            //if (!_isInit)
-            //{
-            //    _isInit = true;
-            //    InitEvents();
-            //}
-            //_ship = new PlayerShip(Profile.Instance.Ship);
+            _asteroid = SelectManager.Location as Asteroid;
+            //AsteroidSprite.spriteName = _asteroid.Image;
+            // _usedQuantity = _asteroid.Quantity - Profile.Instance.Asteroids.FindQuantity(_asteroid);
 
-            //_asteroid = (Asteroid)SelectManager.Location;
-            ////AsteroidSprite.spriteName = _asteroid.Image;
-            //// _usedQuantity = _asteroid.Quantity - Profile.Instance.Asteroids.FindQuantity(_asteroid);
+            _astParts.Clear();
 
-            //_astParts.Clear();
+            System.Random rnd = new System.Random();
 
-            //System.Random rnd = new System.Random();
+            float prevRad = 100f;
+            float sizeMult = 20f;
 
-            //float maxSize = _asteroid.Quantity.Sum();
-            //long prevRad = 50;
-            //float minScale = 0.25f;
+            int refRad = 256;
 
-            //for (int p = 0; p < _asteroid.Ore.Length; p++)
-            //{
-            //    var obj = PrefabsHelper.InstantiateAsteroidPart(Panel);
+            float minRad = 50f;
+            float maxRad = 200f;
 
-            //    AstPart part = new AstPart
-            //    {
-            //        GameObject = obj,
-            //        RotationSpeed = 20 + rnd.Next(50),
-            //    };
-            //    _astParts.Add(part);
+            for (int p = 0; p < _asteroid.Parts.Count; p++)
+            {
+                AsteroidPart ap = _asteroid.Parts[p];
 
-            //    GameButton btn = obj.GetComponentInChildren<GameButton>();
-            //    part.Sprite = obj.GetComponentInChildren<UISprite>();
-            //    part.Sprite.spriteName = _asteroid.Image;
+                var obj = PrefabsHelper.InstantiateAsteroidPart(Panel);
+                obj.transform.localPosition = new Vector3(0,0);
 
-            //    float scale = _asteroid.Quantity[p] / maxSize;
-            //    if (scale < minScale) scale = minScale;
+                AstPart part = new AstPart
+                {
+                    GameObject = obj,
+                    RotationSpeed = 20 + rnd.Next(50),
+                };
+                _astParts.Add(part);
 
-            //    long curRad = (long)(scale * Math.Sqrt(part.Sprite.width * part.Sprite.width / 2));
+                GameButton btn = obj.GetComponentInChildren<GameButton>();
+                
 
-            //    obj.transform.Rotate(0, 0, -1.5f + 3.14f * rnd.Next(100)/100);
-            //    part.Sprite.transform.localScale = new Vector3(scale, scale);
-            //    part.Sprite.transform.localPosition = new Vector3(prevRad + curRad, prevRad + curRad);
-            //    btn.SetBaseScale(part.Sprite.transform.localScale);
+                btn.Up += () => AsteroidPart_Click(part);
 
-            //    prevRad += curRad;
-            //    //Debug.Log("asteroid:add part " + prevWidth);
-            //    Debug.Log("asteroid:add part " + prevRad + " " + curRad);
-            //}
+                part.Sprite = obj.GetComponentInChildren<UISprite>();
+                part.Sprite.spriteName = _asteroid.Image;
+
+                part.Transform = obj.GetComponentInChildren<UIProgressBar>();
+                
+                float size = ap.Size * sizeMult;
+
+                if (size < minRad) size = minRad;
+                if (size > maxRad) size = maxRad;
+
+                float scale = size/refRad;
+
+                float curRad = (float)Math.Sqrt(size * size / 2);
+
+                part.GameObject.transform.Rotate(0, 0, -1.5f + 3.14f * rnd.Next(100) / 100);
+                //obj.transform.Rotate(0, 0, -1.5f + 3.14f * ap.Speed*5 / 100);
+
+                part.RotationSpeed = ap.Speed;
+
+                part.Transform.transform.localScale = new Vector3(scale, scale);
+                part.Transform.transform.localPosition = new Vector3(prevRad , prevRad);
+
+                Debug.Log("asteroid:add part scale=" + scale + ", prevRad=" + prevRad + ", curRad=" + curRad);
+
+                prevRad += curRad;
+                //Debug.Log("asteroid:add part " + prevWidth);                
+            }
 
 
 
@@ -92,6 +107,12 @@ namespace Assets.Scripts.Views
 
             //CargoView.Open();
         }
+        private void AsteroidPart_Click( AstPart part)
+        {
+            //var pos = GetComponent<UICamera>().lastHit.point;
+
+            Debug.Log("asteroid:click " + part.GameObject.transform.localPosition + " " + part.Sprite.transform.localPosition + " " + part.Transform.transform.localPosition);  
+        }
         private void UpdateBar()
         {
             return;
@@ -100,10 +121,6 @@ namespace Assets.Scripts.Views
             //BarCount.text = (_asteroid.Quantity - _usedQuantity).ToString() + "/" + _asteroid.Quantity;
         }
 
-        private void InitEvents()
-        {
-            PickButton.Up += PickButton_Up;
-        }
 
         void PickButton_Up()
         {

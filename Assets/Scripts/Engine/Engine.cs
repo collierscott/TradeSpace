@@ -18,12 +18,10 @@ namespace Assets.Scripts.Engine
         //public void Awake() // Test asteroid
         //{
         //    Env.Initialize();
-        //    //Тест для диалога астеройда
-        //    SelectManager.SelectLocation(
-        //        Env.Systems[Env.SystemNames.Andromeda][Andromeda.A100200.Name]);
-        //    GetComponent<ActionManager>().OpenPlayerScreen(PlayerScreen.Asteroid);
-        //    return;
-        //    GetComponent<ActionManager>().OpenPlayerScreen(PlayerScreen.Galaxy);
+            
+        //    SelectManager.SelectSystem(Env.SystemNames.Andromeda);
+        //    SelectManager.SelectLocation(Env.Systems[Env.SystemNames.Andromeda][Assets.Scripts.Environment.AndromedaSystem.Andromeda.A100200.Name]);
+        //    GetComponent<AsteroidView>().Open();
         //}
 
         //public void Awake() // Test hangar
