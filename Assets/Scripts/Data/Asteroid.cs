@@ -42,11 +42,6 @@ namespace Assets.Scripts.Data
         public bool HasCore
         {
             get { return CRandom.Chance(Quantity * Size * Size / 1000); }
-        }
-
-        public float GetVolumeSample // TODO: just a sample for scaling asteroid parts
-        {
-            get { return Mathf.Pow(Size, 0.33f); }
-        }
+        }        
     }
 }

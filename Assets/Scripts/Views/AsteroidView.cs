@@ -19,25 +19,36 @@ namespace Assets.Scripts.Views
             //public UISprite Sprite;
             //public UIProgressBar Transform;
         }
-        
+
+        private DateTime _lastLaser = DateTime.MinValue;
+        private int _laserLengthMS = 100;
+
         private Asteroid _asteroid = null;
 
         private long _usedQuantity = 0;
         private int _userPickSpeed = 1;
         private PlayerShip _ship = null;
 
+        private float _prevAngel = 0;
+
         public UISprite Laser;
 
         public UIProgressBar Bar;
         public UILabel BarCount;
-        
+
         public CargoView CargoView;
         public UISprite Background;
 
         private List<AstPart> _astParts = new List<AstPart>();
 
+        float sizeMult = 20f;
+        float minSize = 50f;
+        float maxSize = 200f;
+
         protected override void Initialize()
         {
+            Laser.gameObject.SetActive(false);
+
             _ship = new PlayerShip(Profile.Instance.Ship);
 
             _asteroid = SelectManager.Location as Asteroid;
@@ -48,20 +59,16 @@ namespace Assets.Scripts.Views
 
             System.Random rnd = new System.Random();
 
-            float prevRad = 100f;
-            float sizeMult = 20f;
+            float prevRad = 50f;
 
             int refRad = 256;
-
-            float minRad = 50f;
-            float maxRad = 200f;
 
             for (int p = 0; p < _asteroid.Parts.Count; p++)
             {
                 AsteroidPart ap = _asteroid.Parts[p];
 
                 var obj = PrefabsHelper.InstantiateAsteroidPart(Panel);
-                obj.transform.localPosition = new Vector3(0,0);
+                obj.transform.localPosition = new Vector3(0, 0);
 
                 AsteroidPartBehaviour apb = obj.GetComponent<AsteroidPartBehaviour>();
                 apb.SetAsteroidPart(ap, 30);
@@ -75,22 +82,18 @@ namespace Assets.Scripts.Views
                 };
                 _astParts.Add(part);
 
-                
+
                 //GameButton btn = obj.GetComponentInChildren<GameButton>();
-                
+
                 //btn.Up += () => AsteroidPart_Click(part);
 
                 //part.Sprite = obj.GetComponentInChildren<UISprite>();
                 //part.Sprite.spriteName = _asteroid.Image;
 
                 //part.Transform = obj.GetComponentInChildren<UIProgressBar>();
-                
-                float size = ap.Size * sizeMult;
 
-                if (size < minRad) size = minRad;
-                if (size > maxRad) size = maxRad;
-
-                float scale = size/refRad;
+                float size = AstSizeToScreen(ap.Size);
+                float scale = size / refRad;
 
                 float curRad = (float)Math.Sqrt(size * size / 2);
 
@@ -101,7 +104,7 @@ namespace Assets.Scripts.Views
 
 
                 apb.Transform.transform.localScale = new Vector3(scale, scale);
-                apb.Transform.transform.localPosition = new Vector3(prevRad, prevRad);
+                apb.Transform.transform.localPosition = new Vector3(prevRad + curRad, prevRad + curRad);
 
                 Debug.Log("asteroid:add part scale=" + scale + ", prevRad=" + prevRad + ", curRad=" + curRad);
 
@@ -113,19 +116,29 @@ namespace Assets.Scripts.Views
 
             //UpdateBar();
 
-        
+
 
             //CargoView.Open();
         }
+        public float AstSizeToScreen(long originalSize)
+        {
+            float size = Mathf.Pow(originalSize, 0.33f) * sizeMult;
+
+            if (size < minSize) size = minSize;
+            if (size > maxSize) size = maxSize;
+
+            return size;
+        }
         void apb_Click(AsteroidPartBehaviour apb)
         {
+            Laser.gameObject.SetActive(false);
             var pos = apb.Transform.transform.position;
-            int len = (int)(Math.Sqrt(pos.x * pos.x*1920*1920/4 + pos.y * pos.y*1080*1080/4))/2;
+            int len = (int)(Math.Sqrt(pos.x * pos.x * 1920 * 1920 / 4 + pos.y * pos.y * 1920 * 1920 / 4)) / 2;
 
             float angel = 0;
-            if(pos.x==0)
+            if (pos.x == 0)
             {
-                angel = pos.y > 0 ? 1.52f : -1.52f;
+                angel = pos.y > 0 ? 90f : -90f;
             }
             else
             {
@@ -134,8 +147,17 @@ namespace Assets.Scripts.Views
 
             angel = angel * 180f / 3.14f;
 
+            if (pos.x < 0) angel += 180;
+
             Laser.width = len;
+            Laser.transform.Rotate(0, 0, -_prevAngel);
             Laser.transform.Rotate(0, 0, angel);
+
+            _prevAngel = angel;
+
+            Laser.gameObject.SetActive(true);
+            _lastLaser = DateTime.UtcNow;
+
             Debug.Log(len + " " + angel);
             //var parent = apb.Transform.transform.parent.gameObject.
         }
@@ -145,7 +167,7 @@ namespace Assets.Scripts.Views
             //throw new NotImplementedException();
         }
 
-        private void AsteroidPart_Click( AstPart part)
+        private void AsteroidPart_Click(AstPart part)
         {
             //var pos = GetComponent<UICamera>().lastHit.point;
 
@@ -193,6 +215,9 @@ namespace Assets.Scripts.Views
                 p.Apb.transform.Rotate(0, 0, p.RotationSpeed * Time.deltaTime);
                 //p.Sprite.transform.Rotate(0, 0, p.RotationSpeed * Time.deltaTime);
             }
+
+            if (Laser.gameObject.activeSelf && _lastLaser.AddMilliseconds(_laserLengthMS) < DateTime.UtcNow)
+                Laser.gameObject.SetActive(false);
         }
 
         protected override void Cleanup()
