@@ -28,11 +28,26 @@ namespace Assets.Scripts.Data
     public class AsteroidPart
     {
         public GoodsId Mineral = GoodsId.Ferrum;
+        /// <summary>
+        /// Класс, определяет минимальный класс бура для бурения
+        /// </summary>
         public AsteroidClass Class = AsteroidClass.A;
-        public long Size = 0;
-        public long Speed = 10;
+        /// <summary>
+        /// Размер астеройда для отображения
+        /// </summary>
+        public int Size = 1;
+        /// <summary>
+        /// Скорость вражения
+        /// </summary>
+        public int Speed = 10;
+        /// <summary>
+        /// Жесткость, влиляет на кол-во кликов
+        /// </summary>
         public float Hardness = 1;
-        public float Quantity = 1;
+        /// <summary>
+        /// Количество руды
+        /// </summary>
+        public int Quantity = 1;
 
         public float Structure
         {
@@ -42,6 +57,20 @@ namespace Assets.Scripts.Data
         public bool HasCore
         {
             get { return CRandom.Chance(Quantity * Size * Size / 1000); }
-        }        
+        }   
+        /// <summary>
+        /// Объем для грузового отсека
+        /// </summary>
+        public long Volume
+        {
+            get { return (long)(Quantity * Env.GoodsDatabase[Mineral].Volume); }
+        }
+        /// <summary>
+        /// Масса для грузового отсека
+        /// </summary>
+        public long Mass
+        {
+            get { return (long)(Quantity * Env.GoodsDatabase[Mineral].Mass); }
+        }
     }
 }

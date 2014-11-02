@@ -19,14 +19,18 @@ namespace Assets.Scripts.Views
             //public UISprite Sprite;
             //public UIProgressBar Transform;
         }
+        /// <summary>
+        /// Множитель кликов на часть астеройда
+        /// </summary>
+        private const float ClickMult = 0.1f;
 
         private DateTime _lastLaser = DateTime.MinValue;
         private int _laserLengthMS = 100;
 
+        private int _drillPower = 0;
+
         private Asteroid _asteroid = null;
 
-        private long _usedQuantity = 0;
-        private int _userPickSpeed = 1;
         private PlayerShip _ship = null;
 
         private float _prevAngel = 0;
@@ -45,11 +49,38 @@ namespace Assets.Scripts.Views
         float minSize = 50f;
         float maxSize = 200f;
 
+        private int GetDrillPower()
+        {
+            int ret = 0;
+
+            foreach (var m in Profile.Instance.Ship.InstalledEquipment)
+                switch(m.Id)
+                {
+                    case Enums.EquipmentId.ImpulseDrill100: ret = 1; break;
+                    case Enums.EquipmentId.LaserDrill100: ret = 5; break;
+                }
+
+            return ret;
+        }
         protected override void Initialize()
         {
+            Debug.Log(Profile.Instance.SelectedShip + " " + Profile.Instance.Ship.InstalledEquipment.Count);
+
             Laser.gameObject.SetActive(false);
+            _drillPower = GetDrillPower();
+
+            if(_drillPower==0)
+            {
+                //TODO - Dialog
+                Debug.Log("msg: You don't have drill equipment!");
+                return;
+            }
+
+            Debug.Log("DrillPower=" + _drillPower);
 
             _ship = new PlayerShip(Profile.Instance.Ship);
+
+            
 
             _asteroid = SelectManager.Location as Asteroid;
             //AsteroidSprite.spriteName = _asteroid.Image;
@@ -71,9 +102,11 @@ namespace Assets.Scripts.Views
                 obj.transform.localPosition = new Vector3(0, 0);
 
                 AsteroidPartBehaviour apb = obj.GetComponent<AsteroidPartBehaviour>();
-                apb.SetAsteroidPart(ap, 30);
-                apb.Click += apb_Click;
+
+                apb.SetAsteroidPart(ap, CalcClicks(ap));
+                //apb.Click += apb_Click;
                 apb.Crush += apb_Crush;
+                
                 AstPart part = new AstPart
                 {
                     Apb = apb,
@@ -97,7 +130,7 @@ namespace Assets.Scripts.Views
 
                 float curRad = (float)Math.Sqrt(size * size / 2);
 
-                obj.transform.Rotate(0, 0, -1.5f + 3.14f * rnd.Next(100) / 100);
+                //obj.transform.Rotate(0, 0, -1.5f + 3.14f * rnd.Next(100) / 100);
                 //obj.transform.Rotate(0, 0, -1.5f + 3.14f * ap.Speed*5 / 100);
 
                 part.RotationSpeed = ap.Speed;
@@ -106,19 +139,22 @@ namespace Assets.Scripts.Views
                 apb.Transform.transform.localScale = new Vector3(scale, scale);
                 apb.Transform.transform.localPosition = new Vector3(prevRad + curRad, prevRad + curRad);
 
-                Debug.Log("asteroid:add part scale=" + scale + ", prevRad=" + prevRad + ", curRad=" + curRad);
+                Debug.Log("asteroid:add part scale=" + scale + ", prevRad=" + prevRad + ", curRad=" + curRad+", quantity="+ap.Quantity);
 
                 prevRad += curRad;
                 //Debug.Log("asteroid:add part " + prevWidth);                
             }
+            
+            CargoView.Open();
+        }
 
+        private int CalcClicks(AsteroidPart part)
+        {
+            int res = (int)(ClickMult * part.Structure / _drillPower);
 
+            Debug.Log(string.Format("Asteroid part clicks:{0}, size:{1}", res, part.Size));
 
-            //UpdateBar();
-
-
-
-            //CargoView.Open();
+            return res;
         }
         public float AstSizeToScreen(long originalSize)
         {
@@ -129,64 +165,54 @@ namespace Assets.Scripts.Views
 
             return size;
         }
-        void apb_Click(AsteroidPartBehaviour apb)
-        {
-            Laser.gameObject.SetActive(false);
-            var pos = apb.Transform.transform.position;
-            int len = (int)(Math.Sqrt(pos.x * pos.x * 1920 * 1920 / 4 + pos.y * pos.y * 1920 * 1920 / 4)) / 2;
+        ////Эмуляция лазера, отключено
+        //void apb_Click(AsteroidPartBehaviour apb)
+        //{
+        //    Laser.gameObject.SetActive(false);
+        //    var pos = apb.Transform.transform.position;
+        //    int len = (int)(Math.Sqrt(pos.x * pos.x * 1920 * 1920 / 4 + pos.y * pos.y * 1920 * 1920 / 4)) / 2;
 
-            float angel = 0;
-            if (pos.x == 0)
-            {
-                angel = pos.y > 0 ? 90f : -90f;
-            }
-            else
-            {
-                angel = (float)Math.Atan(pos.y / pos.x);
-            }
+        //    float angel = 0;
+        //    if (pos.x == 0)
+        //    {
+        //        angel = pos.y > 0 ? 90f : -90f;
+        //    }
+        //    else
+        //    {
+        //        angel = (float)Math.Atan(pos.y / pos.x);
+        //    }
 
-            angel = angel * 180f / 3.14f;
+        //    angel = angel * 180f / 3.14f;
 
-            if (pos.x < 0) angel += 180;
+        //    if (pos.x < 0) angel += 180;
 
-            Laser.width = len;
-            Laser.transform.Rotate(0, 0, -_prevAngel);
-            Laser.transform.Rotate(0, 0, angel);
+        //    Laser.width = len;
+        //    Laser.transform.Rotate(0, 0, -_prevAngel);
+        //    Laser.transform.Rotate(0, 0, angel);
 
-            _prevAngel = angel;
+        //    _prevAngel = angel;
 
-            Laser.gameObject.SetActive(true);
-            _lastLaser = DateTime.UtcNow;
+        //    Laser.gameObject.SetActive(true);
+        //    _lastLaser = DateTime.UtcNow;
 
-            Debug.Log(len + " " + angel);
-            //var parent = apb.Transform.transform.parent.gameObject.
-        }
+        //    Debug.Log(len + " " + angel);
+        //    //var parent = apb.Transform.transform.parent.gameObject.
+        //}
 
         void apb_Crush(AsteroidPart obj)
         {
+            _ship.AddGoods(new MemoGoods { Id = obj.Mineral, Quantity = obj.Quantity.Encrypt() });
             //throw new NotImplementedException();
+            CargoView.Refresh();
         }
 
-        private void AsteroidPart_Click(AstPart part)
-        {
-            //var pos = GetComponent<UICamera>().lastHit.point;
-
-            //Debug.Log("asteroid:click " + part.Apb.transform.localPosition + " " + part.Sprite.transform.localPosition + " " + part.Transform.transform.localPosition);  
-        }
         private void UpdateBar()
         {
-            return;
-            CargoView.Refresh();
             //Bar.value = 1.0f * (_asteroid.Quantity - _usedQuantity) / _asteroid.Quantity;
             //BarCount.text = (_asteroid.Quantity - _usedQuantity).ToString() + "/" + _asteroid.Quantity;
         }
 
 
-        void PickButton_Up()
-        {
-            SaveData();
-            UpdateBar();
-        }
         private void SaveData()
         {
             //if (_asteroid.Quantity - _usedQuantity == 0) return;

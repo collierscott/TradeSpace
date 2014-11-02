@@ -19,6 +19,7 @@ namespace Assets.Scripts.Engine
         //{
         //    Env.Initialize();
 
+        //    //SelectManager.SelectShip(0);
         //    SelectManager.SelectSystem(Env.SystemNames.Andromeda);
         //    SelectManager.SelectLocation(Env.Systems[Env.SystemNames.Andromeda][Assets.Scripts.Environment.AndromedaSystem.Andromeda.A100200.Name]);
         //    GetComponent<AsteroidView>().Open();

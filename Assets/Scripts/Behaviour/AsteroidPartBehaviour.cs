@@ -12,13 +12,14 @@ namespace Assets.Scripts.Behaviour
     {
         public UISprite Image;
         public UISprite Health;
+        public UISprite HealthBG;
         
         public GameButton Button;
 
         public GameObject Transform;
         public GameObject Item;
         /// <summary>
-        /// Событие при зазбиении части астеройда
+        /// Событие при разбиении части астеройда
         /// </summary>
         public event Action<AsteroidPart> Crush = (p) => { };
         public event Action<AsteroidPartBehaviour> Click = (p) => { };
@@ -35,14 +36,34 @@ namespace Assets.Scripts.Behaviour
         public bool HealthIsVisible
         {
             get { return Health.gameObject.activeSelf; }
-            set { Health.gameObject.SetActive(value); }
+            set 
+            {
+                HealthBG.gameObject.SetActive(value); 
+                Health.gameObject.SetActive(value); 
+            }
+        }
+
+        private bool IsValidMassAndVolume()
+        {
+            var ps = new PlayerShip(Profile.Instance.Ship);
+
+            long avaibleMass = ps.Mass - ps.GoodsMass;
+            long avaibleVolume = ps.Volume - ps.GoodsVolume;
+
+            return _asteroidPart.Volume <= avaibleVolume && _asteroidPart.Mass <= avaibleMass;
         }
         void Button_Up()
         {
-            Debug.Log("Asteroid part click "+Transform.transform.position);
+            Debug.Log("Asteroid part click Quantity:"+_asteroidPart.Quantity);
             if (_asteroidPart==null)
             {
                 Debug.LogWarning("You haven't equipment to dril this asteroid");
+                return;
+            }
+
+            if (!IsValidMassAndVolume())
+            {
+                Debug.LogWarning("You haven't available mass or volume to dril this asteroid. Quantity:"+_asteroidPart.Quantity);
                 return;
             }
 

@@ -22,15 +22,25 @@ namespace Assets.Scripts.Environment.AndromedaSystem
                     Mineral = GoodsId.Ferrum,
                     Class = AsteroidClass.A,
                     Size = 10,
-                    Speed = 10
+                    Speed = 10,
+                    Quantity = 10,
                 },
                 new AsteroidPart
                 {
                     Mineral = GoodsId.Titanium,
                     Class = AsteroidClass.B,
                     Size = 5,
-                    Speed = 20
-                }
+                    Speed = 20,
+                    Quantity = 100,
+                },
+                 new AsteroidPart
+                {
+                    Mineral = GoodsId.Ferrum,
+                    Class = AsteroidClass.A,
+                    Size = 10,
+                    Speed = -10,
+                    Quantity = 10,
+                },
             }
         };
     }

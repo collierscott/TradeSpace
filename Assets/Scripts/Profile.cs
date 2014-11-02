@@ -44,7 +44,8 @@ namespace Assets.Scripts
             PlayerPrefs.DeleteAll(); // TODO: WARNING!
             PlayerPrefs.Save();
 
-            if (PlayerPrefs.HasKey(ProfileKey))
+            //if (PlayerPrefs.HasKey(ProfileKey))
+            if(false)
             {
                 //var profile = PlayerPrefs.GetString(ProfileKey);
 
@@ -80,7 +81,9 @@ namespace Assets.Scripts
                 _instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>
                 {
                     new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
-                    new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 }
+                    new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 },
+                    //new MemoInstalledEquipment { Id = EquipmentId.ImpulseDrill100, Index = 2 }
+                    new MemoInstalledEquipment { Id = EquipmentId.LaserDrill100, Index = 2 }
                 };
 
                 _instance.Ships[1].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };

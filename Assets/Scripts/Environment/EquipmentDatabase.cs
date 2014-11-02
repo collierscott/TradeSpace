@@ -56,6 +56,34 @@ namespace Assets.Scripts.Environment
             },
 
             #endregion
+
+            #region Drill
+
+            new Equipment
+            {
+                Id = EquipmentId.ImpulseDrill100,
+                Name = "Импульсный бур для астеройдов",
+                Description = "Описание ...",
+                Mass = 5,
+                Volume = 5,
+                Price = 1000,
+                Type = EquipmentType.EquipmentKit,
+                BonusAdd = 0
+            },
+
+            new Equipment
+            {
+                Id = EquipmentId.LaserDrill100,
+                Name = "Лазерный бур для астеройдов",
+                Description = "Описание ...",
+                Mass = 5,
+                Volume = 5,
+                Price = 1000,
+                Type = EquipmentType.EquipmentKit,
+                BonusAdd = 0
+            },
+
+            #endregion
         };
 
         public static readonly Dictionary<EquipmentId, Equipment> EquipmentDatabase = EquipmentList.ToDictionary(i => i.Id);
