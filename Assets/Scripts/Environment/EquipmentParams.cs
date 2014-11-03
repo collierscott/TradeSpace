@@ -16,7 +16,7 @@ namespace Assets.Scripts.Environment
                         Power = 10,
                         Class = AsteroidClass.A,
                         Type = DrillType.Impulse,
-                        ReloadSeconds = 1
+                        ReloadSecs = 1
                     };
                 case EquipmentId.LaserDrill100:
                     return new DrillParams

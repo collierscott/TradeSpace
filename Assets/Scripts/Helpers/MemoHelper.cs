@@ -9,18 +9,19 @@ namespace Assets.Scripts
 {
     public static class MemoHelper
     {
-        public static void Update(this List<MemoAsteroid> items, string name, long quantity)
+        public static void AddEmptyPart(this List<MemoAsteroid> items, string name, int partIndex)
         {
             MemoAsteroid ast = items.Where(i => i.Name == name).FirstOrDefault();
             if (ast == null)
             {
                 ast = new MemoAsteroid();
                 ast.Name = name;
-                ast.Quantity = quantity.Encrypt();
+                ast.EmptyParts = new List<int> { partIndex };
+
                 items.Add(ast);
             }
             else
-                ast.Quantity = quantity.Encrypt();
+                ast.EmptyParts.Add(partIndex);
         }
 
         //public static long FindQuantity(this List<MemoAsteroid> items, Asteroid ast)

@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Common;
 using Assets.Scripts.Data;
+using Assets.Scripts.Enums;
 using Assets.Scripts.Engine;
 using Assets.Scripts.Environment;
 using Assets.Scripts.Views;
@@ -10,6 +11,11 @@ namespace Assets.Scripts.Behaviour
 {
     public class AsteroidPartBehaviour : Script
     {
+        /// <summary>
+        /// Множитель кликов на часть астеройда
+        /// </summary>
+        private const float ClickMult = 0.1f;
+
         public UISprite Image;
         public UISprite Health;
         public UISprite HealthBG;
@@ -21,12 +27,16 @@ namespace Assets.Scripts.Behaviour
         /// <summary>
         /// Событие при разбиении части астеройда
         /// </summary>
-        public event Action<AsteroidPart> Crush = (p) => { };
+        public event Action<AsteroidPart, int> Crush = (p,i) => { };
         public event Action<AsteroidPartBehaviour> Click = (p) => { };
 
         private AsteroidPart _asteroidPart;
+        private DrillParams _drillParams;
         private int _maxClicks = 1000;
         private int _curClicks = 0;
+        private PlayerShip _playerShip = null;
+        private int _index = 0;
+
         public void Awake()
         {
             this.HealthIsVisible = false;
@@ -61,9 +71,23 @@ namespace Assets.Scripts.Behaviour
                 return;
             }
 
-            if (!IsValidMassAndVolume())
+            var volMassCheck = _playerShip.CanAddGoods(new MemoGoods { Id = _asteroidPart.Mineral, Quantity = _asteroidPart.Quantity.Encrypt() });
+
+            if ((volMassCheck & ShipGoodsCheck.NoMass) == ShipGoodsCheck.NoMass)
             {
-                Debug.LogWarning("You haven't available mass or volume to dril this asteroid. Quantity:"+_asteroidPart.Quantity);
+                Debug.LogWarning("You haven't available mass to dril this asteroid. Quantity:"+_asteroidPart.Quantity);
+                return;
+            }
+
+            if ((volMassCheck & ShipGoodsCheck.NoVolume) == ShipGoodsCheck.NoVolume)
+            {
+                Debug.LogWarning("You haven't available volume to dril this asteroid. Quantity:" + _asteroidPart.Quantity);
+                return;
+            }
+
+            if ((int)_asteroidPart.Class > (int)_drillParams.Class)
+            {
+                Debug.LogWarning("You haven't actual equipment to dril this asteroid class '" + _asteroidPart.Class+"'");
                 return;
             }
 
@@ -90,7 +114,7 @@ namespace Assets.Scripts.Behaviour
 
             if (_curClicks == _maxClicks)
             {
-                Crush(_asteroidPart);
+                Crush(_asteroidPart,_index);
                 Item.SetActive(false);
             }
         }
@@ -111,11 +135,25 @@ namespace Assets.Scripts.Behaviour
             //Image.transform.Rotate(0, 0, 100 * Time.deltaTime);
         }
 
-        public void SetAsteroidPart(AsteroidPart part, int clicks)
+        public void SetAsteroidPart(AsteroidPart part, DrillParams drillParams, int index)
         {
-            _maxClicks = clicks;
+            _index = index;
+            _playerShip = new PlayerShip(Profile.Instance.Ship);
+            _drillParams = drillParams;
             _curClicks = 0;
             _asteroidPart = part;
+
+            _maxClicks = CalcClicks();
+            
+        }
+
+        private int CalcClicks()
+        {
+            int res = (int)(ClickMult * _asteroidPart.Structure / _drillParams.Power);
+
+            Debug.Log(string.Format("Asteroid part clicks:{0}, size:{1}", res, _asteroidPart.Size));
+
+            return res;
         }
     }
 }

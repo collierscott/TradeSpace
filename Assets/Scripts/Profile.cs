@@ -41,23 +41,24 @@ namespace Assets.Scripts
         {
             GameLog.Write("Loading profile...");
 
-            PlayerPrefs.DeleteAll(); // TODO: WARNING!
-            PlayerPrefs.Save();
+            //PlayerPrefs.DeleteAll(); // TODO: WARNING!
+            //PlayerPrefs.Save();
 
-            //if (PlayerPrefs.HasKey(ProfileKey))
-            if(false)
+            if (PlayerPrefs.HasKey(ProfileKey))
             {
-                //var profile = PlayerPrefs.GetString(ProfileKey);
+                Debug.Log("Load old profile");
+                var profile = PlayerPrefs.GetString(ProfileKey);
 
-                //GameLog.Write("Serialized profile: {0}", profile);
+                GameLog.Write("Serialized profile: {0}", profile);
 
-                //_instance = Serializer.Deserialize<Profile>(profile);
+                _instance = Serializer.Deserialize<Profile>(profile);
             }
             else
             {
+                Debug.Log("Create new profile");
                 _instance = new Profile
                 {
-                    Credits = new ProtectedValue(2000),
+                    Credits = 2000,
                     InitShopsTime = DateTime.UtcNow.Encrypt(),
                     Ships = new List<MemoShip>
                     {
@@ -71,12 +72,12 @@ namespace Assets.Scripts
                 _instance.Ships[0].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Fobos"].ToRouteNode() };
                 _instance.Ships[0].Goods = new List<MemoGoods>
                 {
-                    new MemoGoods { Id = GoodsId.Water, Quantity = 10.Encrypt() },
-                    new MemoGoods { Id = GoodsId.Fish, Quantity = 5.Encrypt() }
+                    new MemoGoods { Id = GoodsId.Water, Quantity = 10 },
+                    new MemoGoods { Id = GoodsId.Fish, Quantity = 5 }
                 };
                 _instance.Ships[0].Equipment = new List<MemoEquipment>
                 {
-                    new MemoEquipment { Id = EquipmentId.MassKit100, Quantity = 5.Encrypt() }
+                    new MemoEquipment { Id = EquipmentId.MassKit100, Quantity = 5 }
                 };
                 _instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>
                 {
@@ -89,7 +90,7 @@ namespace Assets.Scripts
                 _instance.Ships[1].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };
                 _instance.Ships[1].Goods = new List<MemoGoods>
                 {
-                    new MemoGoods { Id = GoodsId.Ferrum, Quantity = 10.Encrypt() },
+                    new MemoGoods { Id = GoodsId.Ferrum, Quantity = 10 },
                 };
                 _instance.Ships[1].Equipment = new List<MemoEquipment>();
                 _instance.Ships[1].InstalledEquipment = new List<MemoInstalledEquipment>

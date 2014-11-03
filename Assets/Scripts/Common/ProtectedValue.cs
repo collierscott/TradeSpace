@@ -16,6 +16,35 @@ namespace Assets.Scripts.Common
             Encrypted = B64R.Encrypt(Convert.ToString(value));
         }
 
+        #region implicit conversions
+
+        public static implicit operator ProtectedValue(int value)
+        {
+            return new ProtectedValue(value);
+        }
+        public static implicit operator ProtectedValue(long value)
+        {
+            return new ProtectedValue(value);
+        }
+        public static implicit operator ProtectedValue(string value)
+        {
+            return new ProtectedValue(value);
+        }
+        public static implicit operator ProtectedValue(DateTime value)
+        {
+            return new ProtectedValue(value);
+        }
+        public static implicit operator ProtectedValue(float value)
+        {
+            return new ProtectedValue(value);
+        }
+        public static implicit operator ProtectedValue(double value)
+        {
+            return new ProtectedValue(value);
+        }
+
+        #endregion
+
         [XmlIgnore]
         public long Long
         {

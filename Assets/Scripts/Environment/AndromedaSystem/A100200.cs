@@ -37,9 +37,17 @@ namespace Assets.Scripts.Environment.AndromedaSystem
                 {
                     Mineral = GoodsId.Ferrum,
                     Class = AsteroidClass.A,
-                    Size = 10,
+                    Size = 20,
                     Speed = -10,
                     Quantity = 10,
+                },
+                 new AsteroidPart
+                {
+                    Mineral = GoodsId.Titanium,
+                    Class = AsteroidClass.B,
+                    Size = 5,
+                    Speed = 20,
+                    Quantity = 1,
                 },
             }
         };

@@ -39,11 +39,13 @@ namespace Assets.Scripts.Engine
             if (Input.GetKeyDown(KeyCode.S))
             {
                 Profile.Instance.Save();
+                Debug.Log("Save profile");
             }
 
             if (Input.GetKeyDown(KeyCode.L))
             {
                 Profile.Load();
+                Debug.Log("Load profile");                
             }
         }
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Assets.Scripts.Common;
 using Assets.Scripts.Enums;
 
@@ -6,14 +8,20 @@ namespace Assets.Scripts.Data
 {
     public class MemoItem
     {
-        public ProtectedValue Quantity = 0.Encrypt();
-        public ProtectedValue Price = 0.Encrypt();
+        public ProtectedValue Quantity = 0;
+        public ProtectedValue Price = 0;
     }
 
     public class MemoAsteroid
     {
-        public ProtectedValue Quantity = 0.Encrypt();
+        public List<int> EmptyParts;
         public string Name;
+
+        public override string ToString()
+        {
+            return string.Format("Name:{0}, EmptyParts:{1}", Name,
+                EmptyParts!=null ? string.Join(",", EmptyParts.Select(s => s.ToString()).ToArray()):"null");
+        }
     }
 
     public class MemoGoods : MemoItem

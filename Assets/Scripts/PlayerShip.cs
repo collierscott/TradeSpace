@@ -118,6 +118,29 @@ namespace Assets.Scripts
 
             throw new Exception();
         }
+        /// <summary>
+        /// Проверка свободного места
+        /// </summary>
+        /// <param name="goods"></param>
+        /// <returns></returns>
+        public ShipGoodsCheck CanAddGoods(MemoGoods goods)
+        {
+            long goodsVolume = Env.GoodsDatabase[goods.Id].Volume * goods.Quantity.Long;
+            long goodsMass = Env.GoodsDatabase[goods.Id].Mass * goods.Quantity.Long;
+
+            ShipGoodsCheck result = ShipGoodsCheck.Unknown;
+
+            if (goodsVolume > Volume - GoodsVolume)
+                result |= ShipGoodsCheck.NoVolume;
+
+            if (goodsMass > Mass - GoodsMass)
+                result |= ShipGoodsCheck.NoMass;
+
+            if (result == ShipGoodsCheck.Unknown)
+                result = ShipGoodsCheck.Success;
+
+            return result;
+        }
 
         public void AddGoods(MemoGoods goods)
         {
