@@ -143,29 +143,32 @@ namespace Assets.Scripts.Views
             return size;
         }
 
-        void apb_Crush(AsteroidPart obj, int index)
+        void apb_Crush(AsteroidPart mineral, int index)
         {
-            _ship.AddGoods(new MemoGoods { Id = obj.Mineral, Quantity = obj.Quantity });
+            _ship.AddGoods(new MemoGoods { Id = mineral.Mineral, Quantity = mineral.Quantity });
 
-            if(obj.HasCore)
+            if(mineral.HasCore)
             {
-                var coreGoods = Environment.Env.AsteroidCoreDatabase[obj.Mineral];
-                var coreValue = new MemoGoods { Id = coreGoods, Quantity = obj.Quantity };
+                var core = new MemoGoods
+                {
+                    Id = Environment.Env.GetMineralCore(mineral.Mineral),
+                    Quantity = 1
+                };
 
-                var checkResult = _ship.CanAddGoods(coreValue);
+                var checkResult = _ship.CanAddGoods(core);
 
                 if(checkResult == Enums.ShipGoodsCheck.Success)
                 {
-                    _ship.AddGoods(coreValue);
-                    Debug.LogWarning("Congratulations! You got asteroid core:" + coreGoods);
+                    _ship.AddGoods(core);
+                    Debug.LogWarning("Congratulations! You got asteroid core:" + core.Id);
                 }
                 else if((checkResult & Enums.ShipGoodsCheck.NoMass)== Enums.ShipGoodsCheck.NoMass)
                 {
-                    Debug.LogWarning("You got asteroid core:" + coreGoods + " but you don't have enough mass.");
+                    Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough mass.");
                 }
                 else if ((checkResult & Enums.ShipGoodsCheck.NoVolume) == Enums.ShipGoodsCheck.NoVolume)
                 {
-                    Debug.LogWarning("You got asteroid core:" + coreGoods + " but you don't have enough volume.");
+                    Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough volume.");
                 }
             }
 

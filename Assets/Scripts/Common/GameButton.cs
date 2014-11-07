@@ -25,6 +25,20 @@ namespace Assets.Scripts.Common
             PickColor();
         }
 
+        private bool _down;
+
+        public void Update()
+        {
+            if (_down)
+            {
+                if (!collider2D.bounds.Contains(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+                {
+                    Tween(false);
+                    _down = false;
+                }
+            }
+        }
+
         public bool Enabled
         {
             get { return _enabled; }
@@ -70,9 +84,14 @@ namespace Assets.Scripts.Common
             }
             else
             {
-                ActionUp();
-                Up();
+                if (_down)
+                {
+                    ActionUp();
+                    Up();
+                }
             }
+
+            _down = down;
         }
 
         protected virtual void ActionDown()
@@ -124,9 +143,11 @@ namespace Assets.Scripts.Common
 
         private void PickColor()
         {
-            var widget = GetComponent<UIWidget>();
+            var sprite = GetComponent<UISprite>();
+            var texture = GetComponent<UITexture>();
+            var label = GetComponent<UILabel>();
 
-            _color = widget != null ? widget.color : Color.white;
+            _color = sprite != null ? sprite.color : texture != null ? texture.color : label != null ? label.color : Color.white;
         }
     }
 }

@@ -10,8 +10,8 @@
 
         #region Minerals
 
-        Ferrum,
-        Titanium,
+        Ferrum, FerrumCore,
+        Titanium, TitaniumCore,
         Chromium,
         Wolframium,
         Platinum,

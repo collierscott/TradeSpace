@@ -17,5 +17,18 @@ namespace Assets.Scripts.Environment
                     throw new NotImplementedException();
             }
         }
+
+        public static GoodsId GetMineralCore(GoodsId mineral)
+        {
+            switch (mineral)
+            {
+                case GoodsId.Ferrum:
+                    return GoodsId.FerrumCore;
+                case GoodsId.Titanium:
+                    return GoodsId.TitaniumCore;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
     }
 }

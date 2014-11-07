@@ -6,10 +6,11 @@
         Hyper,
         MassKit,
         VolumeKit,
-        EquipmentKit,
+        Drill,
         Armor,
         Shield,
         Petrol,
+        Common,
         TransferRequirement
     }
 }

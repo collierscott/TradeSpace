@@ -83,7 +83,7 @@ namespace Assets.Scripts
             {
                 var slots = _params.EquipmentSlots;
 
-                foreach (var equipment in _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Where(i => i.Type == EquipmentType.EquipmentKit))
+                foreach (var equipment in _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Where(i => i.Type == EquipmentType.Common))
                 {
                     slots += equipment.BonusAdd;
                 }
