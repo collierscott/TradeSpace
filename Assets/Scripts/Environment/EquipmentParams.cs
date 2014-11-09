@@ -25,7 +25,8 @@ namespace Assets.Scripts.Environment
                         Class = AsteroidClass.A,
                         Type = DrillType.Laser,
                         HeatingRate = 10,
-                        CoolingRate = 25
+                        CoolingRate = 25,
+                        HeatingTo = 30,
                     };
                 default:
                     throw new NotImplementedException();

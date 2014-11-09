@@ -44,7 +44,8 @@ namespace Assets.Scripts
             //PlayerPrefs.DeleteAll(); // TODO: WARNING!
             //PlayerPrefs.Save();
 
-            if (PlayerPrefs.HasKey(ProfileKey))
+            //if (PlayerPrefs.HasKey(ProfileKey))
+            if(false)
             {
                 Debug.Log("Load old profile");
                 var profile = PlayerPrefs.GetString(ProfileKey);

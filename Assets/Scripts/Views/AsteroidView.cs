@@ -17,7 +17,11 @@ namespace Assets.Scripts.Views
             public AsteroidPartBehaviour Apb;
             public long RotationSpeed;
         }
-        
+
+        private bool _isMouseDown = false;
+        private float _curHeatingValue = 0;
+
+        private DateTime _curTime = DateTime.UtcNow;
 
         private DrillParams _drillParams = null;
         
@@ -25,8 +29,8 @@ namespace Assets.Scripts.Views
 
         private PlayerShip _ship = null;
 
-        public UIProgressBar Bar;
-        public UILabel BarCount;
+        public UISprite HeatingBar;
+        public GameObject HeatingNode;
 
         public CargoView CargoView;
         public UISprite Background;
@@ -183,6 +187,48 @@ namespace Assets.Scripts.Views
             {
                 p.Apb.transform.Rotate(0, 0, p.RotationSpeed * Time.deltaTime);
                 //p.Sprite.transform.Rotate(0, 0, p.RotationSpeed * Time.deltaTime);
+            }
+
+            if (_drillParams.Type == Enums.DrillType.Laser)
+            {
+                if (!_isMouseDown)
+                    _isMouseDown = Input.GetMouseButtonDown(0);
+                else
+                    _isMouseDown = !Input.GetMouseButtonUp(0);
+
+                HeatingNode.SetActive(true);
+
+                DateTime start = _curTime;
+                DateTime end = DateTime.UtcNow;
+
+                _curTime = end;
+
+                TimeSpan delta = end.Subtract(start);
+                float seconds = 1f * delta.Ticks / TimeSpan.TicksPerSecond;
+
+                if (_isMouseDown)
+                    _curHeatingValue += seconds * _drillParams.HeatingRate;
+                else
+                    _curHeatingValue -= seconds * _drillParams.CoolingRate;
+
+                if (_curHeatingValue < 0)
+                    _curHeatingValue = 0;
+                if (_curHeatingValue > _drillParams.HeatingTo)
+                    _curHeatingValue = _drillParams.HeatingTo;
+
+                float barValue =  _curHeatingValue / _drillParams.HeatingTo;
+
+                Debug.Log(string.Format("Heating curValue:{0}, max:{1}, isDown:{2}", _curHeatingValue, _drillParams.HeatingTo, _isMouseDown));
+
+                HeatingBar.fillAmount = barValue;
+
+                bool allowHit = _curHeatingValue != _drillParams.HeatingTo;
+
+                foreach (var p in _astParts)
+                    p.Apb.AllowHit = allowHit;
+
+                if (!allowHit)
+                    Debug.LogWarning("DIALOG! You boer temperature is to high!");
             }
         }
 

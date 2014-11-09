@@ -128,16 +128,13 @@ namespace Assets.Scripts
             long goodsVolume = Env.GoodsDatabase[goods.Id].Volume * goods.Quantity.Long;
             long goodsMass = Env.GoodsDatabase[goods.Id].Mass * goods.Quantity.Long;
 
-            ShipGoodsCheck result = ShipGoodsCheck.Unknown;
+            ShipGoodsCheck result = ShipGoodsCheck.Success;
 
             if (goodsVolume > Volume - GoodsVolume)
-                result |= ShipGoodsCheck.NoVolume;
+                result = ShipGoodsCheck.NoVolume;
 
             if (goodsMass > Mass - GoodsMass)
-                result |= ShipGoodsCheck.NoMass;
-
-            if (result == ShipGoodsCheck.Unknown)
-                result = ShipGoodsCheck.Success;
+                result = result== ShipGoodsCheck.Success ? ShipGoodsCheck.NoMass : ShipGoodsCheck.NoMassAndVolume;
 
             return result;
         }

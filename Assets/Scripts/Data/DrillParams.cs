@@ -7,7 +7,13 @@ namespace Assets.Scripts.Data
         public float Power;
         public AsteroidClass Class;
         public DrillType Type;
+
+
         public float ReloadSecs = 1;
+        /// <summary>
+        /// Максимальная температура нагрева
+        /// </summary>
+        public float HeatingTo = 1000;
         /// <summary>
         /// 0-100 per second
         /// </summary>
