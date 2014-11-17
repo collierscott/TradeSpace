@@ -125,10 +125,9 @@ namespace Assets.Scripts
         /// <returns></returns>
         public ShipGoodsCheck CanAddGoods(MemoGoods goods)
         {
-            long goodsVolume = Env.GoodsDatabase[goods.Id].Volume * goods.Quantity.Long;
-            long goodsMass = Env.GoodsDatabase[goods.Id].Mass * goods.Quantity.Long;
-
-            ShipGoodsCheck result = ShipGoodsCheck.Success;
+            var goodsVolume = Env.GoodsDatabase[goods.Id].Volume * goods.Quantity.Long;
+            var goodsMass = Env.GoodsDatabase[goods.Id].Mass*goods.Quantity.Long;
+            var result = ShipGoodsCheck.Success;
 
             if (goodsVolume > Volume - GoodsVolume)
                 result = ShipGoodsCheck.NoVolume;
@@ -143,7 +142,7 @@ namespace Assets.Scripts
         {
             if (_ship.Goods.Contains(goods.Id))
             {
-                _ship.Goods.Single(goods.Id).Quantity.Long += goods.Quantity.Long;
+                _ship.Goods.Single(goods.Id).Quantity += goods.Quantity;
             }
             else
             {
@@ -161,7 +160,7 @@ namespace Assets.Scripts
             }
             else
             {
-                item.Quantity.Long -= goods.Quantity.Long;
+                item.Quantity -= goods.Quantity;
             }
         }
     }

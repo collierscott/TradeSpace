@@ -92,7 +92,7 @@ namespace Assets.Scripts.Behaviour
                 errMsg = "You haven't actual equipment to dril this asteroid class '" + _asteroidPart.Class + "'";
             else
             {
-                var volMassCheck = _playerShip.CanAddGoods(new MemoGoods { Id = _asteroidPart.Mineral, Quantity = _asteroidPart.Quantity.Encrypt() });
+                var volMassCheck = _playerShip.CanAddGoods(new MemoGoods { Id = _asteroidPart.Mineral, Quantity = _asteroidPart.Quantity });
 
                 switch(volMassCheck)
                 {

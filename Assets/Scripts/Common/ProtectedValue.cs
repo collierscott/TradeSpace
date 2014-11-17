@@ -1,43 +1,49 @@
 ﻿using System;
-using System.Xml.Serialization;
+using SimpleJSON;
 
 namespace Assets.Scripts.Common
 {
     public class ProtectedValue
     {
-        public string Encrypted;
+        private readonly string _protected;
 
-        private ProtectedValue()
+        private ProtectedValue(string value)
         {
+            _protected = value;
         }
 
         public ProtectedValue(object value)
         {
-            Encrypted = B64R.Encrypt(Convert.ToString(value));
+            _protected = B64R.Encode(Convert.ToString(value));
         }
 
-        #region implicit conversions
+        #region Implicit
 
         public static implicit operator ProtectedValue(int value)
         {
             return new ProtectedValue(value);
         }
+
         public static implicit operator ProtectedValue(long value)
         {
             return new ProtectedValue(value);
         }
+
         public static implicit operator ProtectedValue(string value)
         {
             return new ProtectedValue(value);
         }
+
         public static implicit operator ProtectedValue(DateTime value)
         {
             return new ProtectedValue(value);
         }
+
         public static implicit operator ProtectedValue(float value)
         {
             return new ProtectedValue(value);
         }
+
         public static implicit operator ProtectedValue(double value)
         {
             return new ProtectedValue(value);
@@ -45,32 +51,113 @@ namespace Assets.Scripts.Common
 
         #endregion
 
-        [XmlIgnore]
+        #region Types
+
+        public int Int
+        {
+            get { return int.Parse(B64R.Decode(_protected)); }
+        }
+
         public long Long
         {
-            get { return long.Parse(B64R.Decrypt(Encrypted)); }
-            set { Encrypted = B64R.Encrypt(Convert.ToString(value)); }
+            get { return long.Parse(B64R.Decode(_protected)); }
         }
 
-        [XmlIgnore]
         public float Float
         {
-            get { return float.Parse(B64R.Decrypt(Encrypted)); }
-            set { Encrypted = B64R.Encrypt(Convert.ToString(value)); }
+            get { return float.Parse(B64R.Decode(_protected)); }
         }
 
-        [XmlIgnore]
         public string String
         {
-            get { return B64R.Decrypt(Encrypted); }
-            set { Encrypted = B64R.Encrypt(value); }
+            get { return B64R.Decode(_protected); }
         }
 
-        [XmlIgnore]
         public DateTime DateTime
         {
-            get { return DateTime.Parse(B64R.Decrypt(Encrypted)); }
-            set { Encrypted = B64R.Encrypt(Convert.ToString(value)); }
+            get { return DateTime.Parse(B64R.Decode(_protected)); }
         }
+
+        #endregion
+
+        #region JSON
+
+        public JSONData ToJson()
+        {
+            return new JSONData(_protected);
+        }
+
+        public static ProtectedValue FromJson(JSONNode json)
+        {
+            return new ProtectedValue(json.Value);
+        }
+
+        #endregion
+
+        #region Common
+
+        public override int GetHashCode()
+        {
+            return _protected != null ? _protected.GetHashCode() : 0;
+        }
+
+        public static bool operator !=(ProtectedValue a, ProtectedValue b)
+        {
+            return !(a == b);
+        }
+
+        public static bool operator ==(ProtectedValue a, ProtectedValue b)
+        {
+            if ((ReferenceEquals(null, a) && !ReferenceEquals(null, b)) || (!ReferenceEquals(null, a) && ReferenceEquals(null, b)))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(null, a))
+            {
+                return true;
+            }
+
+            return a._protected == b._protected;
+        }
+
+        public static ProtectedValue operator ++(ProtectedValue value)
+        {
+            return value.Long + 1;
+        }
+
+        public static ProtectedValue operator --(ProtectedValue value)
+        {
+            return value.Long - 1;
+        }
+
+        public static ProtectedValue operator +(ProtectedValue a, ProtectedValue b)
+        {
+            return a.Long + b.Long;
+        }
+
+        public static ProtectedValue operator -(ProtectedValue a, ProtectedValue b)
+        {
+            return a.Long - b.Long;
+        }
+
+        public bool Equals(ProtectedValue other)
+        {
+            return this == other;
+        }
+
+        public override bool Equals(object value)
+        {
+            if (ReferenceEquals(null, value)) return false;
+
+            return value as ProtectedValue == this;
+        }
+
+        public ProtectedValue Copy()
+        {
+            return new ProtectedValue(_protected);
+        }
+
+        #endregion
     }
 }

@@ -74,11 +74,10 @@ namespace Assets.Scripts.Views
 
             
 
-            _asteroid = SelectManager.Location as Asteroid;
-            
+            _asteroid = (Asteroid) SelectManager.Location;
             _astParts.Clear();
 
-            MemoAsteroid astMemo = Profile.Instance.Asteroids.Where(a => a.Name == _asteroid.Name).FirstOrDefault();
+            var astMemo = Profile.Instance.Asteroids.ContainsKey(_asteroid.Name) ? Profile.Instance.Asteroids[_asteroid.Name] : null;
 
             Debug.Log("AstMemo: " + (astMemo != null ? astMemo.ToString() : "null"));
 
@@ -176,7 +175,17 @@ namespace Assets.Scripts.Views
                 }
             }
 
-            Profile.Instance.Asteroids.AddEmptyPart(_asteroid.Name, index);
+            if (Profile.Instance.Asteroids.ContainsKey(_asteroid.Name))
+            {
+                Profile.Instance.Asteroids[_asteroid.Name].EmptyParts.Add(index);
+            }
+            else
+            {
+                Profile.Instance.Asteroids.Add(_asteroid.Name, new MemoAsteroid
+                {
+                    Name = name, EmptyParts = new List<int> { index }
+                });
+            }
 
             CargoView.Refresh();
         }

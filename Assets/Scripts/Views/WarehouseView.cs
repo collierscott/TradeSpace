@@ -10,19 +10,17 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class ShopView : ViewBase, IScreenView
+    public class WarehouseView : ViewBase, IScreenView
     {
-        public Transform ShopTransform;
+        public Transform WarehouseTransform;
         public Transform ShipTransform;
-        public GameButton SellButton;
-        public GameButton BuyButton;
+        public GameButton PutButton;
+        public GameButton GetButton;
         public UISprite SelectedImage;
         public UILabel SelectedName;
-        public UILabel BuyPriceText;
-        public UILabel SellPriceText;
         public CargoView CargoView;
 
-        private List<MemoGoods> _shopGoods;
+        private List<MemoGoods> _warehouseGoods;
         private List<MemoGoods> _shipGoods;
         private GoodsId _selected;
 
@@ -36,13 +34,18 @@ namespace Assets.Scripts.Views
                 environment.InitShop(planet);
             }
 
-            ShopTransform.Clean();
+            WarehouseTransform.Clean();
             ShipTransform.Clean();
 
             SelectedName.text = null;
             SelectedImage.spriteName = null;
 
-            _shopGoods = Profile.Instance.Shops[planet.Name].Goods;
+            if (!Profile.Instance.Warehouses.ContainsKey(planet.Name))
+            {
+                Profile.Instance.Warehouses[planet.Name] = new MemoWarehouse { Goods = new List<MemoGoods>() };
+            }
+
+            _warehouseGoods = Profile.Instance.Warehouses[planet.Name].Goods;
             _shipGoods = Profile.Instance.Ship.Goods;
 
             Refresh();
@@ -56,12 +59,8 @@ namespace Assets.Scripts.Views
 
         public void Refresh()
         {
-            var planet = (Planet) SelectManager.Location;
-
-            _shipGoods.ForEach(i => i.Price = _shopGoods.Contains(i.Id) ? _shopGoods.Single(i.Id).Price : (Env.GoodsDatabase[i.Id].Price * planet.DefaultPriceRate).RoundToLong());
-            RefreshGoods(_shopGoods, ShopTransform, false);
+            RefreshGoods(_warehouseGoods, WarehouseTransform, false);
             RefreshGoods(_shipGoods, ShipTransform, true);
-            RefreshPrices();
             RefreshButtons();
         }
 
@@ -70,18 +69,17 @@ namespace Assets.Scripts.Views
             _selected = goodsId;
             SelectedImage.spriteName = goodsId.ToString();
             SelectedName.SetText(goodsId.ToString());
-            RefreshPrices();
             RefreshButtons();
         }
 
-        public void Buy()
+        public void Get()
         {
-            Trade(_shopGoods, _shipGoods, _selected, false);
+            Transfer(_warehouseGoods, _shipGoods, _selected, false);
         }
 
-        public void Sell()
+        public void Put()
         {
-            Trade(_shipGoods, _shopGoods, _selected, true);
+            Transfer(_shipGoods, _warehouseGoods, _selected, true);
         }
 
         #region Helpers
@@ -95,7 +93,8 @@ namespace Assets.Scripts.Views
             var unavailableGoods = goods.Where(i => i.Quantity.Long == 0).ToList();
             var availableGoods = goods.Except(unavailableGoods).ToList();
             var buttons = parent.GetComponentsInChildren<GoodsButton>();
-            var buttonsToDestroy = buttons.Where(i => availableGoods.All(j => j.Id != i.GoodsId) || unavailableGoods.Any(j => j.Id == i.GoodsId)).ToList();
+            var buttonsToDestroy = buttons.Where(i => availableGoods.All(j => j.Id != i.GoodsId)
+                || unavailableGoods.Any(j => j.Id == i.GoodsId)).ToList();
 
             if (buttonsToDestroy.Count > 0)
             {
@@ -123,7 +122,6 @@ namespace Assets.Scripts.Views
             {
                 var goodsId = goods[i].Id;
                 var button = buttons.FirstOrDefault(j => j.GoodsId == goodsId);
-                var price = shop ? GetShopPrice(goods[i].Price.Long) : goods[i].Price.Long;
                 var position = new Vector3(-Step / 2 * (goods.Count - 1) + Step * i, 0);
 
                 if (button == null)
@@ -133,7 +131,7 @@ namespace Assets.Scripts.Views
                     TweenAlpha.Begin(button.gameObject, 0, 0);
                 }
 
-                button.Initialize(goodsId, goods[i].Quantity.Long, price, () => SelectGoods(goodsId));
+                button.Initialize(goodsId, goods[i].Quantity.Long, () => SelectGoods(goodsId));
                 TweenButton(button, position, 1, AnimationTime);
             }
         }
@@ -144,56 +142,24 @@ namespace Assets.Scripts.Views
             TweenAlpha.Begin(component.gameObject, animationTime, alpha);
         }
 
-        private void RefreshPrices()
-        {
-            var goods = _shopGoods.SingleOrDefault(_selected);
-
-            if (goods == null)
-            {
-                BuyPriceText.text = null;
-            }
-            else
-            {
-                var price = goods.Price.Long;
-                var total = goods.Quantity.Long * price;
-
-                BuyPriceText.text = string.Format("{0} $[888888] / {1} $[-]", price, total);
-            }
-
-            goods = _shipGoods.SingleOrDefault(_selected);
-
-            if (goods == null)
-            {
-                SellPriceText.text = null;
-            }
-            else
-            {
-                var price = GetShopPrice(goods.Price.Long);
-                var total = goods.Quantity.Long * price;
-
-                SellPriceText.text = string.Format("{0} $[888888] / {1} $[-]", price, total);
-            }
-        }
-
         private void RefreshButtons()
         {
             var ship = new PlayerShip(Profile.Instance.Ship);
 
             if (SelectManager.Ship.Location.Name != SelectManager.Location.Name)
             {
-                SellButton.Enabled = BuyButton.Enabled = false;
+                PutButton.Enabled = GetButton.Enabled = false;
 
                 return;
             }
 
-            SellButton.Enabled = _selected != GoodsId.Empty && _shipGoods.Any(i => i.Id == _selected && i.Quantity.Long > 0);
-            BuyButton.Enabled = _selected != GoodsId.Empty && _shopGoods.Any(i => i.Id == _selected && i.Quantity.Long > 0)
+            PutButton.Enabled = _selected != GoodsId.Empty && _shipGoods.Any(i => i.Id == _selected && i.Quantity.Long > 0);
+            GetButton.Enabled = _selected != GoodsId.Empty && _warehouseGoods.Any(i => i.Id == _selected && i.Quantity.Long > 0)
                                 && ship.GoodsMass + Env.GoodsDatabase[_selected].Mass <= ship.Mass
-                                && ship.GoodsVolume + Env.GoodsDatabase[_selected].Volume <= ship.Volume
-                                && Profile.Instance.Credits.Long >= _shopGoods.Single(i => i.Id == _selected).Price.Long;
+                                && ship.GoodsVolume + Env.GoodsDatabase[_selected].Volume <= ship.Volume;
         }
 
-        private void Trade(List<MemoGoods> source, List<MemoGoods> destination, GoodsId goodsId, bool sell)
+        private void Transfer(List<MemoGoods> source, List<MemoGoods> destination, GoodsId goodsId, bool sell)
         {
             var goods = source.Single(goodsId);
 
@@ -215,22 +181,8 @@ namespace Assets.Scripts.Views
                 destination.Add(new MemoGoods { Id = goodsId, Quantity = 1, Price = goods.Price });
             }
 
-            if (sell)
-            {
-                Profile.Instance.Credits += GetShopPrice(goods.Price.Long);
-            }
-            else
-            {
-                Profile.Instance.Credits -= goods.Price;
-            }
-
             Refresh();
             CargoView.Refresh();
-        }
-
-        private static long GetShopPrice(long price)
-        {
-            return (price * Settings.SellRate).RoundToLong();
         }
 
         #endregion

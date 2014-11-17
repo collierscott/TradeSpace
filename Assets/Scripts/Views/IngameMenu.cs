@@ -16,6 +16,7 @@ namespace Assets.Scripts.Views
         public GameButton ShopButton;
         public GameButton EquipmentShopButton;
         public GameButton HangarButton;
+        public GameButton WarehouseButton;
 
         protected static class Colors
         {
@@ -37,12 +38,12 @@ namespace Assets.Scripts.Views
 
         private List<GameButton> PlanetButtons
         {
-            get { return new List<GameButton> { HangarButton, ShopButton }; }
+            get { return new List<GameButton> { HangarButton, WarehouseButton, ShopButton }; }
         }
 
         private List<GameButton> StationButtons
         {
-            get { return new List<GameButton> { HangarButton, EquipmentShopButton }; }
+            get { return new List<GameButton> { HangarButton, WarehouseButton, EquipmentShopButton }; }
         }
 
         private List<GameButton> AsteroidButtons
@@ -59,13 +60,22 @@ namespace Assets.Scripts.Views
             ShopButton.Up += () => GetComponent<ShopView>().Open();
             EquipmentShopButton.Up += () => GetComponent<EquipmentShopView>().Open();
             HangarButton.Up += () => GetComponent<HangarView>().Open();
+            WarehouseButton.Up += () => GetComponent<WarehouseView>().Open();
 
             Reset();
         }
 
         public void Reset()
         {
-            foreach (var button in new[] { InfoButton, OpenButton, MoveButton, ReturnButton, ShopButton, EquipmentShopButton, HangarButton })
+            foreach (var button in new[] {
+                InfoButton,
+                OpenButton,
+                MoveButton,
+                ReturnButton,
+                ShopButton,
+                EquipmentShopButton,
+                HangarButton,
+                WarehouseButton})
             {
                 button.gameObject.SetActive(false);
             }

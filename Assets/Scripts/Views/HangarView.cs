@@ -95,7 +95,7 @@ namespace Assets.Scripts.Views
             }
             else
             {
-                equipment.Quantity.Long--;
+                equipment.Quantity--;
             }
 
             if (_installed.Any(i => i.Index == _index))
@@ -115,11 +115,11 @@ namespace Assets.Scripts.Views
 
             if (_equipment.Contains(_selectedEquipment))
             {
-                _equipment.Single(_selectedEquipment).Quantity.Long++;
+                _equipment.Single(_selectedEquipment).Quantity++;
             }
             else
             {
-                _equipment.Add(new MemoEquipment { Id = _selectedEquipment, Quantity = 1.Encrypt() });
+                _equipment.Add(new MemoEquipment { Id = _selectedEquipment, Quantity = 1 });
             }
 
             _hangarAction = HangarAction.None;

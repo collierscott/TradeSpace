@@ -33,12 +33,12 @@ namespace Assets.Scripts.Views
             var station = (Station) SelectManager.Location;
             var environment = GetComponent<EnvironmentManager>();
 
-            if (!environment.ShopExists(station.Name))
+            if (!Profile.Instance.Shops.ContainsKey(station.Name))
             {
                 environment.InitShop(station);
             }
 
-            _shopEquipment = Profile.Instance.Shops.Single(i => i.Id == station.Name).Equipment;
+            _shopEquipment = Profile.Instance.Shops[station.Name].Equipment;
             _shipEquipment = Profile.Instance.Ship.Equipment;
 
             ShopTransform.Clean();
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Views
         {
             var station = (Station) SelectManager.Location;
 
-            _shipEquipment.ForEach(i => i.Price.Long = _shopEquipment.Contains(i.Id) ? _shopEquipment.Single(i.Id).Price.Long : (Env.EquipmentDatabase[i.Id].Price * station.PriceRate).RoundToLong());
+            _shipEquipment.ForEach(i => i.Price = _shopEquipment.Contains(i.Id) ? _shopEquipment.Single(i.Id).Price.Long : (Env.EquipmentDatabase[i.Id].Price * station.PriceRate).RoundToLong());
             RefreshEquipmentButtons(_shopEquipment, ShopTransform, false);
             RefreshEquipmentButtons(_shipEquipment, ShipTransform, true);
             RefreshPrices();
@@ -156,29 +156,37 @@ namespace Assets.Scripts.Views
                                 && Profile.Instance.Credits.Long >= _shopEquipment.Single(i => i.Id == _selected).Price.Long;
         }
 
-        private void Trade(List<MemoEquipment> source, List<MemoEquipment> destination, EquipmentId equipment, bool shop)
+        private void Trade(List<MemoEquipment> source, List<MemoEquipment> destination, EquipmentId equipment, bool sell)
         {
             var goods = source.Single(equipment);
 
-            if (goods.Quantity.Long == 1 && shop)
+            if (goods.Quantity.Long == 1 && sell)
             {
                 source.Remove(goods);
             }
             else
             {
-                goods.Quantity.Long--;
+                goods.Quantity--;
             }
 
             if (destination.Contains(equipment))
             {
-                destination.Single(equipment).Quantity.Long++;
+                destination.Single(equipment).Quantity++;
             }
             else
             {
-                destination.Add(new MemoEquipment { Id = equipment, Quantity = 1.Encrypt(), Price = goods.Price });
+                destination.Add(new MemoEquipment { Id = equipment, Quantity = 1, Price = goods.Price });
             }
 
-            Profile.Instance.Credits.Long += shop ? GetShopPrice(goods.Price.Long) : -goods.Price.Long;
+            if (sell)
+            {
+                Profile.Instance.Credits += GetShopPrice(goods.Price.Long);
+            }
+            else
+            {
+                Profile.Instance.Credits -= goods.Price;
+            }
+
             Refresh();
             CargoView.Refresh();
         }

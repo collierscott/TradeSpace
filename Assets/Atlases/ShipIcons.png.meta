@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: edadbf12f09692141b513ac6e110cb07
+guid: 80115ae19f7888a4085249de95780c11
 TextureImporter:
   fileIDToRecycleName:
-    21300000: ActionIcons
-    21300002: NavigationIcons
+    21300000: ShipIcons
+    21300002: Ship
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

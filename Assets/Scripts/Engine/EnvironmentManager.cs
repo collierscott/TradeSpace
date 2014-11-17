@@ -3,22 +3,16 @@ using System.Linq;
 using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Environment;
-using UnityEngine;
 
 namespace Assets.Scripts.Engine
 {
     public class EnvironmentManager : Script
     {
-        public bool ShopExists(string location)
-        {
-            return Profile.Instance.Shops.Any(i => i.Id == location);
-        }
-
         public void InitShop(Planet planet)
         {
-            Profile.Instance.Shops.RemoveAll(i => i.Id == planet.Name);
+            Profile.Instance.Shops.Remove(planet.Name);
 
-            var shop = new MemoShop { Id = planet.Name, Goods = new List<MemoGoods>() };
+            var shop = new MemoShop { Goods = new List<MemoGoods>() };
 
             foreach (var goods in planet.Export)
             {
@@ -27,21 +21,21 @@ namespace Assets.Scripts.Engine
                 var memoGoods = new MemoGoods
                 {
                     Id = goods.Id,
-                    Quantity = CRandom.GetRandom(goods.MinQuantity, goods.MaxQuantity).Encrypt(),
-                    Price = (Env.GoodsDatabase[goods.Id].Price * CRandom.GetRandom(goods.MinPrice, goods.MaxPrice)).RoundToLong().Encrypt()
+                    Quantity = CRandom.GetRandom(goods.MinQuantity, goods.MaxQuantity),
+                    Price = (Env.GoodsDatabase[goods.Id].Price * CRandom.GetRandom(goods.MinPrice, goods.MaxPrice)).RoundToLong()
                 };
 
                 shop.Goods.Add(memoGoods);
             }
 
-            Profile.Instance.Shops.Add(shop);
+            Profile.Instance.Shops.Add(planet.Name, shop);
         }
 
         public void InitShop(Station station)
         {
-            Profile.Instance.Shops.RemoveAll(i => i.Id == station.Name);
+            Profile.Instance.Shops.Remove(station.Name);
 
-            var shop = new MemoShop { Id = station.Name, Equipment = new List<MemoEquipment>() };
+            var shop = new MemoShop { Equipment = new List<MemoEquipment>() };
 
             foreach (var equipment in station.Equipments)
             {
@@ -50,19 +44,19 @@ namespace Assets.Scripts.Engine
                 var memoEquipment = new MemoEquipment
                 {
                     Id = equipment.Id,
-                    Quantity = CRandom.GetRandom(equipment.MinQuantity, equipment.MaxQuantity).Encrypt(),
-                    Price = (Env.EquipmentDatabase[equipment.Id].Price * CRandom.GetRandom(equipment.MinPrice, equipment.MaxPrice)).RoundToLong().Encrypt()
+                    Quantity = CRandom.GetRandom(equipment.MinQuantity, equipment.MaxQuantity),
+                    Price = (Env.EquipmentDatabase[equipment.Id].Price * CRandom.GetRandom(equipment.MinPrice, equipment.MaxPrice)).RoundToLong()
                 };
 
                 shop.Equipment.Add(memoEquipment);
             }
 
-            Profile.Instance.Shops.Add(shop);
+            Profile.Instance.Shops.Add(station.Name, shop);
         }
 
         public void InitShops()
         {
-            Profile.Instance.Shops = new List<MemoShop>();
+            Profile.Instance.Shops = new Dictionary<string, MemoShop>();
 
             foreach (var planet in Env.Systems.Values.SelectMany(system => system.Values).OfType<Planet>())
             {

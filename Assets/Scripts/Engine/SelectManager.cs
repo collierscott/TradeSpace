@@ -12,10 +12,7 @@ namespace Assets.Scripts.Engine
 
         public static ShipBehaviour Ship
         {
-            get
-            {
-                return ShipsView.Ships[Profile.Instance.SelectedShip];
-            }
+            get { return ShipsView.Ships[Profile.Instance.SelectedShip.Int]; }
         }
 
         public static void SelectShip(int index)
