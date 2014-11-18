@@ -103,12 +103,30 @@ namespace Assets.Scripts.Data
     {
         public EquipmentId Id;
         public long Index;
+
+        public JSONNode ToJson()
+        {
+            return new JSONClass
+            {
+                { "Id", Id.ToString() },
+                { "Index", Convert.ToString(Index) }
+            };
+        }
+
+        public static MemoInstalledEquipment FromJson(JSONNode json)
+        {
+            return new MemoInstalledEquipment
+            {
+                Id = json["Id"].Value.ToEnum<EquipmentId>(),
+                Index = long.Parse(json["Index"])
+            };
+        }
     }
 
     public class MemoShop
     {
-        public List<MemoGoods> Goods;
-        public List<MemoEquipment> Equipment;
+        public List<MemoGoods> Goods = new List<MemoGoods>();
+        public List<MemoEquipment> Equipment = new List<MemoEquipment>();
 
         public JSONNode ToJson()
         {
@@ -144,16 +162,63 @@ namespace Assets.Scripts.Data
 
     public class MemoWarehouse : MemoShop
     {
+        public new static MemoWarehouse FromJson(JSONNode json)
+        {
+            return new MemoWarehouse
+            {
+                Goods = json["Goods"].Childs.Select(i => MemoGoods.FromJson(i)).ToList(),
+                Equipment = json["Equipment"].Childs.Select(i => MemoEquipment.FromJson(i)).ToList()
+            };
+        }
     }
 
     public class MemoShip
     {
         public ShipId Id;
         public ShipState State;
-        public List<RouteNode> Route;
-        public List<RouteNode> Trace;
-        public List<MemoGoods> Goods;
-        public List<MemoEquipment> Equipment;
-        public List<MemoInstalledEquipment> InstalledEquipment;
+        public List<RouteNode> Route = new List<RouteNode>();
+        public List<RouteNode> Trace = new List<RouteNode>();
+        public List<MemoGoods> Goods = new List<MemoGoods>();
+        public List<MemoEquipment> Equipment = new List<MemoEquipment>();
+        public List<MemoInstalledEquipment> InstalledEquipment = new List<MemoInstalledEquipment>();
+
+        public JSONNode ToJson()
+        {
+            var route = new JSONArray();
+            var trace = new JSONArray();
+            var goods = new JSONArray();
+            var equipment = new JSONArray();
+            var installedEquipment = new JSONArray();
+
+            Route.ForEach(i => route.Add(i.ToJson()));
+            Goods.ForEach(i => goods.Add(i.ToJson()));
+            Equipment.ForEach(i => equipment.Add(i.ToJson()));
+            InstalledEquipment.ForEach(i => installedEquipment.Add(i.ToJson()));
+
+            return new JSONClass
+            {
+                { "Id", Id.ToString() },
+                { "State", State.ToString() },
+                { "Route", route },
+                { "Trace", trace },
+                { "Goods", goods },
+                { "Equipment", equipment },
+                { "InstalledEquipment", installedEquipment }
+            };
+        }
+
+        public static MemoShip FromJson(JSONNode json)
+        {
+            return new MemoShip
+            {
+                Id = json["Id"].Value.ToEnum<ShipId>(),
+                State = json["State"].Value.ToEnum<ShipState>(),
+                Route = json["Route"].Childs.Select(i => RouteNode.FromJson(i)).ToList(),
+                Trace = json["Trace"].Childs.Select(i => RouteNode.FromJson(i)).ToList(),
+                Goods = json["Goods"].Childs.Select(i => MemoGoods.FromJson(i)).ToList(),
+                Equipment = json["Equipment"].Childs.Select(i => MemoEquipment.FromJson(i)).ToList(),
+                InstalledEquipment = json["InstalledEquipment"].Childs.Select(i => MemoInstalledEquipment.FromJson(i)).ToList(),
+            };
+        }
     }
 }

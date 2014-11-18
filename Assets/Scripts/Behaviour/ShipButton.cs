@@ -1,14 +1,16 @@
 ﻿using Assets.Scripts.Common;
 using Assets.Scripts.Engine;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Environment;
 using Assets.Scripts.Views;
 using UnityEngine;
 
 namespace Assets.Scripts.Behaviour
 {
-    public class ShipSelector : Script
+    public class ShipButton : Script
     {
         public SelectButton Button;
+        public UISprite Image;
         public UISprite State;
         public UISprite Mass;
         public UISprite Volume;
@@ -28,6 +30,7 @@ namespace Assets.Scripts.Behaviour
 
             var ship = new PlayerShip(Profile.Instance.Ships[_index]);
 
+            Image.spriteName = Env.ShipDatabase[Profile.Instance.Ships[_index].Id].Image;
             Mass.transform.localScale = new Vector2(1, (float) ship.GoodsMass / ship.Mass);
             Volume.transform.localScale = new Vector2(1, (float) ship.GoodsVolume / ship.Volume);
         }

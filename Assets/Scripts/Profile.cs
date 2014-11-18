@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
@@ -15,7 +16,7 @@ namespace Assets.Scripts
         public ProtectedValue SelectedShip = 0;
         public ProtectedValue InitShopsTime = 0;
 
-        public List<MemoShip> Ships;
+        public List<MemoShip> Ships = new List<MemoShip>();
         public Dictionary<string, MemoShop> Shops = new Dictionary<string, MemoShop>();
         public Dictionary<string, MemoWarehouse> Warehouses = new Dictionary<string, MemoWarehouse>();
         public Dictionary<string, MemoAsteroid> Asteroids = new Dictionary<string, MemoAsteroid>();
@@ -36,85 +37,76 @@ namespace Assets.Scripts
             }
         }
 
-        private Profile()
-        {
-        }
-
-        public static void Load() // TODO: Make private
-        {
-            GameLog.Write("Loading profile...");
-
-            //PlayerPrefs.DeleteAll(); // TODO: WARNING!
-            //PlayerPrefs.Save();
-
-            //if (PlayerPrefs.HasKey(ProfileKey))
-            if (false)
-            {
-                Debug.Log("Load old profile");
-                var profile = PlayerPrefs.GetString(ProfileKey);
-
-                GameLog.Write("Serialized profile: {0}", profile);
-
-                _instance = Serializer.Deserialize<Profile>(profile);
-            }
-            else
-            {
-                Debug.Log("Create new profile");
-
-                _instance = new Profile
-                {
-                    Credits = 2000,
-                    InitShopsTime = DateTime.UtcNow,
-                    Ships = new List<MemoShip>
-                    {
-                        new MemoShip { Id = ShipId.Rhino },
-                        new MemoShip { Id = ShipId.Rhino }
-                    }
-                };
-
-                _instance.Ships[0].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Fobos"].ToRouteNode() };
-                _instance.Ships[0].Goods = new List<MemoGoods>
-                {
-                    new MemoGoods { Id = GoodsId.Water, Quantity = 10 },
-                    new MemoGoods { Id = GoodsId.Fish, Quantity = 5 }
-                };
-                _instance.Ships[0].Equipment = new List<MemoEquipment>
-                {
-                    new MemoEquipment { Id = EquipmentId.MassKit100, Quantity = 5 }
-                };
-                _instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>
-                {
-                    new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
-                    new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 },
-                    //new MemoInstalledEquipment { Id = EquipmentId.ImpulseDrill100, Index = 2 }
-                    new MemoInstalledEquipment { Id = EquipmentId.LaserDrill100, Index = 2 }
-                };
-
-                _instance.Ships[1].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };
-                _instance.Ships[1].Goods = new List<MemoGoods>
-                {
-                    new MemoGoods { Id = GoodsId.Ferrum, Quantity = 10 },
-                };
-                _instance.Ships[1].Equipment = new List<MemoEquipment>();
-                _instance.Ships[1].InstalledEquipment = new List<MemoInstalledEquipment>
-                {
-                    new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
-                    new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 1 }
-                };
-            }
-        }
-
         public MemoShip Ship
         {
             get { return Ships[SelectedShip.Int]; }
         }
 
-        private JSONNode ToJson()
+        private Profile()
+        {
+        }
+
+        public void Save()
+        {
+            Debug.Log("Saving profile...");
+
+            var json = ToJson().ToString();
+
+            Debug.Log("Profile json: " + json);
+
+            PlayerPrefs.SetString(ProfileKey, json);
+            PlayerPrefs.Save();
+        }
+
+        public static void Load()
+        {
+            Debug.Log("Loading profile...");
+            
+            if (PlayerPrefs.HasKey(ProfileKey))
+            {
+                try
+                {
+                    var json = PlayerPrefs.GetString(ProfileKey);
+
+                    Debug.Log("Profile json: " + json);
+
+                    _instance = FromJson(JSON.Parse(json));
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("Error parsing json: " + e);
+
+                    _instance = CreateInstance();
+                }
+            }
+            else
+            {
+                Debug.Log("Creating new profile...");
+
+                _instance = CreateInstance();
+            }
+        }
+
+        public static void Reset()
+        {
+            Debug.Log("Reseting profile...");
+
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
+
+        private JSONClass ToJson()
         {
             var json = new JSONClass();
+            var ships = new JSONArray();
             var shops = new JSONClass();
             var warehouses = new JSONClass();
             var asteroids = new JSONClass();
+
+            foreach (var ship in Ships)
+            {
+                ships.Add(ship.ToJson());
+            }
 
             foreach (var shop in Shops)
             {
@@ -128,13 +120,14 @@ namespace Assets.Scripts
 
             foreach (var asteroid in Asteroids)
             {
-                warehouses.Add(asteroid.Key, asteroid.Value.ToJson());
+                asteroids.Add(asteroid.Key, asteroid.Value.ToJson());
             }
 
             json.Add("Credits", Credits.ToJson());
             json.Add("SelectedShip", SelectedShip.ToJson());
             json.Add("InitShopsTime", InitShopsTime.ToJson());
 
+            json.Add("Ships", ships);
             json.Add("Shops", shops);
             json.Add("Warehouses", warehouses);
             json.Add("Asteroids", asteroids);
@@ -148,39 +141,76 @@ namespace Assets.Scripts
             {
                 Credits = ProtectedValue.FromJson(json["Credits"]),
                 SelectedShip = ProtectedValue.FromJson(json["SelectedShip"]),
-                InitShopsTime = ProtectedValue.FromJson(json["InitShopsTime"])
+                InitShopsTime = ProtectedValue.FromJson(json["InitShopsTime"]),
+                Ships = json["Ships"].Childs.Select(i => MemoShip.FromJson(i)).ToList(),
             };
 
-            foreach (var shop in json["Shops"].Childs)
+            foreach (var location in json["Shops"].AsObject.Keys)
             {
-                foreach (var location in shop.AsObject.Keys)
-                {
-                    profile.Shops.Add(location, MemoShop.FromJson(shop[location]));
-                }
+                profile.Shops.Add(location, MemoShop.FromJson(json["Shops"][location]));
             }
 
-            foreach (var warehouse in json["Warehouses"].Childs)
+            foreach (var location in json["Warehouses"].AsObject.Keys)
             {
-                foreach (var location in warehouse.AsObject.Keys)
-                {
-                    profile.Warehouses.Add(location, (MemoWarehouse) MemoShop.FromJson(warehouse[location]));
-                }
+                profile.Warehouses.Add(location, MemoWarehouse.FromJson(json["Warehouses"][location]));
             }
 
-            foreach (var asteroid in json["Asteroids"].Childs)
+            foreach (var location in json["Asteroids"].AsObject.Keys)
             {
-                foreach (var location in asteroid.AsObject.Keys)
-                {
-                    profile.Asteroids.Add(location, MemoAsteroid.FromJson(asteroid[location]));
-                }
+                profile.Asteroids.Add(location, MemoAsteroid.FromJson(json["Asteroids"][location]));
+            }
+
+            if (profile.Ships.Count == 0)
+            {
+                throw new Exception("profile.Ships.Count == 0");
             }
 
             return profile;
         }
 
-        public void Save()
+        private static Profile CreateInstance()
         {
-            throw new NotImplementedException();
+            var instance = new Profile
+            {
+                Credits = 2000,
+                InitShopsTime = DateTime.UtcNow,
+                Ships = new List<MemoShip>
+                    {
+                        new MemoShip { Id = ShipId.Rhino },
+                        new MemoShip { Id = ShipId.Rover }
+                    }
+            };
+
+            instance.Ships[0].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Fobos"].ToRouteNode() };
+            instance.Ships[0].Goods = new List<MemoGoods>
+                {
+                    new MemoGoods { Id = GoodsId.Water, Quantity = 10 },
+                    new MemoGoods { Id = GoodsId.Fish, Quantity = 5 }
+                };
+            instance.Ships[0].Equipment = new List<MemoEquipment>
+                {
+                    new MemoEquipment { Id = EquipmentId.MassKit100, Quantity = 5 }
+                };
+            instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>
+                {
+                    new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
+                    new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 },
+                    new MemoInstalledEquipment { Id = EquipmentId.LaserDrill100, Index = 2 }
+                };
+
+            instance.Ships[1].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };
+            instance.Ships[1].Goods = new List<MemoGoods>
+                {
+                    new MemoGoods { Id = GoodsId.Ferrum, Quantity = 10 },
+                };
+            instance.Ships[1].Equipment = new List<MemoEquipment>();
+            instance.Ships[1].InstalledEquipment = new List<MemoInstalledEquipment>
+                {
+                    new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
+                    new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 1 }
+                };
+
+            return instance;
         }
     }
 }

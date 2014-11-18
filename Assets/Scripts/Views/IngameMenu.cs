@@ -157,7 +157,7 @@ namespace Assets.Scripts.Views
         {
             get
             {
-                return SelectManager.Ship.State == ShipState.Ready && SelectManager.Ship.Trace != null
+                return SelectManager.Ship.State == ShipState.Ready && SelectManager.Ship.Trace.Count > 0
                     && SelectManager.Ship.Trace.Last().LocationName == SelectManager.Location.Name;
             }
         }

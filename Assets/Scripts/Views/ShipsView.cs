@@ -16,12 +16,12 @@ namespace Assets.Scripts.Views
             for (var i = 0; i < Profile.Instance.Ships.Count; i++)
             {
                 var ship = PrefabsHelper.InstantiateShip(Panel).GetComponent<ShipBehaviour>();
-                var selector = PrefabsHelper.InstantiateShipSelector(SelectorPanel);
+                var selector = PrefabsHelper.InstantiateShipButton(SelectorPanel);
 
                 ship.Initialize(Profile.Instance.Ships[i]);
                 Ships.Add(ship);
                 selector.transform.localPosition = new Vector2(0, 110 * ((Profile.Instance.Ships.Count - 1) / 2f) - 110 * i);
-                selector.GetComponentInChildren<ShipSelector>().Initialize(i);
+                selector.GetComponentInChildren<ShipButton>().Initialize(i);
             }
         }
 

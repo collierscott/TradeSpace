@@ -70,7 +70,7 @@ namespace Assets.Scripts.Behaviour
         {
             var ship = new PlayerShip(_ship);
 
-            _ship.Trace = null;
+            _ship.Trace = new List<RouteNode>();
             _ship.Route = RouteEngine.FindRoute(_ship.Route.Last(), arrival.ToRouteNode(), ship.Speed);
             _ship.State = ShipState.InFlight;
         }

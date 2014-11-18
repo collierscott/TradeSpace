@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Behaviour;
-using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Views;
+using UnityEngine;
 
 namespace Assets.Scripts.Engine
 {
@@ -17,7 +17,7 @@ namespace Assets.Scripts.Engine
 
         public static void SelectShip(int index)
         {
-            GameLog.Write("Select ship: {0}", index);
+            Debug.Log("Select ship: " + index);
             Profile.Instance.SelectedShip = index;
             FindObjectOfType<IngameMenu>().Refresh();
             FindObjectOfType<CargoView>().Refresh();
@@ -26,14 +26,14 @@ namespace Assets.Scripts.Engine
 
         public static void SelectSystem(string system)
         {
-            GameLog.Write("Select system: {0}", system); 
+            Debug.Log("Select system: " + system); 
             System = system;
             FindObjectOfType<IngameMenu>().Reset();
         }
 
         public static void SelectLocation(Location location)
         {
-            GameLog.Write("Select location: {0}", location.Name); 
+            Debug.Log("Select location: " + location.Name); 
             Location = location;
             FindObjectOfType<IngameMenu>().Reset();
         }

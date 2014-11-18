@@ -13,16 +13,6 @@ namespace Assets.Scripts.Engine
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                Profile.Instance.Save();
-            }
-
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                Profile.Load();
-            }
-
             var scroll = Input.GetAxis("Mouse ScrollWheel");
 
             if (Math.Abs(scroll) > 0.001)

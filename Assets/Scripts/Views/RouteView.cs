@@ -19,7 +19,7 @@ namespace Assets.Scripts.Views
 
         protected override void Initialize()
         {
-            var route = SelectManager.Ship.Trace ?? SelectManager.Ship.Route;
+            var route = SelectManager.Ship.Trace.Count > 0 ? SelectManager.Ship.Trace : SelectManager.Ship.Route;
             List<Vector2> polyline;
 
             if (Current is GalaxyView)
