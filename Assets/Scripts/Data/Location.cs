@@ -15,8 +15,7 @@ namespace Assets.Scripts.Data
         public long Interference;
         public long Radiation;
         public Color Color = Color.white;
-
-        public Vector2 NamePosition = Vector2.right;
+        public Vector2 Pivot = Vector2.right;
     }
 
     public static class Extensions

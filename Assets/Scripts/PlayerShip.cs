@@ -92,14 +92,16 @@ namespace Assets.Scripts
             }
         }
 
-        public long GoodsMass
+        public long CargoMass
         {
-            get { return _ship.Goods.Sum(i => i.Quantity.Long * Env.GoodsDatabase[i.Id].Mass); }
+            get { return _ship.Goods.Sum(i => i.Quantity.Long * Env.GoodsDatabase[i.Id].Mass)
+                + _ship.Equipment.Sum(i => i.Quantity.Long * Env.EquipmentDatabase[i.Id].Mass); }
         }
 
-        public long GoodsVolume
+        public long CargoVolume
         {
-            get { return _ship.Goods.Sum(i => i.Quantity.Long * Env.GoodsDatabase[i.Id].Volume); }
+            get { return _ship.Goods.Sum(i => i.Quantity.Long * Env.GoodsDatabase[i.Id].Volume)
+                + _ship.Equipment.Sum(i => i.Quantity.Long * Env.EquipmentDatabase[i.Id].Volume); }
         }
 
         public bool HasFreeSlot()
@@ -129,10 +131,10 @@ namespace Assets.Scripts
             var goodsMass = Env.GoodsDatabase[goods.Id].Mass*goods.Quantity.Long;
             var result = ShipGoodsCheck.Success;
 
-            if (goodsVolume > Volume - GoodsVolume)
+            if (goodsVolume > Volume - CargoVolume)
                 result = ShipGoodsCheck.NoVolume;
 
-            if (goodsMass > Mass - GoodsMass)
+            if (goodsMass > Mass - CargoMass)
                 result = result== ShipGoodsCheck.Success ? ShipGoodsCheck.NoMass : ShipGoodsCheck.NoMassAndVolume;
 
             return result;

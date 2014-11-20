@@ -11,7 +11,7 @@ namespace Assets.Scripts.Environment.AmberSystem
             ConnectedSystem = Env.SystemNames.Phoenix,
             Position = new Vector2(300, -200),
             Image = "G01",
-            NamePosition = -Vector2.right
+            Pivot = -Vector2.right
         };
     }
 }

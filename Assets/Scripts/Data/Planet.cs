@@ -13,7 +13,7 @@ namespace Assets.Scripts.Data
         public List<GoodsType> ImportType;
         public List<ShopGoods> SpecialImport;
         public float ImportPriceRate = 1;
-        public float DefaultPriceRate = 1;
+        public float PriceRate = 1;
 
         public long TechLevel
         {

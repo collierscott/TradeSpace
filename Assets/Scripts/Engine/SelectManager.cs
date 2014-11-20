@@ -17,7 +17,7 @@ namespace Assets.Scripts.Engine
 
         public static void SelectShip(int index)
         {
-            Debug.Log("Select ship: " + index);
+            //Debug.Log("Select ship: " + index);
             Profile.Instance.SelectedShip = index;
             FindObjectOfType<IngameMenu>().Refresh();
             FindObjectOfType<CargoView>().Refresh();
@@ -26,14 +26,14 @@ namespace Assets.Scripts.Engine
 
         public static void SelectSystem(string system)
         {
-            Debug.Log("Select system: " + system); 
+            //Debug.Log("Select system: " + system); 
             System = system;
             FindObjectOfType<IngameMenu>().Reset();
         }
 
         public static void SelectLocation(Location location)
         {
-            Debug.Log("Select location: " + location.Name); 
+            //Debug.Log("Select location: " + location.Name); 
             Location = location;
             FindObjectOfType<IngameMenu>().Reset();
         }

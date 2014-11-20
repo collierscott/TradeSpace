@@ -146,6 +146,26 @@ namespace Assets.Scripts.Common
             return this == other;
         }
 
+        public static bool operator >(ProtectedValue a, ProtectedValue b)
+        {
+            return a.Long > b.Long;
+        }
+
+        public static bool operator <(ProtectedValue a, ProtectedValue b)
+        {
+            return a.Long < b.Long;
+        }
+
+        public static bool operator >=(ProtectedValue a, ProtectedValue b)
+        {
+            return a.Long >= b.Long;
+        }
+
+        public static bool operator <=(ProtectedValue a, ProtectedValue b)
+        {
+            return a.Long <= b.Long;
+        }
+
         public override bool Equals(object value)
         {
             if (ReferenceEquals(null, value)) return false;
@@ -156,6 +176,11 @@ namespace Assets.Scripts.Common
         public ProtectedValue Copy()
         {
             return new ProtectedValue(_protected);
+        }
+
+        public override string ToString()
+        {
+            return String;
         }
 
         #endregion

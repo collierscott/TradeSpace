@@ -28,10 +28,10 @@ namespace Assets.Scripts.Views
 
             ShipNameText.SetText(ship.DisplayName);
             CreditsText.SetText("{0} credits", Profile.Instance.Credits.Long);
-            MassText.SetText("{0}/{1}", ship.GoodsMass, ship.Mass);
-            VolumeText.SetText("{0}/{1}", ship.GoodsVolume, ship.Volume);
-            MassSprite.transform.localScale = new Vector2((float) ship.GoodsMass / ship.Mass, 1);
-            VolumeSprite.transform.localScale = new Vector2((float) ship.GoodsVolume / ship.Volume, 1);
+            MassText.SetText("{0}/{1}", ship.CargoMass, ship.Mass);
+            VolumeText.SetText("{0}/{1}", ship.CargoVolume, ship.Volume);
+            MassSprite.transform.localScale = new Vector2((float) ship.CargoMass / ship.Mass, 1);
+            VolumeSprite.transform.localScale = new Vector2((float) ship.CargoVolume / ship.Volume, 1);
 
             //TweenScale.Begin(MassSprite.gameObject, delay, new Vector2((float) ship.GoodsMass / ship.Mass, 1));
             //TweenScale.Begin(VolumeSprite.gameObject, delay, new Vector2((float) ship.GoodsVolume / ship.Volume, 1));

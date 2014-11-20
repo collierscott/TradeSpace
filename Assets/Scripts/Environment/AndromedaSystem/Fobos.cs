@@ -17,7 +17,7 @@ namespace Assets.Scripts.Environment.AndromedaSystem
             Description = "Description",
             Interference = 0,
             Radiation = 0,
-            DefaultPriceRate = 1.2f,
+            PriceRate = 1.2f,
             Export = new List<ShopGoods>
             {
                 new ShopGoods { Id = GoodsId.Smartphone, MinPrice = 1.2, MaxPrice = 1.5f, MinQuantity = 20, MaxQuantity = 80, Availability = 1 },

@@ -41,12 +41,10 @@ namespace Assets.Scripts.Views
             _index = _ship.HasFreeSlot() ? _ship.FindFreeSlot() : 0;
             _hangarAction = HangarAction.None;
 
+            
+            SelectedName.text = SelectedImage.spriteName = null;
             InstalledTransform.Clean();
             EquipmentTransform.Clean();
-
-            SelectedName.text = null;
-            SelectedImage.spriteName = null;
-
             InitializeEquipmentCellButtons();
             Refresh();
             CargoView.Open();
@@ -187,7 +185,7 @@ namespace Assets.Scripts.Views
 
         private void RemoveRedundantEquipmentButtons()
         {
-            var buttons = EquipmentTransform.GetComponentsInChildren<EquipmentButton>();
+            var buttons = EquipmentTransform.GetComponentsInChildren<ShopItemButton>();
 
             foreach (var button in buttons.Where(i => _equipment.All(j => j.Id != i.EquipmentId)))
             {
@@ -197,21 +195,22 @@ namespace Assets.Scripts.Views
 
         private void InitializeEquipmentButtons()
         {
-            var buttons = EquipmentTransform.GetComponentsInChildren<EquipmentButton>();
+            var buttons = EquipmentTransform.GetComponentsInChildren<ShopItemButton>();
 
             for (var i = 0; i < _equipment.Count; i++)
             {
-                var button = buttons.FirstOrDefault(j => j.EquipmentId == _equipment[i].Id);
+                var equipmentId = _equipment[i].Id;
+                var button = buttons.FirstOrDefault(j => j.EquipmentId == equipmentId);
                 var position = new Vector3(-75 * (_equipment.Count - 1) + 150 * i, 0);
 
                 if (button == null)
                 {
-                    button = PrefabsHelper.InstantiateEquipmentButton(EquipmentTransform).GetComponent<EquipmentButton>();
+                    button = PrefabsHelper.InstantiateEquipmentButton(EquipmentTransform).GetComponent<ShopItemButton>();
                     button.transform.localPosition = position - Shift;
                     //TweenAlpha.Begin(button.gameObject, 0, 0);
                 }
 
-                button.Initialize(_equipment[i].Id, _equipment[i].Quantity.Long);
+                button.Initialize(equipmentId, () => SelectEquipmentToInstall(equipmentId), _equipment[i].Quantity);
                 ShopView.TweenButton(button, position, 1, AnimationTime);
             }
         }

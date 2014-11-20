@@ -23,9 +23,9 @@ namespace Assets.Scripts.Behaviour
 
             transform.localPosition = location.Position;
 
-            if (location.NamePosition != Vector2.right)
+            if (location.Pivot != Vector2.right)
             {
-                if (location.NamePosition == -Vector2.right)
+                if (location.Pivot == -Vector2.right)
                 {
                     var p = Name.transform.localPosition;
 

@@ -11,7 +11,7 @@ namespace Assets.Scripts.Environment.AmberSystem
             ConnectedSystem = Env.SystemNames.Andromeda,
             Position = new Vector2(-200, -100),
             Image = "G01",
-            NamePosition = -Vector2.right
+            Pivot = -Vector2.right
         };
     }
 }

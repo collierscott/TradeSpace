@@ -31,8 +31,8 @@ namespace Assets.Scripts.Behaviour
             var ship = new PlayerShip(Profile.Instance.Ships[_index]);
 
             Image.spriteName = Env.ShipDatabase[Profile.Instance.Ships[_index].Id].Image;
-            Mass.transform.localScale = new Vector2(1, (float) ship.GoodsMass / ship.Mass);
-            Volume.transform.localScale = new Vector2(1, (float) ship.GoodsVolume / ship.Volume);
+            Mass.transform.localScale = new Vector2(1, (float) ship.CargoMass / ship.Mass);
+            Volume.transform.localScale = new Vector2(1, (float) ship.CargoVolume / ship.Volume);
         }
 
         public void Update()

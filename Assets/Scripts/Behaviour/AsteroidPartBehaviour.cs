@@ -77,8 +77,8 @@ namespace Assets.Scripts.Behaviour
         {
             var ps = new PlayerShip(Profile.Instance.Ship);
 
-            long avaibleMass = ps.Mass - ps.GoodsMass;
-            long avaibleVolume = ps.Volume - ps.GoodsVolume;
+            long avaibleMass = ps.Mass - ps.CargoMass;
+            long avaibleVolume = ps.Volume - ps.CargoVolume;
 
             return _asteroidPart.Volume <= avaibleVolume && _asteroidPart.Mass <= avaibleMass;
         }
