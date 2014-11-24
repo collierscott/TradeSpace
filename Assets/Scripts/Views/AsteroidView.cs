@@ -75,6 +75,10 @@ namespace Assets.Scripts.Views
             
 
             _asteroid = (Asteroid) SelectManager.Location;
+            foreach (var p in _astParts)
+                DestroyImmediate(p.Apb.gameObject);
+
+            Debug.Log("_astParts.Count:" + _astParts.Count);
             _astParts.Clear();
 
             var astMemo = Profile.Instance.Asteroids.ContainsKey(_asteroid.Name) ? Profile.Instance.Asteroids[_asteroid.Name] : null;
@@ -86,6 +90,8 @@ namespace Assets.Scripts.Views
             float prevRad = 50f;
 
             int refRad = 256;
+
+            
 
             for (int p = 0; p < _asteroid.Parts.Count; p++)
             {
@@ -227,7 +233,7 @@ namespace Assets.Scripts.Views
 
                 float barValue =  _curHeatingValue / _drillParams.HeatingTo;
 
-                Debug.Log(string.Format("Heating curValue:{0}, max:{1}, isDown:{2}", _curHeatingValue, _drillParams.HeatingTo, _isMouseDown));
+                //Debug.Log(string.Format("Heating curValue:{0}, max:{1}, isDown:{2}", _curHeatingValue, _drillParams.HeatingTo, _isMouseDown));
 
                 HeatingBar.fillAmount = barValue;
 

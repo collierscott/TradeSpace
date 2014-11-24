@@ -20,7 +20,7 @@ namespace Assets.Scripts
         public Dictionary<string, MemoShop> Shops = new Dictionary<string, MemoShop>();
         public Dictionary<string, MemoWarehouse> Warehouses = new Dictionary<string, MemoWarehouse>();
         public Dictionary<string, MemoAsteroid> Asteroids = new Dictionary<string, MemoAsteroid>();
-        
+
         private static Profile _instance;
         private const string ProfileKey = "ST";
 
@@ -61,8 +61,9 @@ namespace Assets.Scripts
         public static void Load()
         {
             Debug.Log("Loading profile...");
-            
-            if (PlayerPrefs.HasKey(ProfileKey))
+
+            //if (PlayerPrefs.HasKey(ProfileKey))
+            if (false)
             {
                 try
                 {
@@ -195,6 +196,7 @@ namespace Assets.Scripts
                 {
                     new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
                     new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 },
+                    new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 3 },
                     new MemoInstalledEquipment { Id = EquipmentId.LaserDrill100, Index = 2 }
                 };
 

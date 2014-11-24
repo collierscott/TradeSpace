@@ -60,7 +60,7 @@ namespace Assets.Scripts.Common
 
         public long Long
         {
-            get { return long.Parse(B64R.Decode(_protected)); }
+			get { return string.IsNullOrEmpty(_protected) || _protected==" "?0: long.Parse(B64R.Decode(_protected)); }
         }
 
         public float Float

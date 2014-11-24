@@ -16,26 +16,41 @@ namespace Assets.Scripts.Behaviour
         public EquipmentId EquipmentId { get { return Id.String.ToEnum<EquipmentId>(); } }
         public bool Pressed { set { Button.Pressed = value; } }
 
-        public void Initialize(ProtectedValue id, Action action, ProtectedValue quantity, ProtectedValue price = null)
+        public void Initialize(ProtectedValue id, Action action, ProtectedValue quantity, ProtectedValue price)
         {
             Id = id.Copy();
             Image.spriteName = id.ToString();
             CommonInitialize(action, quantity, price);
         }
 
-        public void Initialize(GoodsId goodsId, Action action, ProtectedValue quantity, ProtectedValue price = null)
+		public void Initialize(ProtectedValue id, Action action, ProtectedValue quantity)
+		{
+			Initialize (id, action, quantity, null);
+		}
+
+        public void Initialize(GoodsId goodsId, Action action, ProtectedValue quantity, ProtectedValue price)
         {
             Id = (long) goodsId;
             Image.spriteName = goodsId.ToString();
             CommonInitialize(action, quantity, price);
         }
 
-        public void Initialize(EquipmentId equipmentId, Action action, ProtectedValue quantity, ProtectedValue price = null)
+		public void Initialize(GoodsId goodsId, Action action, ProtectedValue quantity)
+		{
+			Initialize (goodsId, action, quantity, null);
+		}
+
+        public void Initialize(EquipmentId equipmentId, Action action, ProtectedValue quantity, ProtectedValue price)
         {
             Id = (long) equipmentId;
             Image.spriteName = equipmentId.ToString();
             CommonInitialize(action, quantity, price);
         }
+
+		public void Initialize(EquipmentId equipmentId, Action action, ProtectedValue quantity)
+		{
+			Initialize (equipmentId, action, quantity, null);
+		}
 
         private void CommonInitialize(Action action, ProtectedValue quantity, ProtectedValue price)
         {

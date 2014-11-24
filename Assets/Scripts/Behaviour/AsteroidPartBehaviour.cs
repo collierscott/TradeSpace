@@ -214,6 +214,8 @@ namespace Assets.Scripts.Behaviour
                     Item.SetActive(false);
                 }
             }
+            else
+                _curTime = DateTime.MinValue;
         }
 
         public void SetAsteroidPart(AsteroidPart part, DrillParams drillParams, int index)
