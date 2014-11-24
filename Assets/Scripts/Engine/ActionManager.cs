@@ -91,5 +91,10 @@ namespace Assets.Scripts.Engine
                     planet.ImportType));
             }
         }
+
+        public void ShowInfo(string title, string message)
+        {
+            GetComponent<DialogManager>().Show(title, message);
+        }
     }
 }

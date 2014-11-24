@@ -63,8 +63,7 @@ namespace Assets.Scripts.Views
 
             if (_drillParams == null)
             {
-                //TODO - Dialog
-                Debug.LogWarning("msg: You don't have drill equipment!");
+                FindObjectOfType<ActionManager>().ShowInfo("Warning", "You don't have drill equipment!");
                 return;
             }
 
@@ -169,15 +168,23 @@ namespace Assets.Scripts.Views
                 if(checkResult == Enums.ShipGoodsCheck.Success)
                 {
                     _ship.AddGoods(core);
-                    Debug.LogWarning("Congratulations! You got asteroid core:" + core.Id);
+                    FindObjectOfType<ActionManager>().ShowInfo("Information", "Congratulations! You got asteroid core:" + core.Id);
+                    //Debug.LogWarning("Congratulations! You got asteroid core:" + core.Id);
                 }
-                else if((checkResult & Enums.ShipGoodsCheck.NoMass)== Enums.ShipGoodsCheck.NoMass)
+                else if(checkResult == Enums.ShipGoodsCheck.NoMass)
                 {
-                    Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough mass.");
+                    //Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough mass.");
+                    FindObjectOfType<ActionManager>().ShowInfo("Warning", "You got asteroid core:" + core.Id + " but you don't have enough mass.");
                 }
-                else if ((checkResult & Enums.ShipGoodsCheck.NoVolume) == Enums.ShipGoodsCheck.NoVolume)
+                else if ( checkResult == Enums.ShipGoodsCheck.NoVolume)
                 {
-                    Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough volume.");
+                    //Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough volume.");
+                    FindObjectOfType<ActionManager>().ShowInfo("Warning", "You got asteroid core:" + core.Id + " but you don't have enough volume.");
+                }
+                else if (checkResult == Enums.ShipGoodsCheck.NoMassAndVolume)
+                {
+                    //Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough volume.");
+                    FindObjectOfType<ActionManager>().ShowInfo("Warning", "You got asteroid core:" + core.Id + " but you don't have enough volume and mass.");
                 }
             }
 
@@ -243,7 +250,8 @@ namespace Assets.Scripts.Views
                     p.Apb.AllowHit = allowHit;
 
                 if (!allowHit)
-                    Debug.LogWarning("DIALOG! You boer temperature is to high!");
+                    FindObjectOfType<ActionManager>().ShowInfo("Warning", "You boer temperature is to high!");
+                    //Debug.LogWarning("DIALOG! You boer temperature is to high!");
             }
         }
 
