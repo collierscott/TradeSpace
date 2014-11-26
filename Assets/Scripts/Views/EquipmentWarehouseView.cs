@@ -4,7 +4,7 @@ using Assets.Scripts.Engine;
 
 namespace Assets.Scripts.Views
 {
-    public class WarehouseView : BaseWarehouseView
+    public class EquipmentWarehouseView : BaseWarehouseView
     {
         public void Start()
         {
@@ -21,21 +21,16 @@ namespace Assets.Scripts.Views
                 Profile.Instance.Warehouses.Add(location, new MemoWarehouse());
             }
 
-            ShopItems = Profile.Instance.Warehouses[location].Goods.Select(i => GetShopItem(i)).ToDictionary(i => i.Id.String);
-            ShipItems = Profile.Instance.Ship.Goods.Select(i => GetShopItem(i)).ToDictionary(i => i.Id.String);
+            ShopItems = Profile.Instance.Warehouses[location].Equipment.Select(i => GetShopItem(i)).ToDictionary(i => i.Id.String);
+            ShipItems = Profile.Instance.Ship.Equipment.Select(i => GetShopItem(i)).ToDictionary(i => i.Id.String);
         }
 
         protected override void SyncItemsBack()
         {
             var location = SelectManager.Location.Name;
 
-            Profile.Instance.Warehouses[location].Goods = ShopItems.Values.Select(i => GetMemoGoods(i)).ToList();
-            Profile.Instance.Ship.Goods = ShipItems.Values.Select(i => GetMemoGoods(i)).ToList();
-
-            foreach (var item in Profile.Instance.Ship.Goods)
-            {
-                item.Price = 0;
-            }
+            Profile.Instance.Warehouses[location].Equipment = ShopItems.Values.Select(i => GetMemoEquipment(i)).ToList();
+            Profile.Instance.Ship.Equipment = ShipItems.Values.Select(i => GetMemoEquipment(i)).ToList();
         }
     }
 }

@@ -111,7 +111,9 @@ namespace Assets.Scripts.Views
 
                 if (button == null)
                 {
-                    button = PrefabsHelper.InstantiateGoodsButton(parent).GetComponent<ShopItemButton>();
+                    button = this is WarehouseView
+                        ? PrefabsHelper.InstantiateGoodsButton(parent).GetComponent<ShopItemButton>()
+                        : PrefabsHelper.InstantiateEquipmentButton(parent).GetComponent<ShopItemButton>();
                     button.transform.localPosition = position + Shift * (shop ? -1 : 1);
                     TweenAlpha.Begin(button.gameObject, 0, 0);
                 }

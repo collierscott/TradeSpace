@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Behaviour;
 using Assets.Scripts.Data;
 using Assets.Scripts.Views;
-using UnityEngine;
 
 namespace Assets.Scripts.Engine
 {

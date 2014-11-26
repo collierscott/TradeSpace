@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using Assets.Scripts.Common;
-using Assets.Scripts.Data;
-using Assets.Scripts.Views;
+﻿using Assets.Scripts.Common;
 using UnityEngine;
 
 namespace Assets.Scripts.Engine

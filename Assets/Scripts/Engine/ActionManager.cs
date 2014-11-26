@@ -28,7 +28,7 @@ namespace Assets.Scripts.Engine
                 GetComponent<SystemView>().Open();
             }
             else if (ViewBase.Current is ShopView || ViewBase.Current is EquipmentShopView || ViewBase.Current is HangarView
-                || ViewBase.Current is WarehouseView)
+                || ViewBase.Current is WarehouseView || ViewBase.Current is EquipmentWarehouseView)
             {
                 ViewBase.Previous.Open();
             }
