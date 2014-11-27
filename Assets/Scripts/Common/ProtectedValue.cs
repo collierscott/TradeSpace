@@ -31,7 +31,7 @@ namespace Assets.Scripts.Common
 
         public static implicit operator ProtectedValue(string value)
         {
-            return new ProtectedValue(value);
+            return new ProtectedValue(B64R.Encode(value));
         }
 
         public static implicit operator ProtectedValue(DateTime value)

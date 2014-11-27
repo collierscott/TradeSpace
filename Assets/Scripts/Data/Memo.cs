@@ -99,6 +99,31 @@ namespace Assets.Scripts.Data
         }
     }
 
+    public class MemoShipItem : MemoItem
+    {
+        public ShipId Id;
+
+        public JSONNode ToJson()
+        {
+            return new JSONClass
+            {
+                { "Id", Id.ToString() },
+                { "Quantity", Quantity.ToJson() },
+                { "Price", Price.ToJson() }
+            };
+        }
+
+        public static MemoShipItem FromJson(JSONNode json)
+        {
+            return new MemoShipItem
+            {
+                Id = json["Id"].Value.ToEnum<ShipId>(),
+                Quantity = ProtectedValue.FromJson(json["Quantity"]),
+                Price = ProtectedValue.FromJson(json["Price"])
+            };
+        }
+    }
+
     public class MemoInstalledEquipment
     {
         public EquipmentId Id;
@@ -127,11 +152,13 @@ namespace Assets.Scripts.Data
     {
         public List<MemoGoods> Goods = new List<MemoGoods>();
         public List<MemoEquipment> Equipment = new List<MemoEquipment>();
+        public List<MemoShipItem> Ships = new List<MemoShipItem>();
 
         public JSONNode ToJson()
         {
             var goods = new JSONArray();
             var equipment = new JSONArray();
+            var ships = new JSONArray();
 
             foreach (var i in Goods)
             {
@@ -143,10 +170,16 @@ namespace Assets.Scripts.Data
                 equipment.Add(i.Id.ToString(), i.ToJson());
             }
 
+            foreach (var i in Ships)
+            {
+                ships.Add(i.Id.ToString(), i.ToJson());
+            }
+
             return new JSONClass
             {
                 { "Goods", goods },
-                { "Equipment", equipment }
+                { "Equipment", equipment },
+                { "Ships", equipment }
             };
         }
 
@@ -155,7 +188,8 @@ namespace Assets.Scripts.Data
             return new MemoShop
             {
                 Goods = json["Goods"].Childs.Select(i => MemoGoods.FromJson(i)).ToList(),
-                Equipment = json["Equipment"].Childs.Select(i => MemoEquipment.FromJson(i)).ToList()
+                Equipment = json["Equipment"].Childs.Select(i => MemoEquipment.FromJson(i)).ToList(),
+                Ships = json["Ships"].Childs.Select(i => MemoShipItem.FromJson(i)).ToList(),
             };
         }
     }
@@ -175,12 +209,18 @@ namespace Assets.Scripts.Data
     public class MemoShip
     {
         public ShipId Id;
+        public ProtectedValue UniqName { get; private set; }
         public ShipState State;
         public List<RouteNode> Route = new List<RouteNode>();
         public List<RouteNode> Trace = new List<RouteNode>();
         public List<MemoGoods> Goods = new List<MemoGoods>();
         public List<MemoEquipment> Equipment = new List<MemoEquipment>();
         public List<MemoInstalledEquipment> InstalledEquipment = new List<MemoInstalledEquipment>();
+
+        public MemoShip()
+        {
+            UniqName = CRandom.RandomString;
+        }
 
         public JSONNode ToJson()
         {
@@ -198,6 +238,7 @@ namespace Assets.Scripts.Data
             return new JSONClass
             {
                 { "Id", Id.ToString() },
+                { "UniqName", UniqName.ToJson() },
                 { "State", State.ToString() },
                 { "Route", route },
                 { "Trace", trace },
@@ -212,6 +253,7 @@ namespace Assets.Scripts.Data
             return new MemoShip
             {
                 Id = json["Id"].Value.ToEnum<ShipId>(),
+                UniqName = ProtectedValue.FromJson(json["UniqName"].Value),
                 State = json["State"].Value.ToEnum<ShipState>(),
                 Route = json["Route"].Childs.Select(i => RouteNode.FromJson(i)).ToList(),
                 Trace = json["Trace"].Childs.Select(i => RouteNode.FromJson(i)).ToList(),

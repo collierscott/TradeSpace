@@ -10,6 +10,7 @@ namespace Assets.Scripts.Views
         public ProtectedValue Mass;
         public ProtectedValue Volume;
         public ProtectedValue Price;
+        public ProtectedValue Disabled;
     }
 
     public abstract class BaseShopView : BaseWarehouseView
@@ -17,9 +18,9 @@ namespace Assets.Scripts.Views
         public UILabel BuyPriceText;
         public UILabel SellPriceText;
 
-        public override void SelectGoods(ProtectedValue id)
+        protected override void SelectItem(ProtectedValue id)
         {
-            base.SelectGoods(id);
+            base.SelectItem(id);
             RefreshPrices();
         }
 
@@ -27,8 +28,8 @@ namespace Assets.Scripts.Views
         {
             base.RefreshButtons();
 
-            GetButton.Enabled &= Selected != null && ShopItems.ContainsKey(Selected.String)
-                && Profile.Instance.Credits >= ShopItems[Selected.String].Price;
+            GetButton.Enabled &= Selected != null && LocationItems.ContainsKey(Selected.String)
+                && Profile.Instance.Credits >= LocationItems[Selected.String].Price;
         }
 
         protected override void Move(Dictionary<string, ShopItem> source, Dictionary<string, ShopItem> destination, ProtectedValue id, bool sell)
@@ -36,7 +37,7 @@ namespace Assets.Scripts.Views
             var price = source[id.String].Price;
 
             base.Move(source, destination, id, sell);
-            
+           
             if (sell)
             {
                 Profile.Instance.Credits += GetShopPrice(price);
@@ -52,9 +53,9 @@ namespace Assets.Scripts.Views
 
         protected void RefreshPrices()
         {
-            if (Selected != null && ShopItems.ContainsKey(Selected.String))
+            if (Selected != null && LocationItems.ContainsKey(Selected.String))
             {
-                var items = ShopItems[Selected.String];
+                var items = LocationItems[Selected.String];
                 var price = items.Price.Long;
                 var total = items.Quantity.Long * price;
 
@@ -65,9 +66,9 @@ namespace Assets.Scripts.Views
                 BuyPriceText.text = null;
             }
 
-            if (Selected != null && ShipItems.ContainsKey(Selected.String))
+            if (Selected != null && PlayerItems.ContainsKey(Selected.String))
             {
-                var items = ShipItems[Selected.String];
+                var items = PlayerItems[Selected.String];
                 var price = GetShopPrice(items.Price.Long);
                 var total = items.Quantity.Long * price;
 
@@ -79,7 +80,7 @@ namespace Assets.Scripts.Views
             }
         }
 
-        private static long GetShopPrice(ProtectedValue price)
+        protected static long GetShopPrice(ProtectedValue price)
         {
             return (price.Long * Settings.SellRate).RoundToLong();
         }

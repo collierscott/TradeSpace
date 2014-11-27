@@ -35,7 +35,11 @@ namespace Assets.Scripts.Engine
         {
             Profile.Instance.Shops.Remove(station.Name);
 
-            var shop = new MemoShop { Equipment = new List<MemoEquipment>() };
+            var shop = new MemoShop
+            {
+                Equipment = new List<MemoEquipment>(),
+                Ships = new List<MemoShipItem>()
+            };
 
             foreach (var equipment in station.Equipments)
             {

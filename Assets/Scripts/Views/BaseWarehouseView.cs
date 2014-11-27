@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Behaviour;
 using Assets.Scripts.Common;
-using Assets.Scripts.Data;
 using Assets.Scripts.Engine;
-using Assets.Scripts.Enums;
-using Assets.Scripts.Environment;
 using UnityEngine;
 
 namespace Assets.Scripts.Views
@@ -20,11 +18,24 @@ namespace Assets.Scripts.Views
         public UILabel SelectedName;
         public CargoView CargoView;
 
-        protected Dictionary<string, ShopItem> ShopItems = new Dictionary<string, ShopItem>();
-        protected Dictionary<string, ShopItem> ShipItems = new Dictionary<string, ShopItem>();
+        protected Dictionary<string, ShopItem> LocationItems = new Dictionary<string, ShopItem>();
+        protected Dictionary<string, ShopItem> PlayerItems = new Dictionary<string, ShopItem>();
         protected ProtectedValue Selected;
 
-        protected abstract void SyncItems();
+        public void Start()
+        {
+            GetButton.Up += Get;
+            PutButton.Up += Put;
+        }
+
+        public static void TweenButton(Component component, Vector2 position, float alpha, float animationTime)
+        {
+            TweenPosition.Begin(component.gameObject, animationTime, position);
+            TweenAlpha.Begin(component.gameObject, animationTime, alpha);
+        }
+
+        protected abstract void WrapItems();
+        protected abstract void ExtractItems();
 
         protected override void Initialize()
         {
@@ -32,7 +43,7 @@ namespace Assets.Scripts.Views
             SelectedName.text = SelectedImage.spriteName = null;
             ShopGroup.Clean();
             ShipGroup.Clean();
-            SyncItems();
+            WrapItems();
             Refresh();
             CargoView.Open();
         }
@@ -42,91 +53,42 @@ namespace Assets.Scripts.Views
             CargoView.Close();
         }
 
-        protected virtual void Refresh()
-        {
-            RefreshItems(ShopItems.Values.ToList(), ShopGroup, false);
-            RefreshItems(ShipItems.Values.ToList(), ShipGroup, true);
-            RefreshButtons();
-        }
-
-        public virtual void SelectGoods(ProtectedValue id)
-        {
-            Selected = id.Copy();
-            SelectedImage.spriteName = id.String;
-            SelectedName.SetText(id.String);
-            RefreshButtons();
-        }
-
         protected void Get()
         {
-            Move(ShopItems, ShipItems, Selected, false);
+            Move(LocationItems, PlayerItems, Selected, false);
         }
 
         protected void Put()
         {
-            Move(ShipItems, ShopItems, Selected, true);
-        }
-
-        #region Helpers
-
-        private const float AnimationTime = 0.25f;
-        private const float Step = 170;
-        private static readonly Vector3 Shift = new Vector3(0, 150);
-
-        private void RefreshItems(List<ShopItem> items, Transform parent, bool shop)
-        {
-            var unavailable = items.Where(i => i.Quantity == 0).ToList();
-            var available = items.Where(i => i.Quantity > 0).ToList();
-            var buttons = parent.GetComponentsInChildren<ShopItemButton>();
-            var buttonsToDestroy = buttons.Where(i => available.All(j => j.Id != i.Id)
-                || unavailable.Any(j => j.Id == i.Id)).ToList();
-
-            if (buttonsToDestroy.Count > 0)
+            if (PlayerItems[Selected.String].Disabled == null)
             {
-                DestroyItems(buttonsToDestroy, shop);
+                Move(PlayerItems, LocationItems, Selected, true);
             }
-
-            ShowItems(buttons, available, parent, shop);
-        }
-
-        private static void DestroyItems(IEnumerable<ShopItemButton> buttons, bool shop)
-        {
-            foreach (var button in buttons)
+            else
             {
-                var position = button.transform.localPosition + Shift * (shop ? -1 : 1);
-
-                button.Pressed = false;
-                TweenButton(button, position, 0, AnimationTime);
-                Destroy(button.gameObject, AnimationTime);
+                Debug.Log(PlayerItems[Selected.String].Disabled.String);
             }
         }
 
-        private void ShowItems(ShopItemButton[] buttons, List<ShopItem> goods, Transform parent, bool shop)
+        #region Virtual
+
+        protected virtual void Refresh()
         {
-            for (var i = 0; i < goods.Count; i++)
-            {
-                var id = goods[i].Id;
-                var button = buttons.FirstOrDefault(j => j.Id == id);
-                var position = new Vector3(-Step / 2 * (goods.Count - 1) + Step * i, 0);
-
-                if (button == null)
-                {
-                    button = this is WarehouseView
-                        ? PrefabsHelper.InstantiateGoodsButton(parent).GetComponent<ShopItemButton>()
-                        : PrefabsHelper.InstantiateEquipmentButton(parent).GetComponent<ShopItemButton>();
-                    button.transform.localPosition = position + Shift * (shop ? -1 : 1);
-                    TweenAlpha.Begin(button.gameObject, 0, 0);
-                }
-
-                button.Initialize(id, () => SelectGoods(id), goods[i].Quantity);
-                TweenButton(button, position, 1, AnimationTime);
-            }
+            RefreshItems(LocationItems, ShopGroup, false);
+            RefreshItems(PlayerItems, ShipGroup, true);
+            RefreshButtons();
         }
 
-        public static void TweenButton(Component component, Vector2 position, float alpha, float animationTime)
+        protected virtual void SelectItem(ProtectedValue id)
         {
-            TweenPosition.Begin(component.gameObject, animationTime, position);
-            TweenAlpha.Begin(component.gameObject, animationTime, alpha);
+            Selected = id.Copy();
+            SelectedImage.spriteName = SelectedName.text = id.String;
+            RefreshButtons();
+        }
+
+        protected virtual void InitializeItemButton(ShopItemButton button, ProtectedValue key, ShopItem item)
+        {
+            button.Initialize(key, () => SelectItem(key), item.Quantity);
         }
 
         protected virtual void RefreshButtons()
@@ -146,8 +108,8 @@ namespace Assets.Scripts.Views
             }
             else
             {
-                var shipItem = ShipItems.ContainsKey(Selected.String) ? ShipItems[Selected.String] : null;
-                var shopItem = ShopItems.ContainsKey(Selected.String) ? ShopItems[Selected.String] : null;
+                var shipItem = PlayerItems.ContainsKey(Selected.String) ? PlayerItems[Selected.String] : null;
+                var shopItem = LocationItems.ContainsKey(Selected.String) ? LocationItems[Selected.String] : null;
                 var item = shipItem ?? shopItem;
 
                 PutButton.Enabled = shipItem != null && shipItem.Quantity > 0;
@@ -156,8 +118,6 @@ namespace Assets.Scripts.Views
                     && ship.CargoVolume + item.Volume <= ship.Volume;
             }
         }
-
-        protected abstract void SyncItemsBack();
 
         protected virtual void Move(Dictionary<string, ShopItem> source, Dictionary<string, ShopItem> destination, ProtectedValue id, bool sell)
         {
@@ -188,53 +148,81 @@ namespace Assets.Scripts.Views
                 });
             }
 
-            SyncItemsBack();
+            ExtractItems();
             Refresh();
             CargoView.Refresh();
         }
 
-        protected static ShopItem GetShopItem(MemoGoods item)
+        #endregion
+
+        #region Private
+
+        private const float AnimationTime = 0.25f;
+        private const float Step = 170;
+        private static readonly Vector3 Shift = new Vector3(0, 150);
+
+        private void RefreshItems(Dictionary<string, ShopItem> items, Transform parent, bool sell)
         {
-            return new ShopItem
+            var unavailable = items.Where(i => i.Value.Quantity == 0).ToDictionary(i => i.Key, i => i.Value);
+            var available = items.Where(i => i.Value.Quantity > 0).ToDictionary(i => i.Key, i => i.Value);
+            var buttons = parent.GetComponentsInChildren<ShopItemButton>();
+            var buttonsToDestroy = buttons.Where(button => available.All(item => item.Key != button.Id)
+                || unavailable.Any(item => item.Key == button.Id)).ToList();
+
+            if (buttonsToDestroy.Count > 0)
             {
-                Id = new ProtectedValue(item.Id),
-                Quantity = item.Quantity.Copy(),
-                Mass = Env.GoodsDatabase[item.Id].Mass,
-                Volume = Env.GoodsDatabase[item.Id].Volume,
-                Price = item.Price.Copy()
-            };
+                DestroyItems(buttonsToDestroy, sell);
+            }
+
+            ShowItems(buttons, available, parent, sell);
         }
 
-        protected static MemoGoods GetMemoGoods(ShopItem item)
+        private static void DestroyItems(IEnumerable<ShopItemButton> buttons, bool shop)
         {
-            return new MemoGoods
+            foreach (var button in buttons)
             {
-                Id = item.Id.String.ToEnum<GoodsId>(),
-                Quantity = item.Quantity.Copy(),
-                Price = item.Price.Copy()
-            };
+                var position = button.transform.localPosition + Shift * (shop ? -1 : 1);
+
+                button.Pressed = false;
+                TweenButton(button, position, 0, AnimationTime);
+                Destroy(button.gameObject, AnimationTime);
+            }
         }
 
-        protected static ShopItem GetShopItem(MemoEquipment item)
+        private void ShowItems(ShopItemButton[] buttons, Dictionary<string, ShopItem> items, Transform parent, bool sell)
         {
-            return new ShopItem
+            foreach (var item in items)
             {
-                Id = new ProtectedValue(item.Id),
-                Quantity = item.Quantity.Copy(),
-                Mass = Env.EquipmentDatabase[item.Id].Mass,
-                Volume = Env.EquipmentDatabase[item.Id].Volume,
-                Price = item.Price.Copy()
-            };
-        }
+                var i = items.ToList().IndexOf(item);
+                var button = buttons.FirstOrDefault(j => j.Id == item.Key);
+                var position = new Vector3(-Step / 2 * (items.Count - 1) + Step * i, 0);
 
-        protected static MemoEquipment GetMemoEquipment(ShopItem item)
-        {
-            return new MemoEquipment
-            {
-                Id = item.Id.String.ToEnum<EquipmentId>(),
-                Quantity = item.Quantity.Copy(),
-                Price = item.Price.Copy()
-            };
+                if (button == null)
+                {
+                    if (this is ShopView || this is WarehouseView)
+                    {
+                        button = PrefabsHelper.InstantiateGoodsButton(parent).GetComponent<ShopItemButton>();
+                    }
+                    else if (this is EquipmentShopView || this is EquipmentWarehouseView)
+                    {
+                        button = PrefabsHelper.InstantiateEquipmentButton(parent).GetComponent<ShopItemButton>();
+                    }
+                    else if (this is ShipShopView)
+                    {
+                        button = PrefabsHelper.InstantiateShipItemButton(parent).GetComponent<ShopItemButton>();
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                    button.transform.localPosition = position + Shift * (sell ? -1 : 1);
+                    TweenAlpha.Begin(button.gameObject, 0, 0);
+                }
+
+                InitializeItemButton(button, item.Key, item.Value);
+                TweenButton(button, position, 1, AnimationTime);
+            }
         }
 
         #endregion

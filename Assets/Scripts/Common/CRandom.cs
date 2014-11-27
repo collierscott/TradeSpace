@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace Assets.Scripts.Common
@@ -62,6 +63,11 @@ namespace Assets.Scripts.Common
 	    {
 	        return Chance((int) (100 * chance));
 	    }
+
+        public static string RandomString
+        {
+            get { return Path.GetRandomFileName().Replace(".", string.Empty); }
+        }
 
         private static void FillBuffer()
         {

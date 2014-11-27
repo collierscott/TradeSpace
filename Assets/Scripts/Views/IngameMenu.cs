@@ -18,6 +18,7 @@ namespace Assets.Scripts.Views
         public GameButton HangarButton;
         public GameButton WarehouseButton;
         public GameButton EquipmentWarehouseButton;
+        public GameButton ShipShopButton;
 
         protected static class Colors
         {
@@ -39,12 +40,31 @@ namespace Assets.Scripts.Views
 
         private List<GameButton> PlanetButtons
         {
-            get { return new List<GameButton> { HangarButton, WarehouseButton, EquipmentWarehouseButton, ShopButton }; }
+            get
+            {
+                return new List<GameButton>
+                {
+                    HangarButton,
+                    WarehouseButton,
+                    EquipmentWarehouseButton,
+                    ShopButton
+                };
+            }
         }
 
         private List<GameButton> StationButtons
         {
-            get { return new List<GameButton> { HangarButton, WarehouseButton, EquipmentWarehouseButton, EquipmentShopButton }; }
+            get
+            {
+                return new List<GameButton>
+                {
+                    HangarButton,
+                    WarehouseButton,
+                    EquipmentWarehouseButton,
+                    EquipmentShopButton,
+                    ShipShopButton
+                };
+            }
         }
 
         private List<GameButton> AsteroidButtons
@@ -63,6 +83,7 @@ namespace Assets.Scripts.Views
             HangarButton.Up += () => GetComponent<HangarView>().Open();
             WarehouseButton.Up += () => GetComponent<WarehouseView>().Open();
             EquipmentWarehouseButton.Up += () => GetComponent<EquipmentWarehouseView>().Open();
+            ShipShopButton.Up += () => GetComponent<ShipShopView>().Open();
 
             Reset();
         }
@@ -79,7 +100,8 @@ namespace Assets.Scripts.Views
                 EquipmentShopButton,
                 HangarButton,
                 WarehouseButton,
-                EquipmentWarehouseButton
+                EquipmentWarehouseButton,
+                ShipShopButton
             })
             {
                 button.gameObject.SetActive(false);

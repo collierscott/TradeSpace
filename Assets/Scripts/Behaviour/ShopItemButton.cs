@@ -19,37 +19,13 @@ namespace Assets.Scripts.Behaviour
         public void Initialize(ProtectedValue id, Action action, ProtectedValue quantity, ProtectedValue price)
         {
             Id = id.Copy();
-            Image.spriteName = id.ToString();
+            Image.spriteName = id.String;
             CommonInitialize(action, quantity, price);
         }
 
 		public void Initialize(ProtectedValue id, Action action, ProtectedValue quantity)
 		{
-			Initialize (id, action, quantity, null);
-		}
-
-        public void Initialize(GoodsId goodsId, Action action, ProtectedValue quantity, ProtectedValue price)
-        {
-            Id = (long) goodsId;
-            Image.spriteName = goodsId.ToString();
-            CommonInitialize(action, quantity, price);
-        }
-
-		public void Initialize(GoodsId goodsId, Action action, ProtectedValue quantity)
-		{
-			Initialize (goodsId, action, quantity, null);
-		}
-
-        public void Initialize(EquipmentId equipmentId, Action action, ProtectedValue quantity, ProtectedValue price)
-        {
-            Id = (long) equipmentId;
-            Image.spriteName = equipmentId.ToString();
-            CommonInitialize(action, quantity, price);
-        }
-
-		public void Initialize(EquipmentId equipmentId, Action action, ProtectedValue quantity)
-		{
-			Initialize (equipmentId, action, quantity, null);
+			Initialize(id, action, quantity, null);
 		}
 
         private void CommonInitialize(Action action, ProtectedValue quantity, ProtectedValue price)

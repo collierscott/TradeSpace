@@ -59,6 +59,11 @@ namespace Assets.Scripts
             return Instantiate("EquipmentButton", parent);
         }
 
+        public static GameObject InstantiateShipItemButton(Transform parent)
+        {
+            return Instantiate("ShipItemButton", parent);
+        }
+
         public static GameObject InstantiateEquipmentCellButton(Transform parent)
         {
             return Instantiate("EquipmentCellButton", parent);

@@ -9,13 +9,7 @@ namespace Assets.Scripts.Views
 {
     public class EquipmentShopView : BaseShopView
     {
-        public void Start()
-        {
-            GetButton.Up += Get;
-            PutButton.Up += Put;
-        }
-
-        protected override void SyncItems()
+        protected override void WrapItems()
         {
             var station = (Station) SelectManager.Location;
 
@@ -24,23 +18,23 @@ namespace Assets.Scripts.Views
                 GetComponent<EnvironmentManager>().InitShop(station);
             }
 
-            ShopItems = Profile.Instance.Shops[station.Name].Equipment.Select(i => GetShopItem(i)).ToDictionary(i => i.Id.String);
-            ShipItems = Profile.Instance.Ship.Equipment.Select(i => GetShopItem(i)).ToDictionary(i => i.Id.String);
+            LocationItems = Profile.Instance.Shops[station.Name].Equipment.Select(i => ShopConversation.GetShopItem(i)).ToDictionary(i => i.Id.String);
+            PlayerItems = Profile.Instance.Ship.Equipment.Select(i => ShopConversation.GetShopItem(i)).ToDictionary(i => i.Id.String);
 
-            foreach (var i in ShipItems.Values)
+            foreach (var i in PlayerItems.Values)
             {
-                i.Price = ShopItems.ContainsKey(i.Id.String)
-                    ? ShopItems[i.Id.String].Price.Copy()
+                i.Price = LocationItems.ContainsKey(i.Id.String)
+                    ? LocationItems[i.Id.String].Price.Copy()
                     : (Env.GoodsDatabase[i.Id.String.ToEnum<GoodsId>()].Price * station.PriceRate).RoundToLong();
             }
         }
 
-        protected override void SyncItemsBack()
+        protected override void ExtractItems()
         {
             var station = (Station)SelectManager.Location;
 
-            Profile.Instance.Shops[station.Name].Equipment = ShopItems.Values.Select(i => GetMemoEquipment(i)).ToList();
-            Profile.Instance.Ship.Equipment = ShipItems.Values.Select(i => GetMemoEquipment(i)).ToList();
+            Profile.Instance.Shops[station.Name].Equipment = LocationItems.Values.Select(i => ShopConversation.GetMemoEquipment(i)).ToList();
+            Profile.Instance.Ship.Equipment = PlayerItems.Values.Select(i => ShopConversation.GetMemoEquipment(i)).ToList();
 
             foreach (var item in Profile.Instance.Ship.Equipment)
             {
