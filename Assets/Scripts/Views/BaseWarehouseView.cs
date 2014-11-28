@@ -16,7 +16,6 @@ namespace Assets.Scripts.Views
         public GameButton GetButton;
         public UISprite SelectedImage;
         public UILabel SelectedName;
-        public CargoView CargoView;
 
         protected Dictionary<string, ShopItem> LocationItems = new Dictionary<string, ShopItem>();
         protected Dictionary<string, ShopItem> PlayerItems = new Dictionary<string, ShopItem>();
@@ -45,12 +44,12 @@ namespace Assets.Scripts.Views
             ShipGroup.Clean();
             WrapItems();
             Refresh();
-            CargoView.Open();
+            Open<CargoView>();
         }
 
         protected override void Cleanup()
         {
-            CargoView.Close();
+            Close<CargoView>();
         }
 
         protected void Get()
@@ -150,7 +149,7 @@ namespace Assets.Scripts.Views
 
             ExtractItems();
             Refresh();
-            CargoView.Refresh();
+            GetComponent<CargoView>().Refresh();
         }
 
         #endregion

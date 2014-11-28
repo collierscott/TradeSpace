@@ -10,9 +10,6 @@ namespace Assets.Scripts.Views
 {
     public class SystemView : ViewBase, IScreenView
     {
-        public CargoView CargoView;
-        public ShipsView ShipsView;
-        public RouteView RouteView;
         public UISprite Background;
 
         protected override void Initialize()
@@ -21,7 +18,7 @@ namespace Assets.Scripts.Views
 
             PrefabsHelper.InstantiateStar(Panel).GetComponent<StarButton>().Initialize(Env.Galaxy[system]);
 
-            ShipsView.Open();
+            Open<ShipView>();
 
             foreach (var location in Env.Systems[system].Select(i => i.Value))
             {
@@ -54,17 +51,15 @@ namespace Assets.Scripts.Views
 
             GetComponent<TweenMap>().Set(Vector2.zero, 1);
             Background.enabled = true;
-            CargoView.Open();
-            RouteView.Open();
+            Open<RouteView>();
         }
 
         protected override void Cleanup()
         {
             Panel.Clean();
             Background.enabled = false;
-            CargoView.Close();
-            ShipsView.Close();
-            RouteView.Close();
+            Close<ShipView>();
+            Close<RouteView>();
             GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position, 1);
         }
     }

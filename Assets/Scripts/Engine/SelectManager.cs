@@ -11,7 +11,7 @@ namespace Assets.Scripts.Engine
 
         public static ShipBehaviour Ship
         {
-            get { return ShipsView.Ships[Profile.Instance.SelectedShip.Int]; }
+            get { return ShipView.Ships[Profile.Instance.SelectedShip.Int]; }
         }
 
         public static void SelectShip(int index)
@@ -19,8 +19,13 @@ namespace Assets.Scripts.Engine
             //Debug.Log("Select ship: " + index);
             Profile.Instance.SelectedShip = index;
             FindObjectOfType<IngameMenu>().Refresh();
+            FindObjectOfType<StatusView>().Refresh();
             FindObjectOfType<CargoView>().Refresh();
-            FindObjectOfType<RouteView>().Refresh();
+
+            if (ViewBase.Current is GalaxyView || ViewBase.Current is SystemView)
+            {
+                FindObjectOfType<RouteView>().Refresh();
+            }
         }
 
         public static void SelectSystem(string system)

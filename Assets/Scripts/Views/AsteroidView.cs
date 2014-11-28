@@ -32,7 +32,6 @@ namespace Assets.Scripts.Views
         public UISprite HeatingBar;
         public GameObject HeatingNode;
 
-        public CargoView CargoView;
         public UISprite Background;
 
         private List<AstPart> _astParts = new List<AstPart>();
@@ -136,8 +135,8 @@ namespace Assets.Scripts.Views
                 else
                     obj.SetActive(false);
             }
-            
-            CargoView.Open();
+
+            Open<CargoView>();
         }
 
         
@@ -200,7 +199,7 @@ namespace Assets.Scripts.Views
                 });
             }
 
-            CargoView.Refresh();
+            GetComponent<CargoView>().Refresh();
         }
 
         public void Update()
@@ -257,7 +256,7 @@ namespace Assets.Scripts.Views
 
         protected override void Cleanup()
         {
-            CargoView.Close();
+            Close<CargoView>();
         }
     }
 }

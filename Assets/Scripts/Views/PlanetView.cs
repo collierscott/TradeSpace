@@ -12,6 +12,7 @@ namespace Assets.Scripts.Views
         {
             Image.mainTexture = Resources.Load<Texture2D>("Images/Planets/" + SelectManager.Location.Image);
             Background.mainTexture = Resources.Load<Texture2D>("Images/LocationBackgrounds/" + SelectManager.Location.System);
+            GetComponent<ShipSelectView>().Refresh();
         }
     }
 }

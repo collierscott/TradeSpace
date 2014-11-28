@@ -48,7 +48,7 @@ namespace Assets.Scripts.Views
             }
 
             Refresh();
-            CargoView.Refresh();
+            GetComponent<StatusView>().Refresh();
         }
 
         protected void RefreshPrices()

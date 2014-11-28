@@ -58,5 +58,15 @@ namespace Assets.Scripts.Views
         protected virtual void Cleanup()
         {
         }
+
+        protected void Open<T>() where T : ViewBase
+        {
+            GetComponent<T>().Open();
+        }
+
+        protected void Close<T>() where T : ViewBase
+        {
+            GetComponent<T>().Close();
+        }
     }
 }

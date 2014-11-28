@@ -7,9 +7,6 @@ namespace Assets.Scripts.Views
 {
     public class GalaxyView : ViewBase, IScreenView
     {
-        public CargoView CargoView;
-        public ShipsView ShipsView;
-        public RouteView RouteView;
         public UISprite Background;
 
         protected override void Initialize()
@@ -32,18 +29,16 @@ namespace Assets.Scripts.Views
             }
 
             Background.enabled = true;
-            CargoView.Open();
-            ShipsView.Open();
-            RouteView.Open();
+            Open<ShipView>();
+            Open<RouteView>();
         }
 
         protected override void Cleanup()
         {
             Panel.Clean();
             Background.enabled = false;
-            CargoView.Close();
-            ShipsView.Close();
-            RouteView.Close();
+            Close<ShipView>();
+            Close<RouteView>();
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Assets.Scripts.Engine
             Env.Initialize();
             SelectManager.SelectSystem(Env.SystemNames.Andromeda);
             GetComponent<GalaxyView>().Open();
+            GetComponent<ShipSelectView>().Open();
         }
 
 

@@ -17,7 +17,6 @@ namespace Assets.Scripts.Views
         public GameButton RemoveButton;
         public UISprite SelectedImage;
         public UILabel SelectedName;
-        public CargoView CargoView;
 
         private List<MemoInstalledEquipment> _installed;
         private List<MemoEquipment> _equipment;
@@ -47,12 +46,12 @@ namespace Assets.Scripts.Views
             EquipmentTransform.Clean();
             InitializeEquipmentCellButtons();
             Refresh();
-            CargoView.Open();
+            Open<CargoView>();
         }
 
         protected override void Cleanup()
         {
-            CargoView.Close();
+            Close<CargoView>();
         }
 
         public void SelectEquipmentToInstall(EquipmentId equipment)
@@ -104,7 +103,7 @@ namespace Assets.Scripts.Views
             _installed.Add(new MemoInstalledEquipment { Id = equipment.Id, Index = _index });
 
             Refresh();
-            CargoView.Refresh();
+            GetComponent<CargoView>().Refresh();
         }
 
         public void Remove()
@@ -123,7 +122,7 @@ namespace Assets.Scripts.Views
             _hangarAction = HangarAction.None;
 
             Refresh();
-            CargoView.Refresh();
+            GetComponent<CargoView>().Refresh();
         }
 
         #region Helpers
