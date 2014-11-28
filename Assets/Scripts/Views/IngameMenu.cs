@@ -81,8 +81,8 @@ namespace Assets.Scripts.Views
             ShopButton.Up += () => GetComponent<ShopView>().Open();
             EquipmentShopButton.Up += () => GetComponent<EquipmentShopView>().Open();
             HangarButton.Up += () => GetComponent<HangarView>().Open();
-            WarehouseButton.Up += () => GetComponent<WarehouseView>().Open();
-            EquipmentWarehouseButton.Up += () => GetComponent<EquipmentWarehouseView>().Open();
+            WarehouseButton.Up += () => GetComponent<StorageView>().Open();
+            EquipmentWarehouseButton.Up += () => GetComponent<EquipmentStorageView>().Open();
             ShipShopButton.Up += () => GetComponent<ShipShopView>().Open();
 
             Reset();

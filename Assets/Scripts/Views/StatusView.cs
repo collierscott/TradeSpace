@@ -11,7 +11,7 @@ namespace Assets.Scripts.Views
         {
             if (Current is ShipShopView)
             {
-                ShipName.SetText(null);
+                ShipName.text = null;
             }
             else
             {

@@ -29,7 +29,7 @@ namespace Assets.Scripts.Engine
             }
             else if (ViewBase.Current is ShopView
                 || ViewBase.Current is EquipmentShopView || ViewBase.Current is HangarView
-                || ViewBase.Current is WarehouseView || ViewBase.Current is EquipmentWarehouseView
+                || ViewBase.Current is StorageView || ViewBase.Current is EquipmentStorageView
                 || ViewBase.Current is ShipShopView)
             {
                 ViewBase.Previous.Open();

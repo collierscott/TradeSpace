@@ -177,8 +177,8 @@ namespace Assets.Scripts.Views
                 var button = PrefabsHelper.InstantiateInstalledEquipmentButton(InstalledTransform).GetComponent<InstalledEquipmentButton>();
 
                 button.Initialize(installed.Id, index);
-                BaseWarehouseView.TweenButton(button, position + Shift, 0, 0);
-                BaseWarehouseView.TweenButton(button, position, 1, AnimationTime);
+                BaseShopView.TweenButton(button, position + Shift, 0, 0);
+                BaseShopView.TweenButton(button, position, 1, AnimationTime);
             }
         }
 
@@ -209,8 +209,8 @@ namespace Assets.Scripts.Views
                     //TweenAlpha.Begin(button.gameObject, 0, 0);
                 }
 
-                button.Initialize(equipmentId.ToString(), () => SelectEquipmentToInstall(equipmentId), _equipment[i].Quantity);
-                BaseWarehouseView.TweenButton(button, position, 1, AnimationTime);
+                button.Initialize(equipmentId.ToString(), equipmentId.ToString(), () => SelectEquipmentToInstall(equipmentId), _equipment[i].Quantity);
+                BaseShopView.TweenButton(button, position, 1, AnimationTime);
             }
         }
 

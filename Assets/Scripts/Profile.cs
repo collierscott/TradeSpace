@@ -205,13 +205,13 @@ namespace Assets.Scripts
             instance.Ships[1].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
             instance.Ships[1].InstalledEquipment = new List<MemoInstalledEquipment>
             {
-                new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 }
+                //new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 }
             };
 
             instance.Ships[2].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
             instance.Ships[2].InstalledEquipment = new List<MemoInstalledEquipment>
             {
-                new MemoInstalledEquipment {Id = EquipmentId.JetEngine100, Index = 0}
+                //new MemoInstalledEquipment {Id = EquipmentId.JetEngine100, Index = 0}
             };
 
             instance.Ships[3].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };

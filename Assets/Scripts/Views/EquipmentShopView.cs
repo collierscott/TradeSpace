@@ -9,6 +9,11 @@ namespace Assets.Scripts.Views
 {
     public class EquipmentShopView : BaseShopView
     {
+        protected override bool Storage
+        {
+            get { return false; }
+        }
+
         protected override void WrapItems()
         {
             var station = (Station) SelectManager.Location;
@@ -18,8 +23,8 @@ namespace Assets.Scripts.Views
                 GetComponent<EnvironmentManager>().InitShop(station);
             }
 
-            LocationItems = Profile.Instance.Shops[station.Name].Equipment.Select(i => ShopConversation.GetShopItem(i)).ToDictionary(i => i.Id.String);
-            PlayerItems = Profile.Instance.Ship.Equipment.Select(i => ShopConversation.GetShopItem(i)).ToDictionary(i => i.Id.String);
+            LocationItems = Profile.Instance.Shops[station.Name].Equipment.Select(i => new GenericShopItem(i)).ToDictionary(i => i.Id.String);
+            PlayerItems = Profile.Instance.Ship.Equipment.Select(i => new GenericShopItem(i)).ToDictionary(i => i.Id.String);
 
             foreach (var i in PlayerItems.Values)
             {
@@ -29,23 +34,17 @@ namespace Assets.Scripts.Views
             }
         }
 
-        protected override void ExtractItems()
+        protected override void ExtractItems(GenericShopItem item, bool sell)
         {
             var station = (Station)SelectManager.Location;
 
-            Profile.Instance.Shops[station.Name].Equipment = LocationItems.Values.Select(i => ShopConversation.GetMemoEquipment(i)).ToList();
-            Profile.Instance.Ship.Equipment = PlayerItems.Values.Select(i => ShopConversation.GetMemoEquipment(i)).ToList();
+            Profile.Instance.Shops[station.Name].Equipment = LocationItems.Values.Select(i => i.Extract<MemoEquipment>()).ToList();
+            Profile.Instance.Ship.Equipment = PlayerItems.Values.Select(i => i.Extract<MemoEquipment>()).ToList();
 
-            foreach (var item in Profile.Instance.Ship.Equipment)
+            foreach (var i in Profile.Instance.Ship.Equipment)
             {
-                item.Price = 0;
+                i.Price = 0;
             }
-        }
-
-        protected override void Refresh()
-        {
-            RefreshPrices();
-            base.Refresh();
         }
     }
 }
