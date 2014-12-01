@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
@@ -16,7 +15,7 @@ namespace Assets.Scripts
         public ProtectedValue SelectedShip = 0;
         public ProtectedValue InitShopsTime = 0;
 
-        public List<MemoShip> Ships = new List<MemoShip>();
+        public Dictionary<string, MemoShip> Ships = new Dictionary<string, MemoShip>();
         public Dictionary<string, MemoShop> Shops = new Dictionary<string, MemoShop>();
         public Dictionary<string, MemoWarehouse> Warehouses = new Dictionary<string, MemoWarehouse>();
         public Dictionary<string, MemoAsteroid> Asteroids = new Dictionary<string, MemoAsteroid>();
@@ -39,7 +38,7 @@ namespace Assets.Scripts
 
         public MemoShip Ship
         {
-            get { return Ships[SelectedShip.Int]; }
+            get { return Ships[SelectedShip.String]; }
         }
 
         private Profile()
@@ -99,14 +98,14 @@ namespace Assets.Scripts
         private JSONClass ToJson()
         {
             var json = new JSONClass();
-            var ships = new JSONArray();
+            var ships = new JSONClass();
             var shops = new JSONClass();
             var warehouses = new JSONClass();
             var asteroids = new JSONClass();
 
             foreach (var ship in Ships)
             {
-                ships.Add(ship.ToJson());
+                ships.Add(ship.Key, ship.Value.ToJson());
             }
 
             foreach (var shop in Shops)
@@ -142,9 +141,13 @@ namespace Assets.Scripts
             {
                 Credits = ProtectedValue.FromJson(json["Credits"]),
                 SelectedShip = ProtectedValue.FromJson(json["SelectedShip"]),
-                InitShopsTime = ProtectedValue.FromJson(json["InitShopsTime"]),
-                Ships = json["Ships"].Childs.Select(i => MemoShip.FromJson(i)).ToList(),
+                InitShopsTime = ProtectedValue.FromJson(json["InitShopsTime"])
             };
+
+            foreach (var ship in json["Ships"].AsObject.Keys)
+            {
+                profile.Ships.Add(ship, MemoShip.FromJson(json["Ships"][ship]));
+            }
 
             foreach (var location in json["Shops"].AsObject.Keys)
             {
@@ -175,26 +178,26 @@ namespace Assets.Scripts
             {
                 Credits = 2000,
                 InitShopsTime = DateTime.UtcNow,
-                Ships = new List<MemoShip>
+                Ships = new Dictionary<string, MemoShip>
                     {
-                        new MemoShip { Id = ShipId.Rhino },
-                        new MemoShip { Id = ShipId.Rover },
-                        new MemoShip { Id = ShipId.Rhino },
-                        new MemoShip { Id = ShipId.Rover }
+                        { "0", new MemoShip { Id = ShipId.Rhino } },
+                        { "1", new MemoShip { Id = ShipId.Rover } },
+                        { "2", new MemoShip { Id = ShipId.Rhino } },
+                        { "3", new MemoShip { Id = ShipId.Rover } }
                     }
             };
 
-            instance.Ships[0].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
-            instance.Ships[0].Goods = new List<MemoGoods>
+            instance.Ships["0"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
+            instance.Ships["0"].Goods = new List<MemoGoods>
             {
                 new MemoGoods { Id = GoodsId.Water, Quantity = 10 },
                 new MemoGoods { Id = GoodsId.Fish, Quantity = 5 }
             };
-            instance.Ships[0].Equipment = new List<MemoEquipment>
+            instance.Ships["0"].Equipment = new List<MemoEquipment>
             {
                 new MemoEquipment { Id = EquipmentId.MassKit100, Quantity = 5 }
             };
-            instance.Ships[0].InstalledEquipment = new List<MemoInstalledEquipment>
+            instance.Ships["0"].InstalledEquipment = new List<MemoInstalledEquipment>
             {
                 new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
                 new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 },
@@ -202,25 +205,25 @@ namespace Assets.Scripts
                 new MemoInstalledEquipment { Id = EquipmentId.LaserDrill100, Index = 2 }
             };
 
-            instance.Ships[1].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
-            instance.Ships[1].InstalledEquipment = new List<MemoInstalledEquipment>
+            instance.Ships["1"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
+            instance.Ships["1"].InstalledEquipment = new List<MemoInstalledEquipment>
             {
                 //new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 }
             };
 
-            instance.Ships[2].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
-            instance.Ships[2].InstalledEquipment = new List<MemoInstalledEquipment>
+            instance.Ships["2"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
+            instance.Ships["2"].InstalledEquipment = new List<MemoInstalledEquipment>
             {
                 //new MemoInstalledEquipment {Id = EquipmentId.JetEngine100, Index = 0}
             };
 
-            instance.Ships[3].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };
-            instance.Ships[3].Goods = new List<MemoGoods>
+            instance.Ships["3"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };
+            instance.Ships["3"].Goods = new List<MemoGoods>
             {
                 new MemoGoods { Id = GoodsId.Ferrum, Quantity = 10 },
             };
-            instance.Ships[3].Equipment = new List<MemoEquipment>();
-            instance.Ships[3].InstalledEquipment = new List<MemoInstalledEquipment>
+            instance.Ships["3"].Equipment = new List<MemoEquipment>();
+            instance.Ships["3"].InstalledEquipment = new List<MemoInstalledEquipment>
             {
                 new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
                 new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 1 }

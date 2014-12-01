@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class CargoView : ViewBase
+    public class CargoView : BaseView
     {
         public UILabel Mass;
         public UISprite MassProgress;

@@ -3,10 +3,10 @@ using Assets.Scripts.Behaviour;
 
 namespace Assets.Scripts.Views
 {
-    public class ShipView : ViewBase
+    public class ShipView : BaseView
     {
-        public static readonly List<ShipBehaviour> Ships = new List<ShipBehaviour>();
-        
+        public static readonly Dictionary<string, ShipBehaviour> Ships = new Dictionary<string, ShipBehaviour>();
+
         protected override void Initialize()
         {
             Ships.Clear();
@@ -15,8 +15,8 @@ namespace Assets.Scripts.Views
             {
                 var ship = PrefabsHelper.InstantiateShip(Panel).GetComponent<ShipBehaviour>();
 
-                ship.Initialize(s);
-                Ships.Add(ship);
+                ship.Initialize(s.Value);
+                Ships.Add(s.Key, ship);
             }
 
             GetComponent<ShipSelectView>().Refresh();

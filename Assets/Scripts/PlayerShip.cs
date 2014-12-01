@@ -26,7 +26,12 @@ namespace Assets.Scripts
         {
             get
             {
-                var engine = _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Single(i => i.Type == EquipmentType.Engine);
+                var engine = _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).SingleOrDefault(i => i.Type == EquipmentType.Engine);
+
+                if (engine == null)
+                {
+                    throw new Exception("engine == null");
+                }
 
                 return _params.Speed + engine.BonusAdd + (_params.Speed * engine.BonusMultiply);
             }

@@ -5,75 +5,12 @@ using Assets.Scripts.Behaviour;
 using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Engine;
-using Assets.Scripts.Enums;
-using Assets.Scripts.Environment;
 using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public abstract class BaseShopView : ViewBase, IScreenView
+    public abstract class BaseShopView : BaseScreenView
     {
-        protected class GenericShopItem
-        {
-            public ProtectedValue Id;
-            public ProtectedValue Quantity;
-            public ProtectedValue Mass;
-            public ProtectedValue Volume;
-            public ProtectedValue Price;
-            public ProtectedValue Disabled;
-
-            public GenericShopItem()
-            {
-            }
-
-            public GenericShopItem(MemoGoods item)
-            {
-                Id = new ProtectedValue(item.Id);
-                Quantity = item.Quantity.Copy();
-                Mass = Env.GoodsDatabase[item.Id].Mass;
-                Volume = Env.GoodsDatabase[item.Id].Volume;
-                Price = item.Price.Copy();
-            }
-
-            public GenericShopItem(MemoEquipment item)
-            {
-                Id = new ProtectedValue(item.Id);
-                Quantity = item.Quantity.Copy();
-                Mass = Env.EquipmentDatabase[item.Id].Mass;
-                Volume = Env.EquipmentDatabase[item.Id].Volume;
-                Price = item.Price.Copy();
-            }
-
-            public GenericShopItem(MemoShipItem item)
-            {
-                Id = new ProtectedValue(item.Id);
-                Quantity = 1;
-                Price = item.Price.Copy();
-                Mass = 0;
-                Volume = 0;
-            }
-
-            public T Extract<T>() where T : MemoItem
-            {
-                if (typeof(T) == typeof(MemoGoods))
-                {
-                    return (T) (object) new MemoGoods { Id = Id.String.ToEnum<GoodsId>(), Quantity = Quantity.Copy(), Price = Price.Copy() };
-                }
-
-                if (typeof(T) == typeof(MemoEquipment))
-                {
-                    return (T) (object) new MemoEquipment { Id = Id.String.ToEnum<EquipmentId>(), Quantity = Quantity.Copy(), Price = Price.Copy() };
-                }
-
-                if (typeof(T) == typeof(MemoShipItem))
-                {
-                    return (T) (object) new MemoShipItem { Id = Id.String.ToEnum<ShipId>(), Quantity = Quantity.Copy(), Price = Price.Copy() };
-                }
-
-                throw new Exception();
-            }
-        }
-
         public Transform ShopGroup;
         public Transform ShipGroup;
         public GameButton SellButton;
@@ -99,6 +36,11 @@ namespace Assets.Scripts.Views
         {
             TweenPosition.Begin(component.gameObject, animationTime, position);
             TweenAlpha.Begin(component.gameObject, animationTime, alpha);
+        }
+
+        public void Reload()
+        {
+            Initialize();
         }
 
         protected override void Initialize()
@@ -181,7 +123,8 @@ namespace Assets.Scripts.Views
             }
             else
             {
-                destination.Add(key.String, new GenericShopItem { Id = item.Id, Quantity = 1, Mass = item.Mass, Volume = item.Volume, Price = item.Price });
+                destination.Add(key.String, new GenericShopItem { Id = item.Id, Quantity = 1,
+                    Mass = item.Mass.Copy(), Volume = item.Volume.Copy(), Price = item.Price.Copy() });
             }
 
             if (sell)

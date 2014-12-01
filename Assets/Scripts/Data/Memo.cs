@@ -219,7 +219,7 @@ namespace Assets.Scripts.Data
 
         public MemoShip()
         {
-            UniqName = CRandom.RandomString;
+            UniqName = Convert.ToString(CRandom.GetRandom(1000000));
         }
 
         public JSONNode ToJson()

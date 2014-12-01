@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Engine;
 using Assets.Scripts.Behaviour;
@@ -10,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class AsteroidView : ViewBase, IScreenView
+    public class AsteroidView : BaseScreenView
     {
         private class AstPart
         {
@@ -54,6 +52,7 @@ namespace Assets.Scripts.Views
 
             return ret;
         }
+
         protected override void Initialize()
         {
             Debug.Log(Profile.Instance.SelectedShip + " " + Profile.Instance.Ship.InstalledEquipment.Count);

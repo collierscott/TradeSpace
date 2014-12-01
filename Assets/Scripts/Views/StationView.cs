@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Views
 {
-    public class StationView : ViewBase, IScreenView
+    public class StationView : BaseScreenView
     {
         public UITexture Background;
 

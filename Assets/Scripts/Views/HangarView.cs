@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class HangarView : ViewBase, IScreenView
+    public class HangarView : BaseScreenView
     {
         public Transform InstalledTransform;
         public Transform EquipmentTransform;
@@ -39,7 +39,6 @@ namespace Assets.Scripts.Views
             _ship = new PlayerShip(Profile.Instance.Ship);
             _index = _ship.HasFreeSlot() ? _ship.FindFreeSlot() : 0;
             _hangarAction = HangarAction.None;
-
             
             SelectedName.text = SelectedImage.spriteName = null;
             InstalledTransform.Clean();

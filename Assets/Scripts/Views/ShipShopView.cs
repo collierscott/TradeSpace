@@ -23,6 +23,11 @@ namespace Assets.Scripts.Views
         {
             base.Cleanup();
             GetComponent<StatusView>().Refresh();
+
+            if (!Profile.Instance.Ships.ContainsKey(Profile.Instance.SelectedShip.String))
+            {
+                Profile.Instance.SelectedShip = Profile.Instance.Ships.First().Key;
+            }
         }
 
         protected override bool Storage
@@ -44,7 +49,7 @@ namespace Assets.Scripts.Views
 
             foreach (var shopItem in Profile.Instance.Shops[station.Name].Ships.Select(i => new GenericShopItem(i)))
             {
-                LocationItems.Add(CRandom.RandomString, shopItem);
+                LocationItems.Add(Env.GetUniqueShipName(), shopItem);
             }
 
             foreach (var ship in CurrentShips)
@@ -74,7 +79,7 @@ namespace Assets.Scripts.Views
         {
             if (sell)
             {
-                Profile.Instance.Ships.RemoveAll(i => i.UniqName == Key);
+                Profile.Instance.Ships.Remove(Key.String);
                 Profile.Instance.Credits += GetShopPrice(item.Price);
             }
             else
@@ -85,7 +90,7 @@ namespace Assets.Scripts.Views
                     Route = new List<RouteNode> { SelectManager.Location.ToRouteNode() }
                 };
 
-                Profile.Instance.Ships.Add(ship);
+                Profile.Instance.Ships.Add(ship.UniqName.String, ship);
                 Profile.Instance.Credits -= item.Price;
             }
         }
@@ -107,7 +112,7 @@ namespace Assets.Scripts.Views
         {
             get
             {
-                return Profile.Instance.Ships.Where(i =>
+                return Profile.Instance.Ships.Values.Where(i =>
                     i.State == ShipState.Ready && i.Route.Last().System == SelectManager.Location.System &&
                     i.Route.Last().LocationName == SelectManager.Location.Name).ToList();
             }

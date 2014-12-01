@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class RouteView : ViewBase
+    public class RouteView : BaseView
     {
         public float Speed = 2;
         public float Delay = 1;

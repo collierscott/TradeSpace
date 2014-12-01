@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Behaviour;
 using Assets.Scripts.Engine;
 using Assets.Scripts.Enums;
@@ -6,15 +7,15 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class ShipSelectView : ViewBase
+    public class ShipSelectView : BaseView
     {
-        private readonly List<ShipButton> Buttons = new List<ShipButton>(); 
+        private readonly List<ShipButton> _buttons = new List<ShipButton>(); 
 
         public void Refresh()
         {
-            foreach (var button in Buttons)
+            foreach (var button in _buttons)
             {
-                var ship = ShipView.Ships[button.Index];
+                var ship = ShipView.Ships[button.UniqName];
 
                 if (Current is GalaxyView || Current is SystemView)
                 {
@@ -30,7 +31,7 @@ namespace Assets.Scripts.Views
                 }
             }
         }
-        
+
         protected override void Initialize()
         {
             for (var i = 0; i < Profile.Instance.Ships.Count; i++)
@@ -39,8 +40,8 @@ namespace Assets.Scripts.Views
                 var button = selector.GetComponentInChildren<ShipButton>();
 
                 selector.transform.localPosition = new Vector2(0, 110 * ((Profile.Instance.Ships.Count - 1) / 2f) - 110 * i);
-                button.Initialize(i);
-                Buttons.Add(button);
+                button.Initialize(Profile.Instance.Ships.ElementAt(i).Key);
+                _buttons.Add(button);
             }
         }
 

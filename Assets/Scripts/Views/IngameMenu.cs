@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class IngameMenu : ViewBase
+    public class IngameMenu : BaseView
     {
         public GameButton InfoButton;
         public GameButton OpenButton;

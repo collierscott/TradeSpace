@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Views
 {
-    public class StatusView : ViewBase
+    public class StatusView : BaseView
     {
         public UILabel ShipName;
         public UILabel Credits;

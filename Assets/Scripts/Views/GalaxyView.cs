@@ -5,7 +5,7 @@ using Assets.Scripts.Environment;
 
 namespace Assets.Scripts.Views
 {
-    public class GalaxyView : ViewBase, IScreenView
+    public class GalaxyView : BaseScreenView
     {
         public UISprite Background;
 
@@ -31,6 +31,7 @@ namespace Assets.Scripts.Views
             Background.enabled = true;
             Open<ShipView>();
             Open<RouteView>();
+            Open<ShipSelectView>();
         }
 
         protected override void Cleanup()

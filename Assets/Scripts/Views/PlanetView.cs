@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class PlanetView : ViewBase, IScreenView
+    public class PlanetView : BaseScreenView
     {
         public UITexture Image;
         public UITexture Background;

@@ -15,28 +15,28 @@ namespace Assets.Scripts.Behaviour
         public UISprite Mass;
         public UISprite Volume;
 
-        public int Index { get; private set; }
+        public string UniqName { get; private set; }
 
-        public void Initialize(int index)
+        public void Initialize(string uniqName)
         {
-            Index = index;
-            Button.Selected += () => SelectManager.SelectShip(index);
+            UniqName = uniqName;
+            Button.Selected += () => SelectManager.SelectShip(uniqName);
 
-            if (Profile.Instance.SelectedShip == index)
+            if (Profile.Instance.SelectedShip == uniqName)
             {
                 Button.Pressed = true;
             }
 
-            var ship = new PlayerShip(Profile.Instance.Ships[Index]);
+            var ship = new PlayerShip(Profile.Instance.Ships[UniqName]);
 
-            Image.spriteName = Env.ShipDatabase[Profile.Instance.Ships[Index].Id].Image;
+            Image.spriteName = Env.ShipDatabase[Profile.Instance.Ships[UniqName].Id].Image;
             Mass.transform.localScale = new Vector2(1, (float) ship.CargoMass / ship.Mass);
             Volume.transform.localScale = new Vector2(1, (float) ship.CargoVolume / ship.Volume);
         }
 
         public void Update()
         {
-            switch (ShipView.Ships[Index].State)
+            switch (ShipView.Ships[UniqName].State)
             {
                 case ShipState.InFlight:
                     State.color = Color.yellow;

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class SystemView : ViewBase, IScreenView
+    public class SystemView : BaseScreenView
     {
         public UISprite Background;
 

@@ -17,22 +17,22 @@ namespace Assets.Scripts.Engine
 
         public void CloseScreen()
         {
-            if (ViewBase.Current == null) return;
+            if (BaseView.Current == null) return;
 
-            if (ViewBase.Current is SystemView)
+            if (BaseView.Current is SystemView)
             {
                 GetComponent<GalaxyView>().Open();
             }
-            else if (ViewBase.Current is PlanetView || ViewBase.Current is StationView || ViewBase.Current is AsteroidView)
+            else if (BaseView.Current is PlanetView || BaseView.Current is StationView || BaseView.Current is AsteroidView)
             {
                 GetComponent<SystemView>().Open();
             }
-            else if (ViewBase.Current is ShopView
-                || ViewBase.Current is EquipmentShopView || ViewBase.Current is HangarView
-                || ViewBase.Current is StorageView || ViewBase.Current is EquipmentStorageView
-                || ViewBase.Current is ShipShopView)
+            else if (BaseView.Current is ShopView
+                || BaseView.Current is EquipmentShopView || BaseView.Current is HangarView
+                || BaseView.Current is StorageView || BaseView.Current is EquipmentStorageView
+                || BaseView.Current is ShipShopView)
             {
-                ViewBase.Previous.Open();
+                BaseView.Previous.Open();
             }
         }
 
@@ -51,16 +51,16 @@ namespace Assets.Scripts.Engine
 
         public void OpenView(string view)
         {
-            ((ViewBase) GetComponent(view)).Open();
+            ((BaseView) GetComponent(view)).Open();
         }
 
         public void Open()
         {
-            if (ViewBase.Current is GalaxyView)
+            if (BaseView.Current is GalaxyView)
             {
                 GetComponent<SystemView>().Open();
             }
-            else if (ViewBase.Current is SystemView)
+            else if (BaseView.Current is SystemView)
             {
                 if (SelectManager.Location is Planet)
                 {

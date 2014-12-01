@@ -13,7 +13,7 @@ namespace Assets.Scripts.Views
         {
             get { return false; }
         }
-
+        
         protected override void WrapItems()
         {
             var planet = (Planet) SelectManager.Location;
