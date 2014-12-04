@@ -48,15 +48,15 @@ namespace Assets.Scripts.Behaviour
 
             if (_ship.State == ShipState.InFlight && Location.Name != null)
             {
-                FindObjectOfType<RouteView>().Close();
+                FindObjectOfType<Route>().Close();
                 _ship.State = ShipState.Ready;
             }
 
-            if (BaseView.Current is SystemView && Location.System != SelectManager.System)
+            if (Base.Current is Views.System && Location.System != SelectManager.System)
             {
                 Hide();
             }
-            else if (BaseView.Current is GalaxyView && Location.System != null)
+            else if (Base.Current is Galaxy && Location.System != null)
             {
                 ShowStatic(Location);
             }

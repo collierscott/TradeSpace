@@ -2,6 +2,9 @@
 using Assets.Scripts.Data;
 using Assets.Scripts.Views;
 using UnityEngine;
+using Asteroid = Assets.Scripts.Views.Asteroid;
+using Planet = Assets.Scripts.Views.Planet;
+using Station = Assets.Scripts.Views.Station;
 
 namespace Assets.Scripts.Engine
 {
@@ -17,29 +20,28 @@ namespace Assets.Scripts.Engine
 
         public void CloseScreen()
         {
-            if (BaseView.Current == null) return;
+            if (Base.Current == null) return;
 
-            if (BaseView.Current is SystemView)
+            if (Base.Current is Views.System)
             {
-                GetComponent<GalaxyView>().Open();
+                GetComponent<Galaxy>().Open();
             }
-            else if (BaseView.Current is PlanetView || BaseView.Current is StationView || BaseView.Current is AsteroidView)
+            else if (Base.Current is Planet || Base.Current is Station || Base.Current is Asteroid)
             {
-                GetComponent<SystemView>().Open();
+                GetComponent<Views.System>().Open();
             }
-            else if (BaseView.Current is ShopView
-                || BaseView.Current is EquipmentShopView || BaseView.Current is HangarView
-                || BaseView.Current is StorageView || BaseView.Current is EquipmentStorageView
-                || BaseView.Current is ShipShopView)
+            else if (Base.Current is Shop
+                || Base.Current is EquipmentShop || Base.Current is Workshop
+                || Base.Current is Storage || Base.Current is ShipShop)
             {
-                BaseView.Previous.Open();
+                Base.Previous.Open();
             }
         }
 
         public void TraceRoute(Location location)
         {
             SelectManager.Ship.BuildTrace(location);
-            GetComponent<RouteView>().Refresh();
+            GetComponent<Route>().Refresh();
             GetComponent<IngameMenu>().Reset();
         }
 
@@ -51,28 +53,28 @@ namespace Assets.Scripts.Engine
 
         public void OpenView(string view)
         {
-            ((BaseView) GetComponent(view)).Open();
+            ((Base) GetComponent(view)).Open();
         }
 
         public void Open()
         {
-            if (BaseView.Current is GalaxyView)
+            if (Base.Current is Galaxy)
             {
-                GetComponent<SystemView>().Open();
+                GetComponent<Views.System>().Open();
             }
-            else if (BaseView.Current is SystemView)
+            else if (Base.Current is Views.System && GetComponent<IngameMenu>().OpenButton.Enabled)
             {
-                if (SelectManager.Location is Planet)
+                if (SelectManager.Location is Data.Planet)
                 {
-                    GetComponent<PlanetView>().Open();
+                    GetComponent<Planet>().Open();
                 }
-                else if (SelectManager.Location is Station)
+                else if (SelectManager.Location is Data.Station)
                 {
-                    GetComponent<StationView>().Open();
+                    GetComponent<Station>().Open();
                 }
-                else if (SelectManager.Location is Asteroid)
+                else if (SelectManager.Location is Data.Asteroid)
                 {
-                    GetComponent<AsteroidView>().Open();
+                    GetComponent<Asteroid>().Open();
                 }
             }
         }
@@ -81,7 +83,7 @@ namespace Assets.Scripts.Engine
         {
             Debug.Log(string.Format("Welcome to: {0}! The info dialog is not implemented yet", location.Name));
 
-            var planet = location as Planet;
+            var planet = location as Data.Planet;
 
             if (planet != null)
             {
@@ -90,7 +92,7 @@ namespace Assets.Scripts.Engine
                     planet.TechLevel,
                     planet.ProductionLevel,
                     string.Join(", ", planet.ExportType.Select(i => i.ToString()).ToArray()),
-                    planet.ImportType));
+                    planet.Import));
             }
         }
 

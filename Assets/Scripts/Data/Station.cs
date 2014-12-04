@@ -5,6 +5,9 @@ namespace Assets.Scripts.Data
     public class Station : Location
     {
         public List<ShopEquipment> Equipments;
-        public float PriceRate = 1;
+        public double ImportRate = 1;
+        public double ExportRate = 1;
+        public double Tax = 0.3f;
+        public double PriceDelta = 0.1f;
     }
 }

@@ -24,7 +24,7 @@ namespace Assets.Scripts.Behaviour
             Button.Confirmed += () =>
             {
                 SelectManager.SelectSystem(connectedSystem.System);
-                FindObjectOfType<SystemView>().Open();
+                FindObjectOfType<Views.System>().Open();
             };
         }
 

@@ -11,25 +11,28 @@ namespace Assets.Scripts.Engine
 
         public static ShipBehaviour Ship
         {
-            get { return ShipView.Ships[Profile.Instance.SelectedShip.String]; }
+            get { return Ships.ShipBehaviours[Profile.Instance.SelectedShip.String]; }
         }
 
         public static void SelectShip(string uniqName)
         {
-            //Debug.Log("Select ship: " + index);
+            //UnityEngine.Debug.Log("Select ship: " + uniqName);
             Profile.Instance.SelectedShip = uniqName;
             FindObjectOfType<IngameMenu>().Refresh();
-            FindObjectOfType<StatusView>().Refresh();
-            FindObjectOfType<CargoView>().Refresh();
+            FindObjectOfType<Status>().Refresh();
+            FindObjectOfType<Cargo>().Refresh();
 
-            if (BaseView.Current is GalaxyView || BaseView.Current is SystemView)
+            if (Base.Current is Galaxy || Base.Current is Views.System)
             {
-                FindObjectOfType<RouteView>().Refresh();
+                FindObjectOfType<Route>().Refresh();
             }
-
-            if (BaseView.Current is BaseShopView)
+            else if (Base.Current is BaseShop)
             {
-                (BaseView.Current as BaseShopView).Reload();
+                (Base.Current as BaseShop).Reload();
+            }
+            else if (Base.Current is Workshop)
+            {
+                (Base.Current as Workshop).Reload();
             }
         }
 

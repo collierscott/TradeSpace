@@ -36,7 +36,7 @@ namespace Assets.Scripts.Behaviour
 
         public void Update()
         {
-            switch (ShipView.Ships[UniqName].State)
+            switch (Ships.ShipBehaviours[UniqName].State)
             {
                 case ShipState.InFlight:
                     State.color = Color.yellow;

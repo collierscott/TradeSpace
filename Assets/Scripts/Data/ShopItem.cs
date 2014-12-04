@@ -2,10 +2,8 @@
 {
     public abstract class ShopItem
     {
-        public double MinPrice;
-        public double MaxPrice;
-        public long MinQuantity;
-        public long MaxQuantity;
-        public double Availability;
+        public long Min;
+        public long Max;
+        public float Availability;
     }
 }

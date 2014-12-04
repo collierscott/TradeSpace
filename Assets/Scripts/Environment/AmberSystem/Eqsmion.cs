@@ -17,9 +17,9 @@ namespace Assets.Scripts.Environment.AmberSystem
             Radiation = 0,
             Export = new List<ShopGoods>
             {
-                new ShopGoods { Id = GoodsId.Smartphone, MinPrice = 1, MaxPrice = 1.2f, MinQuantity = 20, MaxQuantity = 80, Availability = 1 },
-                new ShopGoods { Id = GoodsId.Water, MinPrice = 1.5f, MaxPrice = 1.8f, Availability = 0 }
-            }
+                new ShopGoods { Id = GoodsId.Smartphone, Min = 20, Max = 80, Availability = 1 },
+            },
+            Import = new List<GoodsType> { GoodsType.Food }
         };
     }
 }

@@ -9,11 +9,13 @@ namespace Assets.Scripts.Data
     {
         public PlanetType Type;
         public bool Inhabited;
-        public List<ShopGoods> Export;
-        public List<GoodsType> ImportType;
-        public List<ShopGoods> SpecialImport;
-        public float ImportPriceRate = 1;
-        public float PriceRate = 1;
+        public List<ShopGoods> Export = new List<ShopGoods>();
+        public List<GoodsType> Import = new List<GoodsType>();
+        public List<ShopGoods> SpecialImport = new List<ShopGoods>();
+        public double ImportRate = 1;
+        public double ExportRate = 1;
+        public double Tax = 0.3f;
+        public double PriceDelta = 0.1f;
 
         public long TechLevel
         {
@@ -27,7 +29,7 @@ namespace Assets.Scripts.Data
         {
             get
             {
-                return Export.Select(i => (i.MinQuantity + i.MaxQuantity) / 2).Sum();
+                return Export.Select(i => (i.Min + i.Max) / 2).Sum();
             }
         }
 

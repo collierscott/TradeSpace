@@ -10,7 +10,6 @@ namespace Assets.Scripts.Data
     public class MemoItem
     {
         public ProtectedValue Quantity = 0;
-        public ProtectedValue Price = 0;
     }
 
     public class MemoAsteroid
@@ -58,8 +57,7 @@ namespace Assets.Scripts.Data
             return new JSONClass
             {
                 { "Id", Id.ToString() },
-                { "Quantity", Quantity.ToJson() },
-                { "Price", Price.ToJson() }
+                { "Quantity", Quantity.ToJson() }
             };
         }
 
@@ -68,8 +66,7 @@ namespace Assets.Scripts.Data
             return new MemoGoods
             {
                 Id = json["Id"].Value.ToEnum<GoodsId>(),
-                Quantity = ProtectedValue.FromJson(json["Quantity"]),
-                Price = ProtectedValue.FromJson(json["Price"])
+                Quantity = ProtectedValue.FromJson(json["Quantity"])
             };
         }
     }
@@ -83,8 +80,7 @@ namespace Assets.Scripts.Data
             return new JSONClass
             {
                 { "Id", Id.ToString() },
-                { "Quantity", Quantity.ToJson() },
-                { "Price", Price.ToJson() }
+                { "Quantity", Quantity.ToJson() }
             };
         }
 
@@ -93,8 +89,7 @@ namespace Assets.Scripts.Data
             return new MemoEquipment
             {
                 Id = json["Id"].Value.ToEnum<EquipmentId>(),
-                Quantity = ProtectedValue.FromJson(json["Quantity"]),
-                Price = ProtectedValue.FromJson(json["Price"])
+                Quantity = ProtectedValue.FromJson(json["Quantity"])
             };
         }
     }
@@ -108,8 +103,7 @@ namespace Assets.Scripts.Data
             return new JSONClass
             {
                 { "Id", Id.ToString() },
-                { "Quantity", Quantity.ToJson() },
-                { "Price", Price.ToJson() }
+                { "Quantity", Quantity.ToJson() }
             };
         }
 
@@ -118,8 +112,7 @@ namespace Assets.Scripts.Data
             return new MemoShipItem
             {
                 Id = json["Id"].Value.ToEnum<ShipId>(),
-                Quantity = ProtectedValue.FromJson(json["Quantity"]),
-                Price = ProtectedValue.FromJson(json["Price"])
+                Quantity = ProtectedValue.FromJson(json["Quantity"])
             };
         }
     }
@@ -153,6 +146,7 @@ namespace Assets.Scripts.Data
         public List<MemoGoods> Goods = new List<MemoGoods>();
         public List<MemoEquipment> Equipment = new List<MemoEquipment>();
         public List<MemoShipItem> Ships = new List<MemoShipItem>();
+        public double PriceDelta;
 
         public JSONNode ToJson()
         {
@@ -179,7 +173,8 @@ namespace Assets.Scripts.Data
             {
                 { "Goods", goods },
                 { "Equipment", equipment },
-                { "Ships", equipment }
+                { "Ships", equipment },
+                { "PriceDelta", new JSONData(PriceDelta) },
             };
         }
 
@@ -190,6 +185,7 @@ namespace Assets.Scripts.Data
                 Goods = json["Goods"].Childs.Select(i => MemoGoods.FromJson(i)).ToList(),
                 Equipment = json["Equipment"].Childs.Select(i => MemoEquipment.FromJson(i)).ToList(),
                 Ships = json["Ships"].Childs.Select(i => MemoShipItem.FromJson(i)).ToList(),
+                PriceDelta = json["PriceDelta"].AsDouble
             };
         }
     }

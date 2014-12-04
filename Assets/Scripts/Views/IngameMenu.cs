@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class IngameMenu : BaseView
+    public class IngameMenu : Base
     {
         public GameButton InfoButton;
         public GameButton OpenButton;
@@ -16,8 +16,7 @@ namespace Assets.Scripts.Views
         public GameButton ShopButton;
         public GameButton EquipmentShopButton;
         public GameButton HangarButton;
-        public GameButton WarehouseButton;
-        public GameButton EquipmentWarehouseButton;
+        public GameButton StorageButton;
         public GameButton ShipShopButton;
 
         protected static class Colors
@@ -44,10 +43,9 @@ namespace Assets.Scripts.Views
             {
                 return new List<GameButton>
                 {
+                    ShopButton,
                     HangarButton,
-                    WarehouseButton,
-                    EquipmentWarehouseButton,
-                    ShopButton
+                    StorageButton,
                 };
             }
         }
@@ -58,11 +56,10 @@ namespace Assets.Scripts.Views
             {
                 return new List<GameButton>
                 {
-                    HangarButton,
-                    WarehouseButton,
-                    EquipmentWarehouseButton,
                     EquipmentShopButton,
-                    ShipShopButton
+                    ShipShopButton,
+                    HangarButton,
+                    StorageButton,
                 };
             }
         }
@@ -78,12 +75,11 @@ namespace Assets.Scripts.Views
             MoveButton.Up += MoveButtonPressed;
             OpenButton.Up += ActionManager.Open;
             ReturnButton.Up += ActionManager.CloseScreen;
-            ShopButton.Up += () => GetComponent<ShopView>().Open();
-            EquipmentShopButton.Up += () => GetComponent<EquipmentShopView>().Open();
-            HangarButton.Up += () => GetComponent<HangarView>().Open();
-            WarehouseButton.Up += () => GetComponent<StorageView>().Open();
-            EquipmentWarehouseButton.Up += () => GetComponent<EquipmentStorageView>().Open();
-            ShipShopButton.Up += () => GetComponent<ShipShopView>().Open();
+            ShopButton.Up += () => GetComponent<Shop>().Open();
+            EquipmentShopButton.Up += () => GetComponent<EquipmentShop>().Open();
+            HangarButton.Up += () => GetComponent<Workshop>().Open();
+            StorageButton.Up += () => GetComponent<Storage>().Open();
+            ShipShopButton.Up += () => GetComponent<ShipShop>().Open();
 
             Reset();
         }
@@ -99,8 +95,7 @@ namespace Assets.Scripts.Views
                 ShopButton,
                 EquipmentShopButton,
                 HangarButton,
-                WarehouseButton,
-                EquipmentWarehouseButton,
+                StorageButton,
                 ShipShopButton
             })
             {
@@ -109,23 +104,23 @@ namespace Assets.Scripts.Views
 
             var buttons = new List<GameButton>();
 
-            if (Current is GalaxyView)
+            if (Current is Galaxy)
             {
                 buttons = GalaxyButtons;
             }
-            else if (Current is SystemView)
+            else if (Current is System)
             {
                 buttons = SystemButtons;
             }
-            else if (Current is PlanetView)
+            else if (Current is Planet)
             {
                 buttons = PlanetButtons;
             }
-            else if (Current is StationView)
+            else if (Current is Station)
             {
                 buttons = StationButtons;
             }
-            else if (Current is AsteroidView)
+            else if (Current is Asteroid)
             {
                 buttons = AsteroidButtons;  
             }
@@ -143,11 +138,11 @@ namespace Assets.Scripts.Views
 
         public void Refresh()
         {
-            if (Current is GalaxyView)
+            if (Current is Galaxy)
             {
                 OpenButton.Enabled = SelectManager.System != null;
             }
-            else if (Current is SystemView)
+            else if (Current is System)
             {
                 InfoButton.Enabled = SelectManager.Location != null;
 

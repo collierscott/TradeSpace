@@ -17,12 +17,12 @@ namespace Assets.Scripts.Environment.AndromedaSystem
             Description = "Description",
             Interference = 0,
             Radiation = 0,
-            PriceRate = 1.2f,
+            ImportRate = 1.2f,
             Export = new List<ShopGoods>
             {
-                new ShopGoods { Id = GoodsId.Smartphone, MinPrice = 1.2, MaxPrice = 1.5f, MinQuantity = 20, MaxQuantity = 80, Availability = 1 },
-                new ShopGoods { Id = GoodsId.Water, MinPrice = 1.5f, MaxPrice = 2f, Availability = 0 }
-            }
+                new ShopGoods { Id = GoodsId.Smartphone, Min = 20, Max = 80, Availability = 1 }
+            },
+            Import = new List<GoodsType> { GoodsType.Food }
         };
     }
 }

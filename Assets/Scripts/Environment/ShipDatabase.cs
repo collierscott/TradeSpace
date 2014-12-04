@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Scripts.Common;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
 
@@ -8,11 +6,6 @@ namespace Assets.Scripts.Environment
 {
     public static partial class Env
     {
-        public static string GetUniqueShipName()
-        {
-            return Convert.ToString(CRandom.GetRandom(1000000));
-        }
-
         public static Dictionary<ShipId, Ship> ShipDatabase = new Dictionary<ShipId, Ship>
         {
             {

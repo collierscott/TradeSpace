@@ -12,7 +12,11 @@ namespace Assets.Scripts.Engine
         {
             Profile.Instance.Shops.Remove(planet.Name);
 
-            var shop = new MemoShop { Goods = new List<MemoGoods>() };
+            var shop = new MemoShop
+            {
+                Goods = new List<MemoGoods>(),
+                PriceDelta = CRandom.GetRandom(-planet.PriceDelta, planet.PriceDelta) / 2
+            };
 
             foreach (var goods in planet.Export)
             {
@@ -21,12 +25,12 @@ namespace Assets.Scripts.Engine
                 var memoGoods = new MemoGoods
                 {
                     Id = goods.Id,
-                    Quantity = CRandom.GetRandom(goods.MinQuantity, goods.MaxQuantity),
-                    Price = (Env.GoodsDatabase[goods.Id].Price * CRandom.GetRandom(goods.MinPrice, goods.MaxPrice)).RoundToLong()
+                    Quantity = CRandom.GetRandom(goods.Min, goods.Max)
                 };
 
                 shop.Goods.Add(memoGoods);
             }
+
 
             Profile.Instance.Shops.Add(planet.Name, shop);
         }
@@ -38,7 +42,8 @@ namespace Assets.Scripts.Engine
             var shop = new MemoShop
             {
                 Equipment = new List<MemoEquipment>(),
-                Ships = new List<MemoShipItem>()
+                Ships = new List<MemoShipItem>(),
+                PriceDelta = CRandom.GetRandom(-station.PriceDelta, station.PriceDelta) / 2
             };
 
             foreach (var equipment in station.Equipments)
@@ -48,8 +53,7 @@ namespace Assets.Scripts.Engine
                 var memoEquipment = new MemoEquipment
                 {
                     Id = equipment.Id,
-                    Quantity = CRandom.GetRandom(equipment.MinQuantity, equipment.MaxQuantity),
-                    Price = (Env.EquipmentDatabase[equipment.Id].Price * CRandom.GetRandom(equipment.MinPrice, equipment.MaxPrice)).RoundToLong()
+                    Quantity = CRandom.GetRandom(equipment.Min, equipment.Max)
                 };
 
                 shop.Equipment.Add(memoEquipment);

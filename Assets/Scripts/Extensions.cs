@@ -13,7 +13,7 @@ namespace Assets.Scripts
             return new Color(color.r, color.g, color.b, alpha);
         }
 
-        public static void Clean(this Transform transform)
+        public static void Clear(this Transform transform)
         {
             foreach (Transform child in transform)
             {

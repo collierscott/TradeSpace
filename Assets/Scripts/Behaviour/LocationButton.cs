@@ -45,7 +45,7 @@ namespace Assets.Scripts.Behaviour
         private void Subscribe(Location location)
         {
             Button.Selected += () => SelectManager.SelectLocation(location);
-            Button.Confirmed += BaseView.ActionManager.Open;
+            Button.Confirmed += Base.ActionManager.Open;
         }
     }
 }
