@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Engine;
 using Assets.Scripts.Enums;
@@ -15,18 +14,17 @@ namespace Assets.Scripts.Views
         protected override void Initialize()
         {
             base.Initialize();
-            Close<Cargo>();
-            GetComponent<Status>().Refresh();
+            Close<ShipSelect>();
         }
 
         protected override void Cleanup()
         {
             base.Cleanup();
-            GetComponent<Status>().Refresh();
+            Open<ShipSelect>();
 
             if (!Profile.Instance.Ships.ContainsKey(Profile.Instance.SelectedShip.String))
             {
-                Profile.Instance.SelectedShip = Profile.Instance.Ships.First().Key;
+                Profile.Instance.SelectedShip = Profile.Instance.Ships.Keys.First();
             }
         }
 

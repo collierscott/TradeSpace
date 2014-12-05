@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Common
 {
@@ -8,39 +6,31 @@ namespace Assets.Scripts.Common
     {
         public static bool IntersectionLineCircle(Vector2 center, float radius, Vector2 start, Vector2 end)
         {
-            List<Vector2> points;
+            if (Vector2.Distance(center, start) <= radius || Vector2.Distance(center, end) <= radius)
+            {
+                return true;
+            }
 
-            return IntersectionLineCircle(center, radius, start, end, out points);
-        }
+            var x = center.x;
+            var y = center.y;
 
-        public static bool IntersectionLineCircle(Vector2 center, float radius, Vector2 start, Vector2 end, out List<Vector2> result)
-        {
-            result = new List<Vector2>();
+            var x0 = start.x;
+            var y0 = start.y;
 
-            var ax = (end.y - start.y) / (end.x - start.x);
-            var bx = start.y - ax * start.x;
-            var a = 1 + ax * ax;
-            var b = 2 * (ax * bx - ax * center.y - center.x);
-            var c = center.x * center.x + bx * bx + center.y * center.y - radius * radius - 2 * bx * center.y;
-            var f = b * b - 4 * a * c;
+            var x1 = end.x;
+            var y1 = end.y;
 
-            if (f < 0)
+            var d = ((y0 - y1) * x + (x1 - x0) * y + (x0 * y1 - x1 * y0)) / Mathf.Sqrt(Mathf.Pow((x1 - x0), 2) + Mathf.Pow((y1 - y0), 2));
+
+            if (d > radius)
             {
                 return false;
             }
 
-            var sqrt = Mathf.Sqrt(f);
-            var signs = Math.Abs(sqrt) < 0.001 ? new[] { 0 } : new[] { -1, 1 };
+            var a = Vector2.Angle(end, end - start);
+            var b = Vector2.Angle(start, start - end);
 
-            foreach (var sign in signs)
-            {
-                var x = (-b + sign * sqrt) / (2 * a);
-                var y = ax * x + bx;
-
-                result.Add(new Vector2(x, y));
-            }
-
-            return true;
+            return a < 90 && b < 90;
         }
     }
 }

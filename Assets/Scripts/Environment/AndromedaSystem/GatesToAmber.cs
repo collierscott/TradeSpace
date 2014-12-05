@@ -9,7 +9,7 @@ namespace Assets.Scripts.Environment.AndromedaSystem
         {
             Name = Env.SystemNames.Amber,
             ConnectedSystem = Env.SystemNames.Amber,
-            Position = new Vector2(300, 400),
+            Position = new Vector2(200, 400),
             Image = "G01"
         };
     }

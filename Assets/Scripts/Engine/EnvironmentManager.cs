@@ -46,7 +46,7 @@ namespace Assets.Scripts.Engine
                 PriceDelta = CRandom.GetRandom(-station.PriceDelta, station.PriceDelta) / 2
             };
 
-            foreach (var equipment in station.Equipments)
+            foreach (var equipment in station.Equipment)
             {
                 if (!CRandom.Chance(equipment.Availability)) continue;
 
@@ -57,6 +57,19 @@ namespace Assets.Scripts.Engine
                 };
 
                 shop.Equipment.Add(memoEquipment);
+            }
+
+            foreach (var ship in station.Ships)
+            {
+                if (!CRandom.Chance(ship.Availability)) continue;
+
+                var memoShipItem = new MemoShipItem
+                {
+                    Id = ship.Id,
+                    Quantity = CRandom.GetRandom(ship.Min, ship.Max)
+                };
+
+                shop.Ships.Add(memoShipItem);
             }
 
             Profile.Instance.Shops.Add(station.Name, shop);

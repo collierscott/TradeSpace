@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Assets.Scripts.Behaviour;
+﻿using Assets.Scripts.Behaviour;
 using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Engine;
@@ -16,11 +15,10 @@ namespace Assets.Scripts.Views
         {
             var system = SelectManager.System;
 
+            //SelectManager.SelectSystem(system); // TODO:
             PrefabsHelper.InstantiateStar(Panel).GetComponent<StarButton>().Initialize(Env.Galaxy[system]);
-
-            Open<Ships>();
-
-            foreach (var location in Env.Systems[system].Select(i => i.Value))
+            
+            foreach (var location in Env.Systems[system].Values)
             {
                 var orbit = false;
 
@@ -51,6 +49,7 @@ namespace Assets.Scripts.Views
 
             GetComponent<TweenMap>().Set(Vector2.zero, 1);
             Background.enabled = true;
+            Open<Ships>();
             Open<Route>();
         }
 
@@ -58,8 +57,8 @@ namespace Assets.Scripts.Views
         {
             Panel.Clear();
             Background.enabled = false;
-            Close<Ships>();
             Close<Route>();
+            Close<Ships>();
             GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position, 1);
         }
     }

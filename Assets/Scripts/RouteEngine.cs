@@ -35,22 +35,22 @@ namespace Assets.Scripts
 
                 if (j == 0)
                 {
-                    arv = Env.Systems[departure.System].Select(i => i.Value).Where(i => i is Gates).Single(i => i.ToGates().ConnectedSystem == galaxyRoute[1]).ToRouteNode();
+                    arv = FindGates(departure.System, galaxyRoute[1]);
                     arv.Time = departure.Time.AddSeconds((departure.Position - arv.Position).magnitude / speed);
-                    route.Add(departure);
-                    route.Add(arv);
-
+                    
+                    route.AddRange(FindSystemRoute(departure, arv, speed));
+                    
                     continue;
                 }
 
                 if (j < galaxyRoute.Count - 1)
                 {
-                    dpt = Env.Systems[galaxyRoute[j]].Select(i => i.Value).Where(i => i is Gates).Single(i => i.ToGates().ConnectedSystem == galaxyRoute[j - 1]).ToRouteNode();
-                    arv = Env.Systems[galaxyRoute[j]].Select(i => i.Value).Where(i => i is Gates).Single(i => i.ToGates().ConnectedSystem == galaxyRoute[j + 1]).ToRouteNode();
+                    dpt = FindGates(galaxyRoute[j], galaxyRoute[j - 1]);
+                    arv = FindGates(galaxyRoute[j], galaxyRoute[j + 1]);
                 }
                 else
                 {
-                    dpt = Env.Systems[galaxyRoute[j]].Select(i => i.Value).Where(i => i is Gates).Single(i => i.ToGates().ConnectedSystem == galaxyRoute[j - 1]).ToRouteNode();
+                    dpt = FindGates(galaxyRoute[j], galaxyRoute[j - 1]);
                     arv = arrival;
                 }
 
@@ -61,6 +61,11 @@ namespace Assets.Scripts
             }
 
             return route;
+        }
+
+        private static RouteNode FindGates(string from, string to)
+        {
+            return Env.Systems[from].Values.Where(i => i is Gates).Single(i => i.ToGates().ConnectedSystem == to).ToRouteNode();
         }
 
         private static List<RouteNode> FindSystemRoute(RouteNode departure, RouteNode arrival, float speed)
