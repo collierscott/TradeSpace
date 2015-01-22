@@ -47,7 +47,7 @@ namespace Assets.Scripts.Views
                 }
             }
 
-            GetComponent<TweenMap>().Set(Vector2.zero, 1);
+            GetComponent<TweenMap>().Set(Vector2.zero);
             Background.enabled = true;
             Open<Ships>();
             Open<Route>();
@@ -59,7 +59,7 @@ namespace Assets.Scripts.Views
             Background.enabled = false;
             Close<Route>();
             Close<Ships>();
-            GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position, 1);
+            GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position);
         }
     }
 }

@@ -14,6 +14,11 @@ namespace Assets.Scripts.Common
             }
         }
 
+        public static void Debug(object message)
+        {
+            Debug(message.ToString());
+        }
+
         public static void Error(string format, params object[] args)
         {
             if (LogLevel >= 1)

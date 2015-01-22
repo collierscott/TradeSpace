@@ -29,36 +29,34 @@ namespace Assets.Scripts.Engine
 
             var scroll = Input.GetAxis("Mouse ScrollWheel");
 
-            if (Math.Abs(scroll) > 0.001)
+            if (Math.Abs(scroll) > 0)
             {
                 const float speed = 2.5f;
-                var scale1 = Environment.transform.localScale.x + scroll * speed;
-                var scale2 = Background.transform.localScale.x + ScalePerspective * scroll * speed;
+                var scaleEnv = Environment.transform.localScale.x + scroll * speed;
+                var scaleBack = Background.transform.localScale.x + ScalePerspective * scroll * speed;
 
-                scale1 = Mathf.Min(1.500f, Mathf.Max(0.500f, scale1));
-                scale2 = Mathf.Min(1.125f, Mathf.Max(0.875f, scale2));
+                scaleEnv = Mathf.Min(1.500f, Mathf.Max(0.500f, scaleEnv));
+                scaleBack = Mathf.Min(1.125f, Mathf.Max(0.875f, scaleBack));
 
                 var animationCurve = Environment.GetComponent<TweenScale>().animationCurve;
 
-                TweenPosition.Begin(Environment, Duration, scale1 / Environment.transform.localScale.x * Environment.transform.localPosition).animationCurve = animationCurve;
-                TweenPosition.Begin(Background, Duration, scale2 / Background.transform.localScale.x * Background.transform.localPosition).animationCurve = animationCurve;
+                TweenPosition.Begin(Environment, Duration, scaleEnv / Environment.transform.localScale.x * Environment.transform.localPosition).animationCurve = animationCurve;
+                TweenPosition.Begin(Background, Duration, scaleBack / Background.transform.localScale.x * Background.transform.localPosition).animationCurve = animationCurve;
                 
-                TweenScale.Begin(Environment, Duration, scale1 * Vector3.one).animationCurve = animationCurve;
-                TweenScale.Begin(Background, Duration, scale2 * Vector3.one).animationCurve = animationCurve;
+                TweenScale.Begin(Environment, Duration, scaleEnv * Vector3.one).animationCurve = animationCurve;
+                TweenScale.Begin(Background, Duration, scaleBack * Vector3.one).animationCurve = animationCurve;
 
-                if (UIScreen.Current is Galaxy)
-                {
-                    _scaleGalaxy = scale1;
-                }
-                else
-                {
-                    _scaleSystem = scale1;
-                }
+                Scale = scaleEnv;
             }
 
             if (_pressed && Input.GetKey(KeyCode.Mouse0))
             {
                 var delta = 500 * (Camera.main.ScreenToWorldPoint(Input.mousePosition) - _mouse);
+
+                if (UIScreen.Current is Galaxy)
+                {
+                    delta = GalaxyBounds(delta);
+                }
 
                 Environment.transform.localPosition = _map + delta;
                 Background.transform.localPosition = _background + MovePerspective * delta;
@@ -81,20 +79,60 @@ namespace Assets.Scripts.Engine
             }
         }
 
-        public void Set(Vector2 position, float scale)
+        public void Set(Vector2 position)
         {
             Environment.transform.localPosition = new Vector3(position.x, position.y, -1);
-            Environment.transform.localScale = scale * Vector2.one;
+            Environment.transform.localScale = Scale * Vector2.one;
         }
 
         public void Focus(Vector2 position)
         {
-            var scale = UIScreen.Current is Galaxy ? _scaleGalaxy : _scaleSystem;
-            var pos = scale * new Vector3(position.x, position.y, -1);
+            var pos = Scale * new Vector3(position.x, position.y, -1);
             var delta = pos - Environment.transform.localPosition;
 
             TweenPosition.Begin(Background, Duration, Background.transform.localPosition + MovePerspective * delta);
             TweenPosition.Begin(Environment, Duration, pos);
+        }
+
+        private float Scale
+        {
+            get { return UIScreen.Current is Galaxy ? _scaleGalaxy : _scaleSystem; }
+            set
+            {
+                if (UIScreen.Current is Galaxy)
+                {
+                    _scaleGalaxy = value;
+                }
+                else
+                {
+                    _scaleSystem = value;
+                }
+            }
+        }
+
+        private Vector3 GalaxyBounds(Vector3 delta)
+        {
+            var xBounds = new Vector2(-1000, 1000) * Scale; // Inverted!
+            var yBounds = new Vector2(-1500, 1000) * Scale;
+
+            if ((_map.x + delta.x) > xBounds.y)
+            {
+                delta.x = xBounds.y - _map.x;
+            }
+            else if ((_map.x + delta.x) < xBounds.x)
+            {
+                delta.x = xBounds.x - _map.x;
+            }
+
+            if ((_map.y + delta.y) > yBounds.y)
+            {
+                delta.y = yBounds.y - _map.y;
+            }
+            else if ((_map.y + delta.y) < yBounds.x)
+            {
+                delta.y = yBounds.x - _map.y;
+            }
+            return delta;
         }
     }
 }

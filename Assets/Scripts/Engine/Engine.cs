@@ -13,7 +13,7 @@ namespace Assets.Scripts.Engine
             Env.Initialize();
             SelectManager.SelectSystem(Env.SystemNames.Alpha);
             GetComponent<Galaxy>().Open();
-            GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position, 1);
+            GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position);
         }
 
 
