@@ -24,7 +24,7 @@ namespace Assets.Scripts.Engine
             FindObjectOfType<Status>().Refresh();
             FindObjectOfType<Cargo>().Refresh();
 
-            if (UIScreen.Current is Galaxy || UIScreen.Current is Views.System)
+            if (UIScreen.Current is Galaxy || UIScreen.Current is Systema)
             {
                 FindObjectOfType<Route>().Refresh();
             }

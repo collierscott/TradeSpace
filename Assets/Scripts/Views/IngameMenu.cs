@@ -108,7 +108,7 @@ namespace Assets.Scripts.Views
             {
                 buttons = GalaxyButtons;
             }
-            else if (UIScreen.Current is System)
+            else if (UIScreen.Current is Systema)
             {
                 buttons = SystemButtons;
             }
@@ -142,7 +142,7 @@ namespace Assets.Scripts.Views
             {
                 OpenButton.Enabled = SelectManager.System != null;
             }
-            else if (UIScreen.Current is System)
+            else if (UIScreen.Current is Systema)
             {
                 InfoButton.Enabled = SelectManager.Location != null;
 

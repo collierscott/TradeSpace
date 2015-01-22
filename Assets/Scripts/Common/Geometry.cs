@@ -7,12 +7,30 @@ namespace Assets.Scripts.Common
     {
         public static bool IntersectionLineCircle(Vector2 center, float radius, Vector2 start, Vector2 end)
         {
-            Vector2 intersection1, intersection2;
+            Vector2 i, j;
 
-            return FindLineCircleIntersections(center, radius, start, end, out intersection1, out intersection2) > 0;
+            var count = FindLineCircleIntersections(center, radius, start, end, out i, out j);
+
+            if (count == 0)
+            {
+                return false;
+            }
+            
+            if (count == 1)
+            {
+                return !((start.x > i.x && end.x > i.x)
+                    || (start.x < i.x && end.x < i.x)
+                    || (start.y > i.y && end.y > i.y)
+                    || (start.y < i.y && end.y < i.y));
+            }
+            
+            return !((start.x > i.x && end.x > i.x && start.x > j.x && end.x > j.x
+                || (start.x < i.x && end.x < i.x && start.x < j.x && end.x < j.x)
+                || (start.y > i.y && end.y > i.y && start.y > j.y && end.y > j.y)
+                || (start.y < i.y && end.y < i.y && start.y < j.y && end.y < j.y)));
         }
 
-        public static int FindLineCircleIntersections(Vector2 center, float radius, Vector2 start, Vector2 end, out Vector2 intersection1, out Vector2 intersection2)
+        public static int FindLineCircleIntersections(Vector2 center, float radius, Vector2 start, Vector2 end, out Vector2 i, out Vector2 j)
         {
             var dx = end.x - start.x;
             var dy = end.y - start.y;
@@ -23,8 +41,8 @@ namespace Assets.Scripts.Common
 
             if ((a <= 0.0000001) || (det < 0))
             {
-                intersection1 = new Vector2(float.NaN, float.NaN);
-                intersection2 = new Vector2(float.NaN, float.NaN);
+                i = new Vector2(float.NaN, float.NaN);
+                j = new Vector2(float.NaN, float.NaN);
 
                 return 0;
             }
@@ -33,8 +51,8 @@ namespace Assets.Scripts.Common
             {
                 var t = -b / (2 * a);
 
-                intersection1 = new Vector2(start.x + t * dx, start.y + t * dy);
-                intersection2 = new Vector2(float.NaN, float.NaN);
+                i = new Vector2(start.x + t * dx, start.y + t * dy);
+                j = new Vector2(float.NaN, float.NaN);
 
                 return 1;
             }
@@ -42,9 +60,9 @@ namespace Assets.Scripts.Common
             {
                 var t = (float)((-b + Math.Sqrt(det)) / (2 * a));
                 
-                intersection1 = new Vector2(start.x + t * dx, start.y + t * dy);
+                i = new Vector2(start.x + t * dx, start.y + t * dy);
                 t = (float)((-b - Math.Sqrt(det)) / (2 * a));
-                intersection2 = new Vector2(start.x + t * dx, start.y + t * dy);
+                j = new Vector2(start.x + t * dx, start.y + t * dy);
 
                 return 2;
             }

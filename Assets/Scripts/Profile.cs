@@ -187,7 +187,7 @@ namespace Assets.Scripts
                     }
             };
 
-            instance.Ships["0"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["Highway to Hell"].ToRouteNode() };
+            instance.Ships["0"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["Treunus"].ToRouteNode() };
             instance.Ships["0"].Goods = new List<MemoGoods>
             {
                 new MemoGoods { Id = GoodsId.Water, Quantity = 10 },

@@ -34,7 +34,7 @@ namespace Assets.Scripts.Views
                     }
                 }
             }
-            else if (UIScreen.Current is System)
+            else if (UIScreen.Current is Systema)
             {
                 polyline = route.Where(i => i.System == SelectManager.System).Select(i => i.Position).ToList();
 

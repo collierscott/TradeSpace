@@ -2,6 +2,7 @@
 using Assets.Scripts.Data;
 using Assets.Scripts.Engine;
 using Assets.Scripts.Environment;
+using Assets.Scripts.Views;
 using UnityEngine;
 
 namespace Assets.Scripts.Behaviour
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Behaviour
             Button.Confirmed += () =>
             {
                 SelectManager.SelectSystem(connectedSystem.System);
-                FindObjectOfType<Views.System>().Open();
+                FindObjectOfType<Systema>().Open();
             };
         }
 

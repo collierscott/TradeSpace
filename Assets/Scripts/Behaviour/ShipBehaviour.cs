@@ -52,7 +52,7 @@ namespace Assets.Scripts.Behaviour
                 _ship.State = ShipState.Ready;
             }
 
-            if (UIScreen.Current is Views.System && Location.System != SelectManager.System)
+            if (UIScreen.Current is Systema && Location.System != SelectManager.System)
             {
                 Hide();
             }

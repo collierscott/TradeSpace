@@ -22,13 +22,13 @@ namespace Assets.Scripts.Engine
         {
             if (UIScreen.Current == null) return;
 
-            if (UIScreen.Current is Views.System)
+            if (UIScreen.Current is Systema)
             {
                 GetComponent<Galaxy>().Open();
             }
             else if (UIScreen.Current is Planet || UIScreen.Current is Station || UIScreen.Current is Asteroid)
             {
-                GetComponent<Views.System>().Open();
+                GetComponent<Systema>().Open();
             }
             else if (UIScreen.Current is Shop
                 || UIScreen.Current is EquipmentShop || UIScreen.Current is Workshop
@@ -60,9 +60,9 @@ namespace Assets.Scripts.Engine
         {
             if (UIScreen.Current is Galaxy)
             {
-                GetComponent<Views.System>().Open();
+                GetComponent<Systema>().Open();
             }
-            else if (UIScreen.Current is Views.System && GetComponent<IngameMenu>().OpenButton.Enabled)
+            else if (UIScreen.Current is Systema && GetComponent<IngameMenu>().OpenButton.Enabled)
             {
                 if (SelectManager.Location is Data.Planet)
                 {

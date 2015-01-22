@@ -18,7 +18,7 @@ namespace Assets.Scripts.Views
             {
                 var ship = Ships.ShipBehaviours[button.UniqName];
 
-                if (UIScreen.Current is Galaxy || UIScreen.Current is System)
+                if (UIScreen.Current is Galaxy || UIScreen.Current is Systema)
                 {
                     button.Button.Enabled = true;
                     button.GetComponent<UIWidget>().alpha = 1;

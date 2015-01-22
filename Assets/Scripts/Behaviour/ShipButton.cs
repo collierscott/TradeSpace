@@ -5,6 +5,7 @@ using Assets.Scripts.Engine;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Environment;
 using Assets.Scripts.Views;
+using UnityEngine;
 
 namespace Assets.Scripts.Behaviour
 {
@@ -23,6 +24,7 @@ namespace Assets.Scripts.Behaviour
         {
             UniqName = uniqName;
             Button.Selected += () => SelectManager.SelectShip(uniqName);
+            Button.Confirmed += Focus;
 
             if (Profile.Instance.SelectedShip == uniqName)
             {
@@ -60,6 +62,29 @@ namespace Assets.Scripts.Behaviour
 
             Mass.fillAmount = 0.5f + 0.5f * playerShip.CargoMass / playerShip.Mass;
             Volume.fillAmount = 0.5f + 0.5f * playerShip.CargoVolume / playerShip.Volume;
+        }
+
+        private static void Focus()
+        {
+            Vector2 position;
+
+            if (UIScreen.Current is Galaxy)
+            {
+                if (SelectManager.Ship.Location.System != null)
+                {
+                    position = -Env.Galaxy[SelectManager.Ship.Location.System].Position;
+                }
+                else
+                {
+                    position = -SelectManager.Ship.Location.Position;
+                }
+            }
+            else
+            {
+                position = -SelectManager.Ship.Location.Position;
+            }
+
+            FindObjectOfType<TweenMap>().Focus(position);
         }
     }
 }
