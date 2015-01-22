@@ -215,7 +215,7 @@ namespace Assets.Scripts
                 new MemoGoods { Id = GoodsId.Fish, Quantity = 20 }
             };
 
-            //instance.Ships["2"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["Highway to Hell"].ToRouteNode() };
+            //instance.Ships["2"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["SS-500"].ToRouteNode() };
             //instance.Ships["2"].InstalledEquipment = new List<MemoInstalledEquipment>
             //{
             //    //new MemoInstalledEquipment {Id = EquipmentId.JetEngine100, Index = 0}

@@ -18,7 +18,7 @@ namespace Assets.Scripts.Behaviour
             transform.localPosition = location.Position;
 
             Button.Selected += () => SelectManager.SelectSystem(location.System);
-            Button.Confirmed += FindObjectOfType<ActionManager>().Open;
+            Button.Confirmed += Find<ActionManager>().Open;
 
             if (SelectManager.System == location.System)
             {

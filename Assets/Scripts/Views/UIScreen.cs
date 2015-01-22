@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Common;
+﻿using System;
+using Assets.Scripts.Common;
 
 namespace Assets.Scripts.Views
 {
@@ -12,6 +13,18 @@ namespace Assets.Scripts.Views
         {
             GetComponent<Loading>().Open(LoadingTime);
             TaskScheduler.CreateTask(OpenScreen, LoadingTime);
+        }
+
+        public void Open(Action callback)
+        {
+            GetComponent<Loading>().Open(LoadingTime);
+            TaskScheduler.CreateTask(OpenScreen, LoadingTime, callback);
+        }
+
+        public void Open(Action prepare, Action callback)
+        {
+            GetComponent<Loading>().Open(LoadingTime);
+            TaskScheduler.CreateTask(() => { prepare(); OpenScreen(); }, LoadingTime, callback);
         }
 
         private void OpenScreen()

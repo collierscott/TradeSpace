@@ -7,14 +7,14 @@ namespace Assets.Scripts.Environment.Systems
 {
     public partial class SpaceSystems
     {
-        public static SpaceSystem Unity = new SpaceSystem
+        public static SpaceSystem Hemicuda = new SpaceSystem
         {
-            Name = Env.SystemNames.Unity,
-            Position = new Vector2(-120, 1700),
-            Color = ColorHelper.GetColor("#0066FF", 180),
+            Name = Env.SystemNames.Hemicuda,
+            Position = new Vector2(2200, 420),
+            Color = ColorHelper.GetColor("#FF3300", 180),
             Locations = new List<Location>
             {
-                new Gates { ConnectedSystem = Env.SystemNames.Phoenix }
+                new Gates { ConnectedSystem = Env.SystemNames.Nerus }
             }
         };
     }

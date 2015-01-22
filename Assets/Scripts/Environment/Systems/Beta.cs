@@ -15,20 +15,9 @@ namespace Assets.Scripts.Environment.Systems
             Color = ColorHelper.GetColor("#FF6600", 180),
             Locations = new List<Location>
             {
-                new Gates
-                {
-                    Name = Env.SystemNames.Alpha,
-                    ConnectedSystem = Env.SystemNames.Alpha,
-                    Position = new Vector2(-140, 300),
-                    Image = "G01"
-                },
-                new Gates
-                {
-                    Name = Env.SystemNames.Gamma,
-                    ConnectedSystem = Env.SystemNames.Gamma,
-                    Position = new Vector2(0, -360),
-                    Image = "G01"
-                },
+                new Gates { ConnectedSystem = Env.SystemNames.Alpha },
+                new Gates { ConnectedSystem = Env.SystemNames.Gamma },
+                new Gates { ConnectedSystem = Env.SystemNames.Sirius },
                 new Planet
                 {
                     Name = "Duster",

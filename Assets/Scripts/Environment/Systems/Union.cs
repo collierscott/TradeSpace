@@ -11,23 +11,11 @@ namespace Assets.Scripts.Environment.Systems
         {
             Name = Env.SystemNames.Union,
             Position = new Vector2(300, 1320),
-            Color = ColorHelper.GetColor("#FF99CC", 220),
+            Color = ColorHelper.GetColor("#FF99CC", 180),
             Locations = new List<Location>
             {
-                new Gates
-                {
-                    Name = Env.SystemNames.Rotos,
-                    ConnectedSystem = Env.SystemNames.Rotos,
-                    Position = new Vector2(200, 400),
-                    Image = "G01"
-                },
-                new Gates
-                {
-                    Name = Env.SystemNames.Amber,
-                    ConnectedSystem = Env.SystemNames.Amber,
-                    Position = new Vector2(-600, 300),
-                    Image = "G01"
-                }
+                new Gates { ConnectedSystem = Env.SystemNames.Rotos },
+                new Gates { ConnectedSystem = Env.SystemNames.Amber }
             }
         };
     }

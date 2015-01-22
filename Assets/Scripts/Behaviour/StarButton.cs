@@ -17,7 +17,7 @@ namespace Assets.Scripts.Behaviour
             Name.text = location.System;
             Halo.color = location.Color;
             Button.ColorDown = location.Color.SetAlpha(1);
-            Button.Confirmed += FindObjectOfType<ActionManager>().CloseScreen;
+            Button.Confirmed += Find<ActionManager>().CloseScreen;
         }
     }
 }

@@ -20,13 +20,13 @@ namespace Assets.Scripts.Engine
             Log.Debug("Selecting ship {0}", uniqName);
 
             Profile.Instance.SelectedShip = uniqName;
-            FindObjectOfType<IngameMenu>().Refresh();
-            FindObjectOfType<Status>().Refresh();
-            FindObjectOfType<Cargo>().Refresh();
+            Find<IngameMenu>().Refresh();
+            Find<Status>().Refresh();
+            Find<Cargo>().Refresh();
 
             if (UIScreen.Current is Galaxy || UIScreen.Current is Systema)
             {
-                FindObjectOfType<Route>().Refresh();
+                Find<Route>().Refresh();
             }
             else if (UIScreen.Current is BaseShop)
             {
@@ -42,14 +42,14 @@ namespace Assets.Scripts.Engine
         {
             //Debug.Log("Select system: " + system); 
             System = system;
-            FindObjectOfType<IngameMenu>().Reset();
+            Find<IngameMenu>().Reset();
         }
 
         public static void SelectLocation(Location location)
         {
             //Debug.Log("Select location: " + location.Name); 
             Location = location;
-            FindObjectOfType<IngameMenu>().Reset();
+            Find<IngameMenu>().Reset();
         }
     }
 }

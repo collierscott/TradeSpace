@@ -20,6 +20,13 @@ namespace Assets.Scripts.Environment
                     public const string Amber = "Amber";
                     public const string Union = "Union";
             public const string Beta = "Beta";
+                public const string Sirius = "Sirius";
+                    public const string Capella = "Capella";
+                    public const string Wyvern = "Wyvern";
+                        public const string Catania = "Catania";
+                        public const string Nerus = "Nerus";
+                            public const string Xavis = "Xavis";
+                            public const string Hemicuda = "Hemicuda";
             public const string Gamma = "Gamma";
             public const string Delta = "Delta";
             public const string Epsilon = "Epsilon";
@@ -39,6 +46,13 @@ namespace Assets.Scripts.Environment
                     AddSystem(SpaceSystems.Union);
                     AddSystem(SpaceSystems.Amber);
             AddSystem(SpaceSystems.Beta);
+                AddSystem(SpaceSystems.Sirius);
+                    AddSystem(SpaceSystems.Capella);
+                    AddSystem(SpaceSystems.Wyvern);
+                        AddSystem(SpaceSystems.Catania);
+                        AddSystem(SpaceSystems.Nerus);
+                            AddSystem(SpaceSystems.Xavis);
+                            AddSystem(SpaceSystems.Hemicuda);
             AddSystem(SpaceSystems.Gamma);
             AddSystem(SpaceSystems.Delta);
             AddSystem(SpaceSystems.Epsilon);
@@ -50,6 +64,7 @@ namespace Assets.Scripts.Environment
                         AddSystem(SpaceSystems.Unity);
                         AddSystem(SpaceSystems.Falcon);
 
+            FixGatePositions();
             CalcRoutes();
         }
 
@@ -61,6 +76,21 @@ namespace Assets.Scripts.Environment
             foreach (var child in system.Locations)
             {
                 child.System = system.Name;
+
+                var gates = child as Gates;
+
+                if (gates != null)
+                {
+                    if (gates.Name == null)
+                    {
+                        gates.Name = gates.ConnectedSystem;
+                    }
+
+                    if (gates.Image == null)
+                    {
+                        gates.Image = "G01";
+                    }
+                }
             }
 
             Galaxy.Add(system.Name, system);
@@ -74,6 +104,24 @@ namespace Assets.Scripts.Environment
                 Debug.Log(string.Format("Possible name duplicates found in system {0}: {1}", system,
                     string.Join(", ", system.Locations.Select(i => i.Name).GroupBy(x => x).Where(group => group.Count() > 1).Select(group => group.Key).ToArray())));
                 throw;
+            }
+        }
+
+        private static void FixGatePositions()
+        {
+            foreach (var system in Systems)
+            {
+                foreach (var child in system.Value.Values)
+                {
+                    child.System = system.Key;
+
+                    var gates = child as Gates;
+
+                    if (gates != null)
+                    {
+                        gates.Position = gates.Distance * (Galaxy[gates.ConnectedSystem].Position - Galaxy[system.Key].Position).normalized;
+                    }
+                }
             }
         }
 

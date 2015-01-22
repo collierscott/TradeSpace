@@ -14,20 +14,8 @@ namespace Assets.Scripts.Environment.Systems
             Color = ColorHelper.GetColor("#FF6666", 180),
             Locations = new List<Location>
             {
-                new Gates
-                {
-                    Name = Env.SystemNames.Epsilon,
-                    ConnectedSystem = Env.SystemNames.Epsilon,
-                    Position = new Vector2(200, 400),
-                    Image = "G01"
-                },
-                new Gates
-                {
-                    Name = Env.SystemNames.Eta,
-                    ConnectedSystem = Env.SystemNames.Eta,
-                    Position = new Vector2(-600, 300),
-                    Image = "G01"
-                }
+                new Gates { ConnectedSystem = Env.SystemNames.Epsilon },
+                new Gates { ConnectedSystem = Env.SystemNames.Eta }
             }
         };
     }

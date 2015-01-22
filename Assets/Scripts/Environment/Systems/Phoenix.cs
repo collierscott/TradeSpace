@@ -14,27 +14,9 @@ namespace Assets.Scripts.Environment.Systems
             Color = ColorHelper.GetColor("#FF4400", 220),
             Locations = new List<Location>
             {
-                new Gates
-                {
-                    Name = Env.SystemNames.Oreon,
-                    ConnectedSystem = Env.SystemNames.Oreon,
-                    Position = new Vector2(200, 400),
-                    Image = "G01"
-                },
-                new Gates
-                {
-                    Name = Env.SystemNames.Unity,
-                    ConnectedSystem = Env.SystemNames.Unity,
-                    Position = new Vector2(-600, 300),
-                    Image = "G01"
-                },
-                new Gates
-                {
-                    Name = Env.SystemNames.Falcon,
-                    ConnectedSystem = Env.SystemNames.Falcon,
-                    Position = new Vector2(-600, 300),
-                    Image = "G01"
-                },
+                new Gates { ConnectedSystem = Env.SystemNames.Oreon },
+                new Gates { ConnectedSystem = Env.SystemNames.Unity },
+                new Gates { ConnectedSystem = Env.SystemNames.Falcon },
             }
         };
     }

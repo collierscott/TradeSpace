@@ -15,7 +15,6 @@ namespace Assets.Scripts.Views
         {
             var system = SelectManager.System;
 
-            //SelectManager.SelectSystem(system); // TODO:
             PrefabsHelper.InstantiateStar(Panel).GetComponent<StarButton>().Initialize(Env.Galaxy[system]);
             
             foreach (var location in Env.Systems[system].Values)

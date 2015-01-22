@@ -112,7 +112,7 @@ namespace Assets.Scripts.Engine
 
         private Vector3 GalaxyBounds(Vector3 delta)
         {
-            var xBounds = new Vector2(-1000, 1000) * Scale;
+            var xBounds = new Vector2(-2000, 1000) * Scale;
             var yBounds = new Vector2(-1500, 1000) * Scale;
 
             return FixDelta(delta, xBounds, yBounds);

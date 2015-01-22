@@ -3,5 +3,6 @@
     public class Gates : Location
     {
         public string ConnectedSystem;
+        public float Distance = 600;
     }
 }

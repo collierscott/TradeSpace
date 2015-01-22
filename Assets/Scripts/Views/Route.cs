@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Behaviour;
 using Assets.Scripts.Common;
 using Assets.Scripts.Engine;
+using Assets.Scripts.Enums;
 using Assets.Scripts.Environment;
 using UnityEngine;
 
@@ -19,55 +20,63 @@ namespace Assets.Scripts.Views
 
         protected override void Initialize()
         {
-            var route = SelectManager.Ship.Trace.Count > 0 ? SelectManager.Ship.Trace : SelectManager.Ship.Route;
-            List<Vector2> polyline;
-
-            if (UIScreen.Current is Galaxy)
+            foreach (var ship in Ships.ShipBehaviours.Values)
             {
-                polyline = route.Select(i => i.System).Distinct().Select(i => Env.Galaxy[i].Position).ToList();
+                if (ship.State == ShipState.Ready && ship.Trace.Count == 0)
+                {
+                    continue;
+                }
+
+                var route = ship.Trace.Count > 0 ? ship.Trace : ship.Route;
+                List<Vector2> polyline;
+
+                if (UIScreen.Current is Galaxy)
+                {
+                    polyline = route.Select(i => i.System).Distinct().Select(i => Env.Galaxy[i].Position).ToList();
+
+                    if (polyline.Count >= 2)
+                    {
+                        for (var i = 0; i < polyline.Count - 1; i++)
+                        {
+                            GetComponent<NativeRenderer>().DrawRouteLine(Panel, polyline[i], polyline[i + 1]);
+                        }
+                    }
+                }
+                else if (UIScreen.Current is Systema)
+                {
+                    polyline = route.Where(i => i.System == SelectManager.System).Select(i => i.Position).ToList();
+
+                    if (polyline.Count == 2)
+                    {
+                        GetComponent<NativeRenderer>().DrawRouteLine(Panel, polyline[0], polyline[1]);
+                    }
+                    else if (polyline.Count > 2)
+                    {
+                        GetComponent<NativeRenderer>().DrawRouteLine(Panel, polyline);
+                    }
+                }
+                else
+                {
+                    throw new Exception(UIScreen.Current.GetType().Name);
+                }
 
                 if (polyline.Count >= 2)
                 {
-                    for (var i = 0; i < polyline.Count - 1; i++)
-                    {
-                        GetComponent<NativeRenderer>().DrawRouteLine(Panel, polyline[i], polyline[i + 1]);
-                    }
+                    StartAnimation(polyline, PrefabsHelper.InstantiateRouteFirefly(Panel));
                 }
             }
-            else if (UIScreen.Current is Systema)
-            {
-                polyline = route.Where(i => i.System == SelectManager.System).Select(i => i.Position).ToList();
+        }
 
-                if (polyline.Count == 2)
-                {
-                    GetComponent<NativeRenderer>().DrawRouteLine(Panel, polyline[0], polyline[1]);
-                }
-                else if (polyline.Count > 2)
-                {
-                    GetComponent<NativeRenderer>().DrawRouteLine(Panel, polyline);
-                }
-            }
-            else
-            {
-                throw new Exception(UIScreen.Current.GetType().Name);
-            }
-
-            if (polyline.Count >= 2)
-            {
-                StartAnimation(polyline, PrefabsHelper.InstantiateRouteFirefly(Panel));
-            }
+        public void Refresh()
+        {
+            Cleanup();
+            Initialize();
         }
 
         protected override void Cleanup()
         {
             Panel.Clear();
             TaskScheduler.Kill(_taskId++);
-        }
-
-        public void Refresh()
-        {
-            Close();
-            Open();
         }
 
         private void StartAnimation(IList<Vector2> route, GameObject firefly)

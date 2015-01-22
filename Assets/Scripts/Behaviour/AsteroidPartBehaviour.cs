@@ -109,7 +109,7 @@ namespace Assets.Scripts.Behaviour
             }
 
             if (errMsg != null)
-                FindObjectOfType<ActionManager>().ShowInfo("Warning", errMsg);
+                Find<ActionManager>().ShowInfo("Warning", errMsg);
                 //Debug.LogWarning("DIALOG! " + errMsg);
 
             return errMsg==null;

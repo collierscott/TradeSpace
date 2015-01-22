@@ -19,7 +19,7 @@ namespace Assets.Scripts.Behaviour
             Index = index;
             Image.spriteName = equipmentId.ToString();
             //NameText.SetText(equipmentId.ToString());
-            Button.Selected += () => FindObjectOfType<Workshop>().SelectEquipmentToRemove(equipmentId, index);
+            Button.Selected += () => Find<Workshop>().SelectEquipmentToRemove(equipmentId, index);
         }
     }
 }

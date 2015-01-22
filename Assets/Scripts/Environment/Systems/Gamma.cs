@@ -14,20 +14,8 @@ namespace Assets.Scripts.Environment.Systems
             Color = ColorHelper.GetColor("#009900", 180),
             Locations = new List<Location>
             {
-                new Gates
-                {
-                    Name = Env.SystemNames.Beta,
-                    ConnectedSystem = Env.SystemNames.Beta,
-                    Position = new Vector2(200, 400),
-                    Image = "G01"
-                },
-                new Gates
-                {
-                    Name = Env.SystemNames.Delta,
-                    ConnectedSystem = Env.SystemNames.Delta,
-                    Position = new Vector2(-600, 300),
-                    Image = "G01"
-                }
+                new Gates { ConnectedSystem = Env.SystemNames.Beta }, 
+                new Gates { ConnectedSystem = Env.SystemNames.Delta }
             }
         };
     }

@@ -48,8 +48,8 @@ namespace Assets.Scripts.Behaviour
 
             if (_ship.State == ShipState.InFlight && Location.Name != null)
             {
-                FindObjectOfType<Route>().Close();
                 _ship.State = ShipState.Ready;
+                Find<Route>().Refresh();
             }
 
             if (UIScreen.Current is Systema && Location.System != SelectManager.System)

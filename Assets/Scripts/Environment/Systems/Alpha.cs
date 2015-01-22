@@ -15,27 +15,9 @@ namespace Assets.Scripts.Environment.Systems
             Color = ColorHelper.GetColor("#0099FF", 180),
             Locations = new List<Location>
             {
-                new Gates
-                {
-                    Name = Env.SystemNames.Theta,
-                    ConnectedSystem = Env.SystemNames.Theta,
-                    Position = new Vector2(-500, 0),
-                    Image = "G01"
-                },
-                new Gates
-                {
-                    Name = Env.SystemNames.Beta,
-                    ConnectedSystem = Env.SystemNames.Beta,
-                    Position = new Vector2(500, -300),
-                    Image = "G01"
-                },
-                new Gates
-                {
-                    Name = Env.SystemNames.Rotos,
-                    ConnectedSystem = Env.SystemNames.Rotos,
-                    Position = new Vector2(300, 400),
-                    Image = "G01"
-                },
+                new Gates { ConnectedSystem = Env.SystemNames.Theta },
+                new Gates { ConnectedSystem = Env.SystemNames.Beta },
+                new Gates { ConnectedSystem = Env.SystemNames.Rotos },
                 new Planet
                 {
                     Name = "Fobos",
@@ -84,7 +66,7 @@ namespace Assets.Scripts.Environment.Systems
                 },
                 new Station
                 {
-                    Name = "Highway to Hell",
+                    Name = "SS-500",
                     Position = new Vector2(200, 100),
                     Image = "Station2",
                     Description = "Description",

@@ -5,7 +5,6 @@ using Assets.Scripts.Engine;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Environment;
 using Assets.Scripts.Views;
-using UnityEngine;
 
 namespace Assets.Scripts.Behaviour
 {
@@ -66,7 +65,7 @@ namespace Assets.Scripts.Behaviour
 
         private static void Focus()
         {
-            Vector2 position;
+            var position = -SelectManager.Ship.Location.Position;
 
             if (UIScreen.Current is Galaxy)
             {
@@ -74,17 +73,24 @@ namespace Assets.Scripts.Behaviour
                 {
                     position = -Env.Galaxy[SelectManager.Ship.Location.System].Position;
                 }
-                else
-                {
-                    position = -SelectManager.Ship.Location.Position;
-                }
+
+                Find<TweenMap>().Focus(position);
             }
             else
             {
-                position = -SelectManager.Ship.Location.Position;
+                if (SelectManager.Ship.Location.System == SelectManager.System)
+                {
+                    Find<TweenMap>().Focus(position);
+                }
+                else if (SelectManager.Ship.Location.System == null)
+                {
+                    Find<Galaxy>().Open(() => Find<TweenMap>().Focus(position));
+                }
+                else
+                {
+                    Find<Systema>().Open(() => SelectManager.SelectSystem(SelectManager.Ship.Location.System), () => Find<TweenMap>().Focus(position));
+                }
             }
-
-            FindObjectOfType<TweenMap>().Focus(position);
         }
     }
 }

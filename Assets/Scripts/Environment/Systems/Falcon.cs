@@ -14,13 +14,7 @@ namespace Assets.Scripts.Environment.Systems
             Color = ColorHelper.GetColor("#99FF33", 180),
             Locations = new List<Location>
             {
-                new Gates
-                {
-                    Name = Env.SystemNames.Phoenix,
-                    ConnectedSystem = Env.SystemNames.Phoenix,
-                    Position = new Vector2(200, 400),
-                    Image = "G01"
-                }
+                new Gates { ConnectedSystem = Env.SystemNames.Phoenix }
             }
         };
     }
