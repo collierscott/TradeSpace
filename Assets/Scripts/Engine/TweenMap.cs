@@ -10,15 +10,11 @@ namespace Assets.Scripts.Engine
         public GameObject Background;
 
         private const float Duration = 0.25f;
-        private const float MovePerspective = 0.5f;
-        private const float ScalePerspective = 0.25f;
+        private const float FocusPerspective = 0.5f;
 
         private bool _pressed;
-        private Vector3 _mouse;
-        private Vector3 _map;
-        private Vector3 _background;
-        private float _scaleGalaxy = 1;
-        private float _scaleSystem = 1;
+        private Vector3 _mouse, _map, _background;
+        private float _scaleGalaxy = 1, _scaleSystem = 1;
 
         public void Update()
         {
@@ -33,7 +29,7 @@ namespace Assets.Scripts.Engine
             {
                 const float speed = 2.5f;
                 var scaleEnv = Environment.transform.localScale.x + scroll * speed;
-                var scaleBack = Background.transform.localScale.x + ScalePerspective * scroll * speed;
+                var scaleBack = Background.transform.localScale.x + 0.25f * scroll * speed;
 
                 scaleEnv = Mathf.Min(1.500f, Mathf.Max(0.500f, scaleEnv));
                 scaleBack = Mathf.Min(1.125f, Mathf.Max(0.875f, scaleBack));
@@ -57,9 +53,13 @@ namespace Assets.Scripts.Engine
                 {
                     delta = GalaxyBounds(delta);
                 }
+                else
+                {
+                    delta = SystemBounds(delta);
+                }
 
                 Environment.transform.localPosition = _map + delta;
-                Background.transform.localPosition = _background + MovePerspective * delta;
+                Background.transform.localPosition = _background + FocusPerspective * delta;
             }
             else if (Input.GetKeyDown(KeyCode.Mouse0))
             {
@@ -90,7 +90,7 @@ namespace Assets.Scripts.Engine
             var pos = Scale * new Vector3(position.x, position.y, -1);
             var delta = pos - Environment.transform.localPosition;
 
-            TweenPosition.Begin(Background, Duration, Background.transform.localPosition + MovePerspective * delta);
+            TweenPosition.Begin(Background, Duration, Background.transform.localPosition + FocusPerspective * delta);
             TweenPosition.Begin(Environment, Duration, pos);
         }
 
@@ -112,9 +112,22 @@ namespace Assets.Scripts.Engine
 
         private Vector3 GalaxyBounds(Vector3 delta)
         {
-            var xBounds = new Vector2(-1000, 1000) * Scale; // Inverted!
+            var xBounds = new Vector2(-1000, 1000) * Scale;
             var yBounds = new Vector2(-1500, 1000) * Scale;
 
+            return FixDelta(delta, xBounds, yBounds);
+        }
+
+        private Vector3 SystemBounds(Vector3 delta)
+        {
+            var xBounds = new Vector2(-500, 500) * Scale;
+            var yBounds = new Vector2(-500, 500) * Scale;
+
+            return FixDelta(delta, xBounds, yBounds);
+        }
+
+        private Vector3 FixDelta(Vector3 delta, Vector2 xBounds, Vector2 yBounds)
+        {
             if ((_map.x + delta.x) > xBounds.y)
             {
                 delta.x = xBounds.y - _map.x;
@@ -132,6 +145,7 @@ namespace Assets.Scripts.Engine
             {
                 delta.y = yBounds.x - _map.y;
             }
+
             return delta;
         }
     }
