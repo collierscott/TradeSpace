@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Behaviour;
+using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Views;
 
@@ -16,24 +17,25 @@ namespace Assets.Scripts.Engine
 
         public static void SelectShip(string uniqName)
         {
-            //UnityEngine.Debug.Log("Select ship: " + uniqName);
+            Log.Debug("Selecting ship {0}", uniqName);
+
             Profile.Instance.SelectedShip = uniqName;
             FindObjectOfType<IngameMenu>().Refresh();
             FindObjectOfType<Status>().Refresh();
             FindObjectOfType<Cargo>().Refresh();
 
-            if (Base.Current is Galaxy || Base.Current is Views.System)
+            if (UIScreen.Current is Galaxy || UIScreen.Current is Views.System)
             {
                 FindObjectOfType<Route>().Refresh();
             }
-            else if (Base.Current is BaseShop)
+            else if (UIScreen.Current is BaseShop)
             {
-                (Base.Current as BaseShop).Reload();
+                (UIScreen.Current as BaseShop).Reload();
             }
-            else if (Base.Current is Workshop)
-            {
-                (Base.Current as Workshop).Reload();
-            }
+            //else if (Base.Current is Workshop)
+            //{
+            //    (Base.Current as Workshop).Reload();
+            //}
         }
 
         public static void SelectSystem(string system)

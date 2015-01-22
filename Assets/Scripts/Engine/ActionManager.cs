@@ -20,21 +20,21 @@ namespace Assets.Scripts.Engine
 
         public void CloseScreen()
         {
-            if (Base.Current == null) return;
+            if (UIScreen.Current == null) return;
 
-            if (Base.Current is Views.System)
+            if (UIScreen.Current is Views.System)
             {
                 GetComponent<Galaxy>().Open();
             }
-            else if (Base.Current is Planet || Base.Current is Station || Base.Current is Asteroid)
+            else if (UIScreen.Current is Planet || UIScreen.Current is Station || UIScreen.Current is Asteroid)
             {
                 GetComponent<Views.System>().Open();
             }
-            else if (Base.Current is Shop
-                || Base.Current is EquipmentShop || Base.Current is Workshop
-                || Base.Current is Storage || Base.Current is ShipShop)
+            else if (UIScreen.Current is Shop
+                || UIScreen.Current is EquipmentShop || UIScreen.Current is Workshop
+                || UIScreen.Current is Storage || UIScreen.Current is ShipShop)
             {
-                Base.Previous.Open();
+                UIScreen.Prev.Open();
             }
         }
 
@@ -53,16 +53,16 @@ namespace Assets.Scripts.Engine
 
         public void OpenView(string view)
         {
-            ((Base) GetComponent(view)).Open();
+            ((UI) GetComponent(view)).Open();
         }
 
         public void Open()
         {
-            if (Base.Current is Galaxy)
+            if (UIScreen.Current is Galaxy)
             {
                 GetComponent<Views.System>().Open();
             }
-            else if (Base.Current is Views.System && GetComponent<IngameMenu>().OpenButton.Enabled)
+            else if (UIScreen.Current is Views.System && GetComponent<IngameMenu>().OpenButton.Enabled)
             {
                 if (SelectManager.Location is Data.Planet)
                 {

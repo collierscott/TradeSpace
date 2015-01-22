@@ -1,11 +1,12 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Assets.Scripts.Common
 {
     public static class ColorHelper
     {
-        public static Color GetColor(string hex)
+        public static Color GetColor(string hex, int a = 255)
         {
             const string pattern = "^#{0,1}(?<value>[A-Fa-f0-9]{6})$";
 
@@ -15,7 +16,7 @@ namespace Assets.Scripts.Common
             var g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
             var b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
-            return new Color32(r, g, b, 255);
+            return new Color32(r, g, b, Convert.ToByte(a));
         }
 
         public static Color GetColor(int r, int g, int b)

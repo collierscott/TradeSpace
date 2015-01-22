@@ -99,7 +99,7 @@ public class UICenterOnChild : MonoBehaviour
 
 		// Offset this value by the momentum
 		Vector3 pickingPoint = panelCenter - mScrollView.currentMomentum * (mScrollView.momentumAmount * 0.1f);
-		mScrollView.currentMomentum = Vector3.zero;
+        mScrollView.currentMomentum = Vector3.zero;
 
 		float min = float.MaxValue;
 		Transform closest = null;

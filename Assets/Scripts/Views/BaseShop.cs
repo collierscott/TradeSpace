@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public abstract class BaseShop : BaseScreen
+    public abstract class BaseShop : UIScreen
     {
         public Transform ShopGroup;
         public Transform ShipGroup;
@@ -87,7 +87,7 @@ namespace Assets.Scripts.Views
             }
         }
 
-        private void Refresh()
+        protected virtual void Refresh()
         {
             foreach (var item in LocationItems.Values)
             {

@@ -52,11 +52,11 @@ namespace Assets.Scripts.Behaviour
                 _ship.State = ShipState.Ready;
             }
 
-            if (Base.Current is Views.System && Location.System != SelectManager.System)
+            if (UIScreen.Current is Views.System && Location.System != SelectManager.System)
             {
                 Hide();
             }
-            else if (Base.Current is Galaxy && Location.System != null)
+            else if (UIScreen.Current is Galaxy && Location.System != null)
             {
                 ShowStatic(Location);
             }

@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Behaviour;
+using Assets.Scripts.Common;
 using Assets.Scripts.Engine;
 using Assets.Scripts.Enums;
 using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class ShipSelect : Base
+    public class ShipSelect : UI
     {
         private readonly List<ShipButton> _buttons = new List<ShipButton>(); 
 
@@ -17,7 +18,7 @@ namespace Assets.Scripts.Views
             {
                 var ship = Ships.ShipBehaviours[button.UniqName];
 
-                if (Current is Galaxy || Current is System)
+                if (UIScreen.Current is Galaxy || UIScreen.Current is System)
                 {
                     button.Button.Enabled = true;
                     button.GetComponent<UIWidget>().alpha = 1;
@@ -36,21 +37,26 @@ namespace Assets.Scripts.Views
         {
             for (var i = 0; i < Profile.Instance.Ships.Count; i++)
             {
-                var selector = PrefabsHelper.InstantiateShipButton(Camera.main.transform);
-                var button = selector.GetComponentInChildren<ShipButton>();
+                var uniqName = Profile.Instance.Ships.ElementAt(i).Key;
+                var instance = PrefabsHelper.InstantiateShipButton(Camera.main.transform);
+                var button = instance.GetComponent<ShipButton>();
 
-                selector.transform.parent = Panel;
-                selector.transform.localPosition = new Vector2(0, 110 * ((Profile.Instance.Ships.Count - 1) / 2f) - 110 * i);
-                button.Initialize(Profile.Instance.Ships.ElementAt(i).Key);
-
+                instance.name += "#" + uniqName;
+                instance.transform.parent = Panel;
+                instance.transform.localPosition = new Vector2(75, 150 * ((Profile.Instance.Ships.Count - 1) / 2f) - 150 * i);
+                button.Initialize(uniqName);
                 _buttons.Add(button);
             }
         }
 
         protected override void Cleanup()
         {
+            foreach (var button in _buttons)
+            {
+                Destroy(button.gameObject);
+            }
+
             _buttons.Clear();
-            Panel.Clear();
         }
     }
 }

@@ -2,14 +2,14 @@
 
 namespace Assets.Scripts.Views
 {
-    public class Status : Base
+    public class Status : UI
     {
         public UILabel ShipName;
         public UILabel Credits;
         
         public void Refresh()
         {
-            if (Current is ShipShop)
+            if (UIScreen.Current is ShipShop)
             {
                 ShipName.text = null;
             }

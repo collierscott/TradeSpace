@@ -5,7 +5,7 @@ using Assets.Scripts.Environment;
 
 namespace Assets.Scripts.Views
 {
-    public class Galaxy : BaseScreen
+    public class Galaxy : UIScreen
     {
         public UISprite Background;
 

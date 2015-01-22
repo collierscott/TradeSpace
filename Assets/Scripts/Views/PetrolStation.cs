@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Views
 {
-    public class PetrolStation : BaseScreen
+    public class PetrolStation : UIScreen
     {
     }
 }

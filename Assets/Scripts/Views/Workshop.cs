@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class Workshop : BaseScreen
+    public class Workshop : UIScreen
     {
         public Transform InstalledTransform;
         public Transform EquipmentTransform;

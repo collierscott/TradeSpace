@@ -13,14 +13,17 @@ namespace Assets.Scripts.Common
 
         public static void SetText(this UILabel label, string text, params object[] args)
         {
-            text = string.Format(text, args);
+            if (text != null)
+            {
+                text = string.Format(text, args);
 
-            text = text.Replace("[grey]", "[505050]");
-            text = text.Replace("[red]", "[c83232]");
-            text = text.Replace("[blue]", "[006464]");
-            text = text.Replace("[green]", "[009600]");
-            text = text.Replace("[violet]", "[c832c8]");
-            text = text.Replace("[orange]", "[ce9000]");
+                text = text.Replace("[grey]", "[505050]");
+                text = text.Replace("[red]", "[c83232]");
+                text = text.Replace("[blue]", "[006464]");
+                text = text.Replace("[green]", "[009600]");
+                text = text.Replace("[violet]", "[c832c8]");
+                text = text.Replace("[orange]", "[ce9000]");
+            }
 
             var scale = label.transform.localScale;
 

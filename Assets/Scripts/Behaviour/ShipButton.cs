@@ -1,9 +1,10 @@
-﻿using Assets.Scripts.Common;
+﻿using System;
+using System.Linq;
+using Assets.Scripts.Common;
 using Assets.Scripts.Engine;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Environment;
 using Assets.Scripts.Views;
-using UnityEngine;
 
 namespace Assets.Scripts.Behaviour
 {
@@ -14,6 +15,7 @@ namespace Assets.Scripts.Behaviour
         public UISprite State;
         public UISprite Mass;
         public UISprite Volume;
+        public UILabel Timer;
 
         public string UniqName { get; private set; }
 
@@ -27,24 +29,37 @@ namespace Assets.Scripts.Behaviour
                 Button.Pressed = true;
             }
 
-            var ship = new PlayerShip(Profile.Instance.Ships[UniqName]);
-
             Image.spriteName = Env.ShipDatabase[Profile.Instance.Ships[UniqName].Id].Image;
-            Mass.transform.localScale = new Vector2(1, (float) ship.CargoMass / ship.Mass);
-            Volume.transform.localScale = new Vector2(1, (float) ship.CargoVolume / ship.Volume);
         }
 
         public void Update()
         {
-            switch (Ships.ShipBehaviours[UniqName].State)
+            var ship = Profile.Instance.Ships[UniqName];
+
+            if (ship.State == ShipState.InFlight)
             {
-                case ShipState.InFlight:
-                    State.color = Color.yellow;
-                    break;
-                default:
-                    State.color = Color.green;
-                    break;
+                var departure = ship.Route.First().Time;
+                var arrival = ship.Route.Last().Time;
+                var left = arrival - DateTime.UtcNow;
+
+                if (left.TotalSeconds < 0)
+                {
+                    left = TimeSpan.FromSeconds(0);
+                }
+
+                Timer.SetText(string.Format("{0}:{1:D2}:{2:D2}", Math.Floor(left.TotalHours), left.Minutes, left.Seconds));
+                State.fillAmount = (float) (left.TotalSeconds / (arrival - departure).TotalSeconds);
             }
+            else
+            {
+                State.fillAmount = 0;
+                Timer.SetText(null);
+            }
+
+            var playerShip = new PlayerShip(ship);
+
+            Mass.fillAmount = 0.5f + 0.5f * playerShip.CargoMass / playerShip.Mass;
+            Volume.fillAmount = 0.5f + 0.5f * playerShip.CargoVolume / playerShip.Volume;
         }
     }
 }

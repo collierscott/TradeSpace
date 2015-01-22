@@ -59,7 +59,7 @@ namespace Assets.Scripts
 
         public static void Load()
         {
-            Debug.Log("Loading profile...");
+            Log.Debug("Loading profile...");
 
             //if (PlayerPrefs.HasKey(ProfileKey))
             if (false)
@@ -81,7 +81,7 @@ namespace Assets.Scripts
             }
             else
             {
-                Debug.Log("Creating new profile...");
+                Log.Debug("Creating new profile...");
 
                 _instance = CreateInstance();
             }
@@ -182,12 +182,12 @@ namespace Assets.Scripts
                     {
                         { "0", new MemoShip { Id = ShipId.Rhino } },
                         { "1", new MemoShip { Id = ShipId.Rover } },
-                        { "2", new MemoShip { Id = ShipId.Rhino } },
-                        { "3", new MemoShip { Id = ShipId.Rover } }
+                        //{ "2", new MemoShip { Id = ShipId.Rhino } },
+                        //{ "3", new MemoShip { Id = ShipId.Rover } }
                     }
             };
 
-            instance.Ships["0"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
+            instance.Ships["0"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["Highway to Hell"].ToRouteNode() };
             instance.Ships["0"].Goods = new List<MemoGoods>
             {
                 new MemoGoods { Id = GoodsId.Water, Quantity = 10 },
@@ -205,29 +205,33 @@ namespace Assets.Scripts
                 new MemoInstalledEquipment { Id = EquipmentId.LaserDrill100, Index = 2 }
             };
 
-            instance.Ships["1"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
+            instance.Ships["1"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["Ketania"].ToRouteNode() };
             instance.Ships["1"].InstalledEquipment = new List<MemoInstalledEquipment>
             {
-                //new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 }
+                new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 }
+            };
+            instance.Ships["1"].Goods = new List<MemoGoods>
+            {
+                new MemoGoods { Id = GoodsId.Fish, Quantity = 20 }
             };
 
-            instance.Ships["2"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Highway to Hell"].ToRouteNode() };
-            instance.Ships["2"].InstalledEquipment = new List<MemoInstalledEquipment>
-            {
-                //new MemoInstalledEquipment {Id = EquipmentId.JetEngine100, Index = 0}
-            };
+            //instance.Ships["2"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["Highway to Hell"].ToRouteNode() };
+            //instance.Ships["2"].InstalledEquipment = new List<MemoInstalledEquipment>
+            //{
+            //    //new MemoInstalledEquipment {Id = EquipmentId.JetEngine100, Index = 0}
+            //};
 
-            instance.Ships["3"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Andromeda]["Ketania"].ToRouteNode() };
-            instance.Ships["3"].Goods = new List<MemoGoods>
-            {
-                new MemoGoods { Id = GoodsId.Ferrum, Quantity = 10 },
-            };
-            instance.Ships["3"].Equipment = new List<MemoEquipment>();
-            instance.Ships["3"].InstalledEquipment = new List<MemoInstalledEquipment>
-            {
-                new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
-                new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 1 }
-            };
+            //instance.Ships["3"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["Ketania"].ToRouteNode() };
+            //instance.Ships["3"].Goods = new List<MemoGoods>
+            //{
+            //    new MemoGoods { Id = GoodsId.Ferrum, Quantity = 10 },
+            //};
+            //instance.Ships["3"].Equipment = new List<MemoEquipment>();
+            //instance.Ships["3"].InstalledEquipment = new List<MemoInstalledEquipment>
+            //{
+            //    new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
+            //    new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 1 }
+            //};
 
             return instance;
         }

@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Views
 {
-    public class Lab : BaseScreen
+    public class Lab : UIScreen
     {
     }
 }

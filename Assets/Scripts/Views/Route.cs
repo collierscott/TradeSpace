@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class Route : Base
+    public class Route : UI
     {
         public float Speed = 2;
         public float Delay = 1;
@@ -22,7 +22,7 @@ namespace Assets.Scripts.Views
             var route = SelectManager.Ship.Trace.Count > 0 ? SelectManager.Ship.Trace : SelectManager.Ship.Route;
             List<Vector2> polyline;
 
-            if (Current is Galaxy)
+            if (UIScreen.Current is Galaxy)
             {
                 polyline = route.Select(i => i.System).Distinct().Select(i => Env.Galaxy[i].Position).ToList();
 
@@ -34,7 +34,7 @@ namespace Assets.Scripts.Views
                     }
                 }
             }
-            else if (Current is System)
+            else if (UIScreen.Current is System)
             {
                 polyline = route.Where(i => i.System == SelectManager.System).Select(i => i.Position).ToList();
 
@@ -49,7 +49,7 @@ namespace Assets.Scripts.Views
             }
             else
             {
-                throw new Exception(Current.GetType().Name);
+                throw new Exception(UIScreen.Current.GetType().Name);
             }
 
             if (polyline.Count >= 2)

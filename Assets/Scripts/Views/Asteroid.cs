@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class Asteroid : BaseScreen
+    public class Asteroid : UIScreen
     {
         private class AstPart
         {

@@ -11,8 +11,9 @@ namespace Assets.Scripts.Engine
         public void Awake()
         {
             Env.Initialize();
-            SelectManager.SelectSystem(Env.SystemNames.Andromeda);
+            SelectManager.SelectSystem(Env.SystemNames.Alpha);
             GetComponent<Galaxy>().Open();
+            GetComponent<TweenMap>().Set(-Env.Galaxy[SelectManager.System].Position, 1);
         }
 
 

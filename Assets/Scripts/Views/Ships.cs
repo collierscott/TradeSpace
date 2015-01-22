@@ -3,7 +3,7 @@ using Assets.Scripts.Behaviour;
 
 namespace Assets.Scripts.Views
 {
-    public class Ships : Base
+    public class Ships : UI
     {
         public static readonly Dictionary<string, ShipBehaviour> ShipBehaviours = new Dictionary<string, ShipBehaviour>();
 

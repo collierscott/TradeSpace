@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Assets.Scripts.Data;
 using Assets.Scripts.Engine;
 
@@ -52,7 +51,7 @@ namespace Assets.Scripts.Views
 
         protected override long GetPrice(GenericShopItem item, bool sell)
         {
-            throw new NotImplementedException();
+            return 0;
         }
     }
 }

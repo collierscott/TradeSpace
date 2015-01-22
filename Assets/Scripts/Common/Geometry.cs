@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Common
 {
@@ -6,31 +7,47 @@ namespace Assets.Scripts.Common
     {
         public static bool IntersectionLineCircle(Vector2 center, float radius, Vector2 start, Vector2 end)
         {
-            if (Vector2.Distance(center, start) <= radius || Vector2.Distance(center, end) <= radius)
+            Vector2 intersection1, intersection2;
+
+            return FindLineCircleIntersections(center, radius, start, end, out intersection1, out intersection2) > 0;
+        }
+
+        public static int FindLineCircleIntersections(Vector2 center, float radius, Vector2 start, Vector2 end, out Vector2 intersection1, out Vector2 intersection2)
+        {
+            var dx = end.x - start.x;
+            var dy = end.y - start.y;
+            var a = dx * dx + dy * dy;
+            var b = 2 * (dx * (start.x - center.x) + dy * (start.y - center.y));
+            var c = (start.x - center.x) * (start.x - center.x) + (start.y - center.y) * (start.y - center.y) - radius * radius;
+            var det = b * b - 4 * a * c;
+
+            if ((a <= 0.0000001) || (det < 0))
             {
-                return true;
+                intersection1 = new Vector2(float.NaN, float.NaN);
+                intersection2 = new Vector2(float.NaN, float.NaN);
+
+                return 0;
             }
 
-            var x = center.x;
-            var y = center.y;
-
-            var x0 = start.x;
-            var y0 = start.y;
-
-            var x1 = end.x;
-            var y1 = end.y;
-
-            var d = ((y0 - y1) * x + (x1 - x0) * y + (x0 * y1 - x1 * y0)) / Mathf.Sqrt(Mathf.Pow((x1 - x0), 2) + Mathf.Pow((y1 - y0), 2));
-
-            if (d > radius)
+            if (det == 0)
             {
-                return false;
+                var t = -b / (2 * a);
+
+                intersection1 = new Vector2(start.x + t * dx, start.y + t * dy);
+                intersection2 = new Vector2(float.NaN, float.NaN);
+
+                return 1;
             }
+            else
+            {
+                var t = (float)((-b + Math.Sqrt(det)) / (2 * a));
+                
+                intersection1 = new Vector2(start.x + t * dx, start.y + t * dy);
+                t = (float)((-b - Math.Sqrt(det)) / (2 * a));
+                intersection2 = new Vector2(start.x + t * dx, start.y + t * dy);
 
-            var a = Vector2.Angle(end, end - start);
-            var b = Vector2.Angle(start, start - end);
-
-            return a < 90 && b < 90;
+                return 2;
+            }
         }
     }
 }

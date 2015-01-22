@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Views
 {
-    public class IngameMenu : Base
+    public class IngameMenu : UI
     {
         public GameButton InfoButton;
         public GameButton OpenButton;
@@ -104,23 +104,23 @@ namespace Assets.Scripts.Views
 
             var buttons = new List<GameButton>();
 
-            if (Current is Galaxy)
+            if (UIScreen.Current is Galaxy)
             {
                 buttons = GalaxyButtons;
             }
-            else if (Current is System)
+            else if (UIScreen.Current is System)
             {
                 buttons = SystemButtons;
             }
-            else if (Current is Planet)
+            else if (UIScreen.Current is Planet)
             {
                 buttons = PlanetButtons;
             }
-            else if (Current is Station)
+            else if (UIScreen.Current is Station)
             {
                 buttons = StationButtons;
             }
-            else if (Current is Asteroid)
+            else if (UIScreen.Current is Asteroid)
             {
                 buttons = AsteroidButtons;  
             }
@@ -138,11 +138,11 @@ namespace Assets.Scripts.Views
 
         public void Refresh()
         {
-            if (Current is Galaxy)
+            if (UIScreen.Current is Galaxy)
             {
                 OpenButton.Enabled = SelectManager.System != null;
             }
-            else if (Current is System)
+            else if (UIScreen.Current is System)
             {
                 InfoButton.Enabled = SelectManager.Location != null;
 
