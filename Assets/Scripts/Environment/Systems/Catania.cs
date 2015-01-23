@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment.Systems
         public static SpaceSystem Catania = new SpaceSystem
         {
             Name = Env.SystemNames.Catania,
-            Position = new Vector2(1600, 40),
+            Position = new Vector2(1700, 0),
             Color = ColorHelper.GetColor("#00CCFF", 180),
             Locations = new List<Location>
             {

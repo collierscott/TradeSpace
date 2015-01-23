@@ -7,13 +7,14 @@ namespace Assets.Scripts.Environment.Systems
 {
     public partial class SpaceSystems
     {
-        public static SpaceSystem Eta = new SpaceSystem
+        public static SpaceSystem Neon = new SpaceSystem
         {
-            Name = Env.SystemNames.Eta,
-            Position = new Vector2(-650, 200),
-            Color = ColorHelper.GetColor("#CC9900", 180),
+            Name = Env.SystemNames.Neon,
+            Position = new Vector2(-1700, 1400),
+            Color = ColorHelper.GetColor("#00FF40", 180),
             Locations = new List<Location>
             {
+                new Gates { ConnectedSystem = Env.SystemNames.Flovex }
             }
         };
     }

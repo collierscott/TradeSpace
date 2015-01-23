@@ -10,12 +10,12 @@ namespace Assets.Scripts.Engine
         public GameObject Background;
 
         private const float Duration = 0.25f;
-        private const float FocusPerspective = 0.5f;
+        private const float MovePerspective = 0.5f;
+        private const float ScalePerspective = 0.25f;
 
         private bool _pressed;
         private Vector3 _mouse, _map, _background;
-        private float _scaleGalaxy = 1, _scaleSystem = 1;
-
+        
         public void Update()
         {
             if (!(UIScreen.Current is Galaxy || UIScreen.Current is Systema))
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Engine
             {
                 const float speed = 2.5f;
                 var scaleEnv = Environment.transform.localScale.x + scroll * speed;
-                var scaleBack = Background.transform.localScale.x + 0.25f * scroll * speed;
+                var scaleBack = Background.transform.localScale.x + ScalePerspective * scroll * speed;
 
                 scaleEnv = Mathf.Min(1.500f, Mathf.Max(0.500f, scaleEnv));
                 scaleBack = Mathf.Min(1.125f, Mathf.Max(0.875f, scaleBack));
@@ -59,7 +59,7 @@ namespace Assets.Scripts.Engine
                 }
 
                 Environment.transform.localPosition = _map + delta;
-                Background.transform.localPosition = _background + FocusPerspective * delta;
+                Background.transform.localPosition = _background + MovePerspective * delta;
             }
             else if (Input.GetKeyDown(KeyCode.Mouse0))
             {
@@ -81,18 +81,25 @@ namespace Assets.Scripts.Engine
 
         public void Set(Vector2 position)
         {
-            Environment.transform.localPosition = new Vector3(position.x, position.y, -1);
-            Environment.transform.localScale = Scale * Vector2.one;
+            var deltaPosition = (Vector3) (position * Scale - (Vector2) Environment.transform.localPosition);
+            var deltaScale = (Vector3) (Scale * Vector2.one - (Vector2) Environment.transform.localScale);
+
+            Environment.transform.localPosition += deltaPosition;
+            Background.transform.localPosition += MovePerspective * deltaPosition;
+
+            Environment.transform.localScale += deltaScale;
+            Background.transform.localScale += ScalePerspective * deltaScale;
         }
 
         public void Focus(Vector2 position)
         {
-            var pos = Scale * new Vector3(position.x, position.y, -1);
-            var delta = pos - Environment.transform.localPosition;
+            var deltaPosition = (Vector3) (position * Scale - (Vector2) Environment.transform.localPosition);
 
-            TweenPosition.Begin(Background, Duration, Background.transform.localPosition + FocusPerspective * delta);
-            TweenPosition.Begin(Environment, Duration, pos);
+            TweenPosition.Begin(Environment, Duration, Environment.transform.localPosition + deltaPosition);
+            TweenPosition.Begin(Background, Duration, Background.transform.localPosition + MovePerspective * deltaPosition);
         }
+
+        private float _scaleGalaxy = 0.5f, _scaleSystem = 1;
 
         private float Scale
         {
@@ -112,8 +119,8 @@ namespace Assets.Scripts.Engine
 
         private Vector3 GalaxyBounds(Vector3 delta)
         {
-            var xBounds = new Vector2(-2000, 1000) * Scale;
-            var yBounds = new Vector2(-1500, 1000) * Scale;
+            var xBounds = new Vector2(-2000, 2000) * Scale;
+            var yBounds = new Vector2(-1500, 1500) * Scale;
 
             return FixDelta(delta, xBounds, yBounds);
         }

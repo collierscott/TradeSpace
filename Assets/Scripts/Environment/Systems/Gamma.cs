@@ -15,7 +15,8 @@ namespace Assets.Scripts.Environment.Systems
             Locations = new List<Location>
             {
                 new Gates { ConnectedSystem = Env.SystemNames.Beta }, 
-                new Gates { ConnectedSystem = Env.SystemNames.Delta }
+                new Gates { ConnectedSystem = Env.SystemNames.Delta },
+                new Gates { ConnectedSystem = Env.SystemNames.Spider }, 
             }
         };
     }
