@@ -14,6 +14,9 @@ namespace Assets.Scripts.Environment.Systems
             Color = ColorHelper.GetColor("#CC9900", 180),
             Locations = new List<Location>
             {
+                new Gates { ConnectedSystem = Env.SystemNames.Theta },
+                new Gates { ConnectedSystem = Env.SystemNames.Zeta },
+                new Gates { ConnectedSystem = Env.SystemNames.Vortex }
             }
         };
     }

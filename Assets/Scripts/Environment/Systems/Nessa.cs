@@ -7,16 +7,15 @@ namespace Assets.Scripts.Environment.Systems
 {
     public partial class SpaceSystems
     {
-        public static SpaceSystem Delta = new SpaceSystem
+        public static SpaceSystem Nessa = new SpaceSystem
         {
-            Name = Env.SystemNames.Delta,
-            Position = new Vector2(300, -640),
-            Color = ColorHelper.GetColor("#9933FF", 180),
+            Name = Env.SystemNames.Nessa,
+            Position = new Vector2(-440, -980),
+            Color = ColorHelper.GetColor("#ACFA58", 180),
             Locations = new List<Location>
             {
-                new Gates { ConnectedSystem = Env.SystemNames.Gamma },
                 new Gates { ConnectedSystem = Env.SystemNames.Epsilon },
-                new Gates { ConnectedSystem = Env.SystemNames.Mio }
+                new Gates { ConnectedSystem = Env.SystemNames.Felis }
             }
         };
     }

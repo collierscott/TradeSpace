@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment.Systems
         public static SpaceSystem Alan = new SpaceSystem
         {
             Name = Env.SystemNames.Alan,
-            Position = new Vector2(1000, -1080),
+            Position = new Vector2(880, -960),
             Color = ColorHelper.GetColor("#B40486", 180),
             Locations = new List<Location>
             {

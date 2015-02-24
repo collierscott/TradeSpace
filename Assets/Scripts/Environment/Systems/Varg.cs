@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment.Systems
         public static SpaceSystem Varg = new SpaceSystem
         {
             Name = Env.SystemNames.Varg,
-            Position = new Vector2(1800, -570),
+            Position = new Vector2(1720, -500),
             Color = ColorHelper.GetColor("#FA8258", 180),
             Locations = new List<Location>
             {

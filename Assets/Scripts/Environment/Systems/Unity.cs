@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment.Systems
         public static SpaceSystem Unity = new SpaceSystem
         {
             Name = Env.SystemNames.Unity,
-            Position = new Vector2(-120, 1700),
+            Position = new Vector2(-20, 1580),
             Color = ColorHelper.GetColor("#0066FF", 180),
             Locations = new List<Location>
             {

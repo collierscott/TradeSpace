@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment.Systems
         public static SpaceSystem Mono = new SpaceSystem
         {
             Name = Env.SystemNames.Mono,
-            Position = new Vector2(2300, -600),
+            Position = new Vector2(2130, -340),
             Color = ColorHelper.GetColor("#81DAF5", 180),
             Locations = new List<Location>
             {

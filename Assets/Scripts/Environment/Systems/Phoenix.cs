@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment.Systems
         public static SpaceSystem Phoenix = new SpaceSystem
         {
             Name = Env.SystemNames.Phoenix,
-            Position = new Vector2(-360, 1400),
+            Position = new Vector2(-320, 1320),
             Color = ColorHelper.GetColor("#FF4400", 220),
             Locations = new List<Location>
             {

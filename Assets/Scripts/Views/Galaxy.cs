@@ -15,7 +15,10 @@ namespace Assets.Scripts.Views
 
             foreach (var location in Env.Galaxy.Values)
             {
-                PrefabsHelper.InstantiateSystem(Panel).GetComponent<SystemButton>().Initialize(location);
+                var instance = PrefabsHelper.InstantiateSystem(Panel);
+
+                instance.name = location.Name;
+                instance.GetComponent<SystemButton>().Initialize(location);
 
                 foreach (var system in Env.Routes[location.System].Keys)
                 {

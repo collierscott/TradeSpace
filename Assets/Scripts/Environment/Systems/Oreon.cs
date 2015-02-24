@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment.Systems
         public static SpaceSystem Oreon = new SpaceSystem
         {
             Name = Env.SystemNames.Oreon,
-            Position = new Vector2(-400, 900),
+            Position = new Vector2(-480, 960),
             Color = ColorHelper.GetColor("#FFCC00", 180),
             Locations = new List<Location>
             {

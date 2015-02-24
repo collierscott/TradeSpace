@@ -10,7 +10,7 @@ namespace Assets.Scripts.Environment.Systems
         public static SpaceSystem Sirius = new SpaceSystem
         {
             Name = Env.SystemNames.Sirius,
-            Position = new Vector2(1160, 320),
+            Position = new Vector2(1120, 440),
             Color = ColorHelper.GetColor("#AAAAAA", 180),
             Locations = new List<Location>
             {
