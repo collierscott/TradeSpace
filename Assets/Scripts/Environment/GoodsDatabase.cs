@@ -112,9 +112,9 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.Catalyst,
                 Type = GoodsType.Substance,
-                TechLevel = 0,
                 Name = "Катализатор",
                 Description = "Катализатор используется в промышленности для получения сплавов и композитных материалов",
+                TechLevel = 0,
                 Mass = 2,
                 Volume = 2,
                 Price = 200

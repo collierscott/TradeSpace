@@ -125,11 +125,7 @@ namespace Assets.Scripts
 
             throw new Exception();
         }
-        /// <summary>
-        /// Проверка свободного места
-        /// </summary>
-        /// <param name="goods"></param>
-        /// <returns></returns>
+
         public ShipGoodsCheck CanAddGoods(MemoGoods goods)
         {
             var goodsVolume = Env.GoodsDatabase[goods.Id].Volume * goods.Quantity.Long;
@@ -147,9 +143,11 @@ namespace Assets.Scripts
 
         public void AddGoods(MemoGoods goods)
         {
-            if (_ship.Goods.Contains(goods.Id))
+            var owned = _ship.Goods.SingleOrDefault(i => i.Id == goods.Id);
+
+            if (owned != null)
             {
-                _ship.Goods.Single(goods.Id).Quantity += goods.Quantity;
+                owned.Quantity += goods.Quantity;
             }
             else
             {
@@ -159,9 +157,9 @@ namespace Assets.Scripts
 
         public void RemoveGoods(MemoGoods goods)
         {
-            var item = _ship.Goods.Single(goods.Id);
+            var item = _ship.Goods.Single(i => i.Id == goods.Id);
 
-            if (_ship.Goods.Single(goods.Id).Quantity.Long == 1)
+            if (item.Quantity.Long == 1)
             {
                 _ship.Goods.Remove(item);
             }

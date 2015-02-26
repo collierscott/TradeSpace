@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Enums;
-using Assets.Scripts.Environment;
 
 namespace Assets.Scripts.Data
 {

@@ -90,7 +90,7 @@ namespace Assets.Scripts.Views
 
         public void Install()
         {
-            var equipment = _equipment.Single(_selectedEquipment);
+            var equipment = _equipment.Single(i => i.Id == _selectedEquipment);
 
             if (equipment.Quantity.Long == 1)
             {
@@ -116,9 +116,11 @@ namespace Assets.Scripts.Views
         {
             _installed.RemoveAll(i => i.Id == _selectedEquipment && i.Index == _index);
 
-            if (_equipment.Contains(_selectedEquipment))
+            var item = _equipment.FirstOrDefault(i => i.Id == _selectedEquipment);
+
+            if (item != null)
             {
-                _equipment.Single(_selectedEquipment).Quantity++;
+                item.Quantity++;
             }
             else
             {

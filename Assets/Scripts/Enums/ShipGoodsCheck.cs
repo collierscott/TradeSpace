@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Assets.Scripts.Enums
 {
-    public enum ShipGoodsCheck
+    [Obsolete("Ненужная надстройка, просьба избавиться от нее")]
+    public enum ShipGoodsCheck // TODO: Remove
     {
         Success = 0,
         NoVolume = 1,

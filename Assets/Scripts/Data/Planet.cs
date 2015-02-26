@@ -19,26 +19,17 @@ namespace Assets.Scripts.Data
 
         public long TechLevel
         {
-            get
-            {
-                return Export.Select(i => i.Id).Select(i => Env.GoodsDatabase[i].TechLevel).Max();
-            }
+            get { return Export.Select(i => i.Id).Select(i => Env.GoodsDatabase[i].TechLevel).Max(); }
         }
 
         public long ProductionLevel
         {
-            get
-            {
-                return Export.Select(i => (i.Min + i.Max) / 2).Sum();
-            }
+            get { return Export.Select(i => (i.Min + i.Max) / 2).Sum(); }
         }
 
         public List<GoodsType> ExportType
         {
-            get
-            {
-                return Export.Select(i => Env.GoodsDatabase[i.Id].Type).Distinct().ToList();
-            }
+            get { return Export.Select(i => Env.GoodsDatabase[i.Id].Type).Distinct().ToList(); }
         }
     }
 }

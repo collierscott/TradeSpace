@@ -71,10 +71,10 @@ namespace Assets.Scripts.Views
       
         public void Start()
         {
-            InfoButton.Up += () => ActionManager.ShowInfo(SelectManager.Location);
+            InfoButton.Up += () => Get<ActionManager>().ShowInfo(SelectManager.Location);
             MoveButton.Up += MoveButtonPressed;
-            OpenButton.Up += ActionManager.Open;
-            ReturnButton.Up += ActionManager.CloseScreen;
+            OpenButton.Up += Get<ActionManager>().Open;
+            ReturnButton.Up += Get<ActionManager>().CloseScreen;
             ShopButton.Up += () => GetComponent<Shop>().Open();
             EquipmentShopButton.Up += () => GetComponent<EquipmentShop>().Open();
             HangarButton.Up += () => GetComponent<Workshop>().Open();
@@ -163,15 +163,15 @@ namespace Assets.Scripts.Views
             }
         }
 
-        private static void MoveButtonPressed()
+        private void MoveButtonPressed()
         {
             if (ShipReady)
             {
-                ActionManager.MoveShip(SelectManager.Location);
+                Get<ActionManager>().MoveShip(SelectManager.Location);
             }
             else
             {
-                ActionManager.TraceRoute(SelectManager.Location);
+                Get<ActionManager>().TraceRoute(SelectManager.Location);
             }
         }
 

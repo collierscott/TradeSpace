@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Common;
-using Assets.Scripts.Engine;
 using UnityEngine;
 
 namespace Assets.Scripts.Views
@@ -7,17 +6,7 @@ namespace Assets.Scripts.Views
     public abstract class UI : Script
     {
         public Transform Panel;
-        public static SelectManager SelectManager;
-        public static ActionManager ActionManager;
         public bool Opened { get; private set; }
-
-        public void Awake()
-        {
-            if (SelectManager != null) return;
-
-            SelectManager = GetComponent<SelectManager>();
-            ActionManager = GetComponent<ActionManager>();
-        }
 
         public virtual void Open()
         {

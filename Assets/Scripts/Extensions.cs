@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Data;
-using Assets.Scripts.Enums;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -19,36 +15,6 @@ namespace Assets.Scripts
             {
                 Object.Destroy(child.gameObject);
             }
-        }
-
-        public static bool Contains(this List<MemoGoods> goods, GoodsId id)
-        {
-            return goods.Any(i => i.Id == id);
-        }
-
-        public static MemoGoods Single(this List<MemoGoods> goods, GoodsId id)
-        {
-            return goods.Single(i => i.Id == id);
-        }
-
-        public static MemoGoods SingleOrDefault(this List<MemoGoods> goods, GoodsId id)
-        {
-            return goods.SingleOrDefault(i => i.Id == id);
-        }
-
-        public static bool Contains(this List<MemoEquipment> equipment, EquipmentId id)
-        {
-            return equipment.Any(i => i.Id == id);
-        }
-
-        public static MemoEquipment Single(this List<MemoEquipment> equipment, EquipmentId id)
-        {
-            return equipment.Single(i => i.Id == id);
-        }
-
-        public static MemoEquipment SingleOrDefault(this List<MemoEquipment> equipment, EquipmentId id)
-        {
-            return equipment.SingleOrDefault(i => i.Id == id);
         }
     }
 }
