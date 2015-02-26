@@ -3,210 +3,168 @@ using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Engine;
-using Assets.Scripts.Environment;
-using Assets.Scripts.Views;
 using UnityEngine;
 
 namespace Assets.Scripts.Behaviour
 {
     public class AsteroidPartBehaviour : Script
     {
-        /// <summary>
-        /// Режим работы с жизнью астеройда
-        /// </summary>
+        public UISprite Image;
+        public UISprite Structure;
+        public GameButton Button;
+        public GameObject Item;
+        public event Action<AsteroidPart, int> Crush = (p, i) => { };
+        public event Action<AsteroidPartBehaviour> Click = p => { };
+        public bool AllowHit = true;
+
         public enum HitMode
         {
             Click,
             Over
         }
 
-        /// <summary>
-        /// Множитель кликов на часть астеройда
-        /// </summary>
         private const float ClickMult = 0.1f;
-
-        public UISprite Image;
-        public UISprite Health;
-        public UISprite HealthBG;
-
-        public GameButton Button;
-
-        public GameObject Transform;
-        public GameObject Item;
-        /// <summary>
-        /// Событие при разбиении части астеройда
-        /// </summary>
-        public event Action<AsteroidPart, int> Crush = (p, i) => { };
-        public event Action<AsteroidPartBehaviour> Click = (p) => { };
-
-        public bool AllowHit = true;
-
         private AsteroidPart _asteroidPart;
         private DrillParams _drillParams;
-        
-        private int _maxClicks = 1000;
-        private int _curClicks = 0;
-        private bool _isMouseDown = false;
-
+        private int _max = 1000;
+        private int _clicks;
+        private bool _pressed;
         private float _maxTimeSec = 1000;
-        private float _curTimeSec = 0;
-        private DateTime _curTime = DateTime.MinValue;
-
-        private PlayerShip _playerShip = null;
-        private int _index = 0;
+        private float _curTimeSec;
+        private DateTime _time = DateTime.MinValue;
+        private PlayerShip _playerShip;
+        private int _index;
 
         private HitMode _hitMode = HitMode.Click;
 
         public void Awake()
         {
-            this.HealthIsVisible = false;
-            Button.Up += Button_Up;
+            UpdateStructure();
+            Button.Up += Dig;
         }
 
-        public bool HealthIsVisible
+        private bool CheckContitions()
         {
-            get { return Health.gameObject.activeSelf; }
-            set
-            {
-                HealthBG.gameObject.SetActive(value);
-                Health.gameObject.SetActive(value);
-            }
-        }
-
-        private bool IsValidMassAndVolume()
-        {
-            var ps = new PlayerShip(Profile.Instance.Ship);
-
-            long avaibleMass = ps.Mass - ps.CargoMass;
-            long avaibleVolume = ps.Volume - ps.CargoVolume;
-
-            return _asteroidPart.Volume <= avaibleVolume && _asteroidPart.Mass <= avaibleMass;
-        }
-        private bool IsValidparams()
-        {
-            string errMsg = null;
+            string error = null;
 
             if (_asteroidPart == null)
-                errMsg = "You haven't equipment to dril this asteroid";
-            else if ((int)_asteroidPart.Class > (int)_drillParams.Class)
-                errMsg = "You haven't actual equipment to dril this asteroid class '" + _asteroidPart.Class + "'";
+            {
+                error = "You haven't equipment to dril this asteroid";
+            }
+            else if (_asteroidPart.Class > _drillParams.Class)
+            {
+                error = "You haven't actual equipment to dril this asteroid class '" + _asteroidPart.Class + "'";
+            }
             else
             {
-                var volMassCheck = _playerShip.CanAddGoods(new MemoGoods { Id = _asteroidPart.Mineral, Quantity = _asteroidPart.Quantity });
+                var cargoStatus = _playerShip.GetCargoStatus(new MemoGoods { Id = _asteroidPart.Mineral, Quantity = _asteroidPart.Quantity });
 
-                switch(volMassCheck)
+                switch (cargoStatus)
                 {
-                    case ShipGoodsCheck.NoMass:
-                        errMsg = "You haven't available mass to dril this asteroid. Quantity:" + _asteroidPart.Quantity;
+                    case CargoStatus.NoMass:
+                        error = "You haven't available mass to dril this asteroid. Quantity:" + _asteroidPart.Quantity;
                         break;
-                    case ShipGoodsCheck.NoVolume:
-                        errMsg = "You haven't available volume to dril this asteroid. Quantity:" + _asteroidPart.Quantity;
-                        break;
-                    case ShipGoodsCheck.NoMassAndVolume:
-                        errMsg = "You haven't available mass and volume to dril this asteroid. Quantity:" + _asteroidPart.Quantity;
+                    case CargoStatus.NoVolume:
+                        error = "You haven't available volume to dril this asteroid. Quantity:" + _asteroidPart.Quantity;
                         break;
                 }                
             }
 
-            if (errMsg != null)
-                Find<ActionManager>().ShowInfo("Warning", errMsg);
-                //Debug.LogWarning("DIALOG! " + errMsg);
+            if (error != null)
+            {
+                Find<ActionManager>().ShowInfo("Warning", error);
+            }
 
-            return errMsg==null;
+            return error == null;
         }
-        void Button_Up()
-        {
-            Debug.Log("Asteroid part click Quantity:" + _asteroidPart.Quantity);
 
-            if (!IsValidparams() || _hitMode== HitMode.Over)
+        private void Dig()
+        {
+            Debug.Log("_asteroidPart.Quantity = " + _asteroidPart.Quantity);
+
+            if (!CheckContitions() || _hitMode == HitMode.Over)
+            {
                 return;
+            }
 
             Click(this);
 
-            ShowHealth();
+            if (_clicks == _max) return;
 
-            if (_curClicks == _maxClicks) return;
+            _clicks++;
 
-            _curClicks++;
+            UpdateStructure();
 
-            Update_Health();
-
-            if (_curClicks == _maxClicks)
+            if (_clicks == _max)
             {
                 Crush(_asteroidPart, _index);
                 Item.SetActive(false);
             }
         }
 
-        private void ShowHealth()
+        private void UpdateStructure()
         {
-            if (!this.HealthIsVisible)
-            {
-                var parts = this.gameObject.transform.parent.gameObject.GetComponentsInChildren<AsteroidPartBehaviour>();
-
-                Debug.Log("Parts count=" + parts.Length);
-
-                foreach (var p in parts)
-                    if (p != this)
-                        p.HealthIsVisible = false;
-
-                this.HealthIsVisible = true;
-            }
-        }
-        private void Update_Health()
-        {
-            float value = _hitMode == HitMode.Click ? 1 - 1.0f * _curClicks / _maxClicks : 1 - 1.0f * (_curTimeSec>=0? _curTimeSec:0) / _maxTimeSec;
-            Health.fillAmount = value;
+            var value = _hitMode == HitMode.Click ? 1 - 1.0f * _clicks / _max : 1 - 1.0f * (_curTimeSec>=0? _curTimeSec:0) / _maxTimeSec;
+            
+            Structure.fillAmount = value;
 
             if (value < 0.7f)
-                Health.color = new Color(0.89f, 0.71f, 0.015f);
+            {
+                Structure.color = new Color(0.89f, 0.71f, 0.015f);
+            }
+
             if (value < 0.3f)
-                Health.color = new Color(0.79f, 0.043f, 0.043f);
+            {
+                Structure.color = new Color(0.79f, 0.043f, 0.043f);
+            }
         }
 
         public void Update()
         {
-            if (!_isMouseDown)
-                _isMouseDown = Input.GetMouseButtonDown(0);
-            else
-                _isMouseDown = !Input.GetMouseButtonUp(0);
-
-            if (_hitMode == HitMode.Over && AllowHit && _isMouseDown)
+            if (!_pressed)
             {
-                Debug.Log("Is mouse down");
-                DateTime start = _curTime;
-                DateTime end = DateTime.UtcNow;
-                bool calcTime = false;
+                _pressed = Input.GetMouseButtonDown(0);
+            }
+            else
+            {
+                _pressed = !Input.GetMouseButtonUp(0);
+            }
 
-                if(Button.collider2D.bounds.Contains(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+            if (_hitMode == HitMode.Over && AllowHit && _pressed)
+            {
+                Debug.Log("Pressed");
+
+                var start = _time;
+                var end = DateTime.UtcNow;
+                var calcTime = false;
+
+                if (Button.collider2D.bounds.Contains(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
                 {
                     Debug.Log("Over ...");
-                    if (!IsValidparams()) return;
+                    if (!CheckContitions()) return;
 
-                    if (_curTime != DateTime.MinValue)
+                    if (_time != DateTime.MinValue)
                     {
-                        calcTime = true;                        
+                        calcTime = true;
                     }
-                    _curTime = end;
+                    _time = end;
                 }
                 else
                 {
-                    if (_curTime != DateTime.MinValue)
+                    if (_time != DateTime.MinValue)
                     {
                         calcTime = true;
-                        _curTime = DateTime.MinValue;
+                        _time = DateTime.MinValue;
                     }
                 }
 
-                if(calcTime)
+                if (calcTime)
                 {
-                    ShowHealth();
-
                     TimeSpan delta = end.Subtract(start);
-                    float seconds = 1f* delta.Ticks / TimeSpan.TicksPerSecond;
+                    float seconds = 1f*delta.Ticks/TimeSpan.TicksPerSecond;
                     _curTimeSec += seconds;
 
-                    Update_Health();
+                    UpdateStructure();
                 }
 
                 if (_curTimeSec >= _maxTimeSec)
@@ -216,7 +174,9 @@ namespace Assets.Scripts.Behaviour
                 }
             }
             else
-                _curTime = DateTime.MinValue;
+            {
+                _time = DateTime.MinValue;
+            }
         }
 
         public void SetAsteroidPart(AsteroidPart part, DrillParams drillParams, int index)
@@ -224,11 +184,9 @@ namespace Assets.Scripts.Behaviour
             _index = index;
             _playerShip = new PlayerShip(Profile.Instance.Ship);
             _drillParams = drillParams;
-            _curClicks = 0;
+            _clicks = 0;
             _curTimeSec = 0;
-
             _asteroidPart = part;
-
             CalcData();
         }
 
@@ -238,8 +196,8 @@ namespace Assets.Scripts.Behaviour
 
             if (_hitMode == HitMode.Click)
             {
-                _maxClicks = (int)(ClickMult * _asteroidPart.Structure / _drillParams.Power);
-                Debug.Log(string.Format("Asteroid part clicks:{0}, size:{1}", _maxClicks, _asteroidPart.Size));
+                _max = (int)(ClickMult * _asteroidPart.Structure / _drillParams.Power);
+                Debug.Log(string.Format("Asteroid part clicks:{0}, size:{1}", _max, _asteroidPart.Size));
             }
             else
             {

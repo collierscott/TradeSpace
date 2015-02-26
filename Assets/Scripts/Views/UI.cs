@@ -19,7 +19,7 @@ namespace Assets.Scripts.Views
             enabled = Opened = true;
         }
 
-        public void Close()
+        public virtual void Close()
         {
             Log.Debug("Closing view: {0}", GetType().Name);
             

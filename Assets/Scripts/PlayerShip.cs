@@ -126,19 +126,17 @@ namespace Assets.Scripts
             throw new Exception();
         }
 
-        public ShipGoodsCheck CanAddGoods(MemoGoods goods)
+        public CargoStatus GetCargoStatus(MemoGoods add)
         {
-            var goodsVolume = Env.GoodsDatabase[goods.Id].Volume * goods.Quantity.Long;
-            var goodsMass = Env.GoodsDatabase[goods.Id].Mass*goods.Quantity.Long;
-            var result = ShipGoodsCheck.Success;
+            var volume = Env.GoodsDatabase[add.Id].Volume * add.Quantity.Long;
+            var mass = Env.GoodsDatabase[add.Id].Mass*add.Quantity.Long;
 
-            if (goodsVolume > Volume - CargoVolume)
-                result = ShipGoodsCheck.NoVolume;
+            if (volume > Volume - CargoVolume)
+            {
+                return CargoStatus.NoVolume;
+            }
 
-            if (goodsMass > Mass - CargoMass)
-                result = result== ShipGoodsCheck.Success ? ShipGoodsCheck.NoMass : ShipGoodsCheck.NoMassAndVolume;
-
-            return result;
+            return mass > Mass - CargoMass ? CargoStatus.NoMass : CargoStatus.Ready;
         }
 
         public void AddGoods(MemoGoods goods)

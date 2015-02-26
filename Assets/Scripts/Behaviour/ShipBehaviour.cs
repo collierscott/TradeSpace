@@ -49,6 +49,7 @@ namespace Assets.Scripts.Behaviour
             if (_ship.State == ShipState.InFlight && Location.Name != null)
             {
                 _ship.State = ShipState.Ready;
+                Find<IngameMenu>().Refresh();
                 Find<Route>().Refresh();
             }
 

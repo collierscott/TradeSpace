@@ -96,9 +96,9 @@ namespace Assets.Scripts.Engine
             }
         }
 
-        public void ShowInfo(string title, string message)
+        public void ShowInfo(string subject, string message)
         {
-            GetComponent<DialogManager>().Show(title, message);
+            GetComponent<Dialog>().Open(subject, message);
         }
     }
 }

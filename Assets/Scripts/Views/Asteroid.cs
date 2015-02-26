@@ -10,27 +10,28 @@ namespace Assets.Scripts.Views
 {
     public class Asteroid : UIScreen
     {
+        public UISprite HeatingBar;
+        public GameObject HeatingNode;
+        public UISprite Background;
+
         private class AstPart
         {
             public AsteroidPartBehaviour Apb;
             public long RotationSpeed;
         }
 
-        private bool _isMouseDown = false;
-        private float _curHeatingValue = 0;
+        private bool _isMouseDown;
+        private float _curHeatingValue;
 
         private DateTime _curTime = DateTime.UtcNow;
 
-        private DrillParams _drillParams = null;
+        private DrillParams _drillParams;
         
-        private Data.Asteroid _asteroid = null;
+        private Data.Asteroid _asteroid;
 
-        private PlayerShip _ship = null;
+        private PlayerShip _ship;
 
-        public UISprite HeatingBar;
-        public GameObject HeatingNode;
-
-        public UISprite Background;
+        
 
         private List<AstPart> _astParts = new List<AstPart>();
 
@@ -55,8 +56,6 @@ namespace Assets.Scripts.Views
 
         protected override void Initialize()
         {
-            Debug.Log(Profile.Instance.SelectedShip + " " + Profile.Instance.Ship.InstalledEquipment.Count);
-
             _drillParams = GetDrillParams();
 
             if (_drillParams == null)
@@ -122,8 +121,8 @@ namespace Assets.Scripts.Views
                 part.RotationSpeed = ap.Speed;
 
 
-                apb.Transform.transform.localScale = new Vector3(scale, scale);
-                apb.Transform.transform.localPosition = new Vector3(prevRad + curRad, prevRad + curRad);
+                transform.localScale = new Vector3(scale, scale);
+                transform.localPosition = new Vector3(prevRad + curRad, prevRad + curRad);
 
                 Debug.Log("asteroid:add part scale=" + scale + ", prevRad=" + prevRad + ", curRad=" + curRad+", quantity="+ap.Quantity);
 
@@ -161,28 +160,23 @@ namespace Assets.Scripts.Views
                     Quantity = 1
                 };
 
-                var checkResult = _ship.CanAddGoods(core);
+                var checkResult = _ship.GetCargoStatus(core);
 
-                if(checkResult == Enums.ShipGoodsCheck.Success)
+                if(checkResult == Enums.CargoStatus.Ready)
                 {
                     _ship.AddGoods(core);
                     Find<ActionManager>().ShowInfo("Information", "Congratulations! You got asteroid core:" + core.Id);
                     //Debug.LogWarning("Congratulations! You got asteroid core:" + core.Id);
                 }
-                else if(checkResult == Enums.ShipGoodsCheck.NoMass)
+                else if(checkResult == Enums.CargoStatus.NoMass)
                 {
                     //Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough mass.");
                     Find<ActionManager>().ShowInfo("Warning", "You got asteroid core:" + core.Id + " but you don't have enough mass.");
                 }
-                else if ( checkResult == Enums.ShipGoodsCheck.NoVolume)
+                else if ( checkResult == Enums.CargoStatus.NoVolume)
                 {
                     //Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough volume.");
                     Find<ActionManager>().ShowInfo("Warning", "You got asteroid core:" + core.Id + " but you don't have enough volume.");
-                }
-                else if (checkResult == Enums.ShipGoodsCheck.NoMassAndVolume)
-                {
-                    //Debug.LogWarning("You got asteroid core:" + core.Id + " but you don't have enough volume.");
-                    Find<ActionManager>().ShowInfo("Warning", "You got asteroid core:" + core.Id + " but you don't have enough volume and mass.");
                 }
             }
 
