@@ -79,8 +79,9 @@ namespace Assets.Scripts.Environment.Systems
                     },
                     Ships = new List<ShopShip>
                     {
-                        new ShopShip {Id = ShipId.Rhino, Max = 1, Availability = 0.5f},
-                        new ShopShip {Id = ShipId.Rover, Max = 1, Availability = 0.5f}
+                        new ShopShip { Id = ShipId.ST400, Max = 1, Availability = 1 },
+                        new ShopShip { Id = ShipId.ST500, Max = 1, Availability = 1 },
+                        new ShopShip { Id = ShipId.ST800, Max = 1, Availability = 1 }
                     }
                 },
                 new Asteroid

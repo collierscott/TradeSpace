@@ -2,7 +2,8 @@
 {
     public enum ShipId
     {
-        Rhino,
-        Rover
+        ST400,
+        ST500,
+        ST800,
     }
 }

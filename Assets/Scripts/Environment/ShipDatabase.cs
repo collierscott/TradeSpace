@@ -9,16 +9,16 @@ namespace Assets.Scripts.Environment
         public static Dictionary<ShipId, Ship> ShipDatabase = new Dictionary<ShipId, Ship>
         {
             {
-                ShipId.Rhino,
+                ShipId.ST400,
                 new Ship
                 {
-                    DisplayName = "Rhino",
-                    Image = "Rhino",
-                    Description = "SPACETECH Corporation ST40 \"Rhino\" - popular transport used for short distance shipping.",
-                    Mass = 2000,
-                    Volume = 400,
+                    DisplayName = "ST400",
+                    Image = "ST400",
+                    Description = "SPACETECH Corporation ST500 \"Rover\" - компактная базовая модель транспортного корабля.",
+                    Mass = 1600,
+                    Volume = 320,
                     Price = 10000,
-                    Speed = 40,
+                    Speed = 60,
                     Armor = 0,
                     Shield = 0,
                     EquipmentSlots = 5,
@@ -28,16 +28,16 @@ namespace Assets.Scripts.Environment
                 }
             },
             {
-                ShipId.Rover,
+                ShipId.ST500,
                 new Ship
                 {
-                    DisplayName = "Rover",
-                    Image = "Rover",
-                    Description = "X-Enterprise NGX \"Rover\" - compact base shipping model.",
-                    Mass = 1600,
-                    Volume = 320,
+                    DisplayName = "ST500",
+                    Image = "ST500",
+                    Description = "SPACETECH Corporation ST40 \"Rhino\" - самый распространенный транспорт для перевозок на небольшие расстояния.",
+                    Mass = 2000,
+                    Volume = 400,
                     Price = 12000,
-                    Speed = 60,
+                    Speed = 40,
                     Armor = 0,
                     Shield = 0,
                     EquipmentSlots = 6,
@@ -45,7 +45,26 @@ namespace Assets.Scripts.Environment
                     SupportedEngineTypes = new List<EngineType> { EngineType.Jet },
                     SupportedEngineTopologies = new List<EngineTopology> { EngineTopology.X1 }
                 }
-            }
+            },
+            {
+                ShipId.ST800,
+                new Ship
+                {
+                    DisplayName = "ST800",
+                    Image = "ST800",
+                    Description = "SPACETECH Corporation ST40 \"Hippo\" - последняя модель корпорации с увеличенной грузоподъемностью.",
+                    Mass = 2200,
+                    Volume = 480,
+                    Price = 18000,
+                    Speed = 70,
+                    Armor = 0,
+                    Shield = 0,
+                    EquipmentSlots = 6,
+                    FuelTankCapacity = 20,
+                    SupportedEngineTypes = new List<EngineType> { EngineType.Jet },
+                    SupportedEngineTopologies = new List<EngineTopology> { EngineTopology.X1 }
+                }
+            },
         };
     }
 }

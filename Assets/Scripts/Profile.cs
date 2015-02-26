@@ -106,8 +106,8 @@ namespace Assets.Scripts
                 InitShopsTime = DateTime.UtcNow,
                 Ships = new Dictionary<string, MemoShip>
                     {
-                        { "0", new MemoShip { Id = ShipId.Rhino } },
-                        { "1", new MemoShip { Id = ShipId.Rover } },
+                        { "0", new MemoShip { Id = ShipId.ST500 } },
+                        { "1", new MemoShip { Id = ShipId.ST400 } },
                         //{ "2", new MemoShip { Id = ShipId.Rhino } },
                         //{ "3", new MemoShip { Id = ShipId.Rover } }
                     }
