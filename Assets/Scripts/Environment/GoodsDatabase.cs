@@ -242,6 +242,8 @@ namespace Assets.Scripts.Environment
                 Name = "Шампунь", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Cologne, Type = GoodsType.Health, TechLevel = 0,
                 Name = "Одеколон", Description = "", Mass = 0, Volume = 0, Price = 0 },
+            new Goods { Id = GoodsId.Cosmetics, Type = GoodsType.Health, TechLevel = 0,
+                Name = "Косметика", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
