@@ -8,7 +8,6 @@ namespace Assets.Scripts.Data
         public AsteroidClass Class;
         public DrillType Type;
 
-
         public float ReloadSecs = 1;
         /// <summary>
         /// Максимальная температура нагрева

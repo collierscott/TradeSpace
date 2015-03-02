@@ -8,7 +8,7 @@ namespace Assets.Scripts.Data
 {
     public class Asteroid : Location
     {
-        public List<AsteroidPart> Parts;
+        public List<Lode> Parts;
 
         public List<GoodsId> Minerals
         {
@@ -24,7 +24,7 @@ namespace Assets.Scripts.Data
         }
     }
 
-    public class AsteroidPart
+    public class Lode
     {
         public GoodsId Mineral = GoodsId.Ferrum;
         /// <summary>
@@ -35,6 +35,10 @@ namespace Assets.Scripts.Data
         /// Размер астеройда для отображения
         /// </summary>
         public int Size = 1;
+        /// <summary>
+        /// Радиус вращения
+        /// </summary>
+        public float Radius;
         /// <summary>
         /// Скорость вражения
         /// </summary>

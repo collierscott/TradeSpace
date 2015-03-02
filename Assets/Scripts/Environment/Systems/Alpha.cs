@@ -92,37 +92,41 @@ namespace Assets.Scripts.Environment.Systems
                     Description = "Description",
                     Interference = 0,
                     Radiation = 0,
-                    Parts = new List<AsteroidPart>
+                    Parts = new List<Lode>
                     {
-                        new AsteroidPart
+                        new Lode
                         {
                             Mineral = GoodsId.Ferrum,
                             Class = AsteroidClass.A,
                             Size = 10,
-                            Speed = 10,
+                            Radius = 10,
+                            Speed = 5,
                             Quantity = 10,
                         },
-                        new AsteroidPart
+                        new Lode
                         {
                             Mineral = GoodsId.Titanium,
                             Class = AsteroidClass.B,
                             Size = 5,
+                            Radius = 8,
                             Speed = 20,
                             Quantity = 100,
                         },
-                        new AsteroidPart
+                        new Lode
                         {
                             Mineral = GoodsId.Ferrum,
                             Class = AsteroidClass.A,
                             Size = 20,
+                            Radius = 10,
                             Speed = -10,
                             Quantity = 10,
                         },
-                        new AsteroidPart
+                        new Lode
                         {
                             Mineral = GoodsId.Titanium,
                             Class = AsteroidClass.B,
                             Size = 5,
+                            Radius = 12,
                             Speed = 20,
                             Quantity = 1,
                         },

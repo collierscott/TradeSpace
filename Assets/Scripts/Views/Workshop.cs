@@ -153,7 +153,7 @@ namespace Assets.Scripts.Views
             for (var i = 0; i < _ship.EquipmentSlots; i++)
             {
                 var position = new Vector3(-Step / 2 * (_ship.EquipmentSlots - 1) + Step * i, 0);
-                var cell = PrefabsHelper.InstantiateEquipmentCellButton(InstalledTransform);
+                var cell = PrefabsHelper.InstantiateEquipmentSlotButton(InstalledTransform);
                 var index = i;
 
                 cell.transform.FindChild("Button").GetComponent<SelectButton>().Selected += () => SelectEquipmentCell(index);

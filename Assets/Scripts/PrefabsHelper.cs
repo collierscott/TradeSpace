@@ -7,36 +7,36 @@ namespace Assets.Scripts
 	{
         public static GameObject InstantiateSystem(Transform parent)
         {
-            return Instantiate("System", parent);
+            return Instantiate("SystemButton", parent);
         }
 
         public static GameObject InstantiateStar(Transform parent)
 	    {
-            return Instantiate("Star", parent);
+            return Instantiate("StarButton", parent);
 	    }
 
         public static GameObject InstantiateGates(Transform parent)
         {
-            return Instantiate("Gates", parent);
+            return Instantiate("GatesButton", parent);
         }
 
         public static GameObject InstantiatePlanet(Transform parent)
         {
-            return Instantiate("Planet", parent);
+            return Instantiate("PlanetButton", parent);
         }
 
         public static GameObject InstantiateStation(Transform parent)
         {
-            return Instantiate("Station", parent);
+            return Instantiate("StationButton", parent);
         }
 
         public static GameObject InstantiateAsteroid(Transform parent)
         {
-            return Instantiate("Asteroid", parent);
+            return Instantiate("AsteroidButton", parent);
         }
-        public static GameObject InstantiateAsteroidPart(Transform parent)
+        public static GameObject InstantiateLode(Transform parent)
         {
-            return Instantiate("AsteroidPart", parent);
+            return Instantiate("LodeButton", parent);
         }
 
         public static GameObject InstantiateShip(Transform parent)
@@ -64,9 +64,9 @@ namespace Assets.Scripts
             return Instantiate("ShipItemButton", parent);
         }
 
-        public static GameObject InstantiateEquipmentCellButton(Transform parent)
+        public static GameObject InstantiateEquipmentSlotButton(Transform parent)
         {
-            return Instantiate("EquipmentCellButton", parent);
+            return Instantiate("EquipmentSlotButton", parent);
         }
 
         public static GameObject InstantiateRouteFirefly(Transform parent)

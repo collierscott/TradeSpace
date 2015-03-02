@@ -16,7 +16,7 @@ namespace Assets.Scripts.Views
 
         private class AstPart
         {
-            public AsteroidPartBehaviour Apb;
+            public LodeButton Apb;
             public long RotationSpeed;
         }
 
@@ -87,20 +87,19 @@ namespace Assets.Scripts.Views
 
             int refRad = 256;
 
+            var ship = new PlayerShip(Profile.Instance.Ship);
             
 
             for (int p = 0; p < _asteroid.Parts.Count; p++)
             {
-                AsteroidPart ap = _asteroid.Parts[p];
+                Lode lode = _asteroid.Parts[p];
 
-                var obj = PrefabsHelper.InstantiateAsteroidPart(Panel);
+                var obj = PrefabsHelper.InstantiateLode(Panel);
                 obj.transform.localPosition = new Vector3(0, 0);
 
-                AsteroidPartBehaviour apb = obj.GetComponent<AsteroidPartBehaviour>();
+                LodeButton apb = obj.GetComponent<LodeButton>();
 
-                //apb.Click += apb_Click;
-                apb.Crush += apb_Crush;
-                
+               
                 AstPart part = new AstPart
                 {
                     Apb = apb,
@@ -110,7 +109,7 @@ namespace Assets.Scripts.Views
                 _astParts.Add(part);
 
 
-                float size = AstSizeToScreen(ap.Size);
+                float size = AstSizeToScreen(lode.Size);
                 float scale = size / refRad;
 
                 float curRad = (float)Math.Sqrt(size * size / 2);
@@ -118,18 +117,18 @@ namespace Assets.Scripts.Views
                 //obj.transform.Rotate(0, 0, -1.5f + 3.14f * rnd.Next(100) / 100);
                 //obj.transform.Rotate(0, 0, -1.5f + 3.14f * ap.Speed*5 / 100);
 
-                part.RotationSpeed = ap.Speed;
+                part.RotationSpeed = lode.Speed;
 
 
                 transform.localScale = new Vector3(scale, scale);
                 transform.localPosition = new Vector3(prevRad + curRad, prevRad + curRad);
 
-                Debug.Log("asteroid:add part scale=" + scale + ", prevRad=" + prevRad + ", curRad=" + curRad+", quantity="+ap.Quantity);
+                Debug.Log("asteroid:add part scale=" + scale + ", prevRad=" + prevRad + ", curRad=" + curRad+", quantity="+lode.Quantity);
 
                 prevRad += curRad;
 
                 if (astMemo == null || !astMemo.EmptyParts.Contains(p))
-                    apb.SetAsteroidPart(ap, _drillParams, p);
+                    apb.Initialize(lode, ship);
                 else
                     obj.SetActive(false);
             }
@@ -148,7 +147,7 @@ namespace Assets.Scripts.Views
             return size;
         }
 
-        void apb_Crush(AsteroidPart mineral, int index)
+        public void apb_Crush(Lode mineral, int index)
         {
             _ship.AddGoods(new MemoGoods { Id = mineral.Mineral, Quantity = mineral.Quantity });
 
@@ -238,8 +237,6 @@ namespace Assets.Scripts.Views
 
                 bool allowHit = _curHeatingValue != _drillParams.HeatingTo;
 
-                foreach (var p in _astParts)
-                    p.Apb.AllowHit = allowHit;
 
                 if (!allowHit)
                     Find<ActionManager>().ShowInfo("Warning", "You boer temperature is to high!");

@@ -166,5 +166,15 @@ namespace Assets.Scripts
                 item.Quantity -= goods.Quantity;
             }
         }
+
+        public DrillParams Drill
+        {
+            get
+            {
+                var drill = _ship.InstalledEquipment.Single(i => Env.EquipmentDatabase[i.Id].Type == EquipmentType.Drill);
+
+                return Env.GetDrillParams(drill.Id);
+            }
+        }
     }
 }
