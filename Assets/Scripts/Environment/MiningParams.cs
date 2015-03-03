@@ -15,7 +15,11 @@ namespace Assets.Scripts.Environment
                     { LodeClass.B, 2 },
                     { LodeClass.C, 4 },
                     { LodeClass.D, 8 },
-                    { LodeClass.E, 16 }
+                    { LodeClass.E, 16 },
+                    { LodeClass.F, 32 },
+                    { LodeClass.S, 64 },
+                    { LodeClass.X, 128 },
+                    { LodeClass.Z, 256 },
                 };
             }
         }
