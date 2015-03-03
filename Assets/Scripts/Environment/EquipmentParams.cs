@@ -35,20 +35,22 @@ namespace Assets.Scripts.Environment
                 case EquipmentId.ImpulseDrill100:
                     return new DrillParams
                     {
-                        Power = 10,
-                        Class = AsteroidClass.A,
+                        Class = LodeClass.A,
                         Type = DrillType.Impulse,
-                        ReloadSecs = 1
+                        Power = 100,
+                        Efficiency = 0.5f,
+                        //ReloadSecs = 1
                     };
                 case EquipmentId.LaserDrill100:
                     return new DrillParams
                     {
-                        Power = 10,
-                        Class = AsteroidClass.A,
+                        Class = LodeClass.A,
                         Type = DrillType.Laser,
-                        HeatingRate = 10,
-                        CoolingRate = 25,
-                        HeatingTo = 30,
+                        Power = 100,
+                        Efficiency = 0.5f,
+                        //HeatingRate = 10,
+                        //CoolingRate = 25,
+                        //HeatingTo = 30,
                     };
                 default:
                     throw new NotImplementedException();

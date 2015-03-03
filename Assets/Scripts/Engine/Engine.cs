@@ -11,35 +11,21 @@ namespace Assets.Scripts.Engine
         public void Awake()
         {
             Env.Initialize();
+            AwakeDefault();
+        }
+
+        public void AwakeDefault()
+        {
             SelectManager.SelectSystem(Env.SystemNames.Alpha);
             GetComponent<Galaxy>().Open(() => GetComponent<TweenMap>().Set(-Env.Galaxy["Spider"].Position));
         }
 
-
-        //public void Awake() //тест диалог
-        //{
-        //    GetComponent<ActionManager>().ShowInfo("Тест заголовок 111", "Тест сообщение  222");
-
-        //}
-
-        //public void Awake() // Test asteroid
-        //{
-        //    Env.Initialize();
-
-        //    //SelectManager.SelectShip(0);
-        //    SelectManager.SelectSystem(Env.SystemNames.Andromeda);
-        //    SelectManager.SelectLocation(Env.Systems[Env.SystemNames.Andromeda][Assets.Scripts.Environment.AndromedaSystem.Andromeda.A100200.Name]);
-        //    GetComponent<AsteroidView>().Open();
-        //}
-
-        //public void Awake() // Test hangar
-        //{
-        //    Env.Initialize();
-
-        //    GetComponent<SelectManager>().SelectSystem(SystemId.Andromeda);
-        //    GetComponent<SelectManager>().SelectLocation(Env.Systems[SystemId.Andromeda][LocationId.Netune]);
-        //    GetComponent<HangarView>().Open();
-        //}
+        public void AwakeAsteroid()
+        {
+            SelectManager.SelectSystem(Env.SystemNames.Alpha);
+            SelectManager.SelectLocation(Env.Systems[Env.SystemNames.Alpha]["A100200"]);
+            GetComponent<Asteroid>().Open();
+        }
 
         public void Update()
         {

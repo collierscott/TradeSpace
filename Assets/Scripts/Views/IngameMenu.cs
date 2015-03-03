@@ -66,7 +66,7 @@ namespace Assets.Scripts.Views
 
         private List<GameButton> AsteroidButtons
         {
-            get { return new List<GameButton> { HangarButton, EquipmentShopButton }; }
+            get { return new List<GameButton> { HangarButton }; }
         }
       
         public void Start()

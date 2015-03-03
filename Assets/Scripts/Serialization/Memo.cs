@@ -12,25 +12,17 @@ namespace Assets.Scripts.Data
         {
             var parts = new JSONArray();
 
-            foreach (var part in EmptyParts)
+            foreach (var part in Extracted)
             {
                 parts.Add(Convert.ToString(part));
             }
 
-            return new JSONClass
-            {
-                { "Name", Name },
-                { "EmptyParts", parts }
-            };
+            return new JSONClass { { "Extracted", parts } };
         }
 
         public static MemoAsteroid FromJson(JSONNode json)
         {
-            return new MemoAsteroid
-            {
-                Name = json["Name"].Value,
-                EmptyParts = json["EmptyParts"].Childs.Select(i => int.Parse(i.Value)).ToList()
-            };
+            return new MemoAsteroid { Extracted = json["Extracted"].Childs.Select(i => int.Parse(i.Value)).ToList() };
         }
     }
 

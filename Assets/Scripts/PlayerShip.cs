@@ -141,6 +141,11 @@ namespace Assets.Scripts
 
         public void AddGoods(MemoGoods goods)
         {
+            if (GetCargoStatus(goods) != CargoStatus.Ready)
+            {
+                throw new Exception();
+            }
+
             var owned = _ship.Goods.SingleOrDefault(i => i.Id == goods.Id);
 
             if (owned != null)
@@ -164,16 +169,6 @@ namespace Assets.Scripts
             else
             {
                 item.Quantity -= goods.Quantity;
-            }
-        }
-
-        public DrillParams Drill
-        {
-            get
-            {
-                var drill = _ship.InstalledEquipment.Single(i => Env.EquipmentDatabase[i.Id].Type == EquipmentType.Drill);
-
-                return Env.GetDrillParams(drill.Id);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Enums
 {
-    public enum AsteroidClass
+    public enum LodeClass
     {
         A,
         B,

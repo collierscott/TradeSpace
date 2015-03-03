@@ -92,43 +92,37 @@ namespace Assets.Scripts.Environment.Systems
                     Description = "Description",
                     Interference = 0,
                     Radiation = 0,
-                    Parts = new List<Lode>
+                    Lodes = new List<Lode>
                     {
                         new Lode
                         {
                             Mineral = GoodsId.Ferrum,
-                            Class = AsteroidClass.A,
-                            Size = 10,
-                            Radius = 10,
-                            Speed = 5,
-                            Quantity = 10,
+                            Class = LodeClass.A,
+                            Size = 40
                         },
                         new Lode
                         {
                             Mineral = GoodsId.Titanium,
-                            Class = AsteroidClass.B,
-                            Size = 5,
-                            Radius = 8,
-                            Speed = 20,
-                            Quantity = 100,
+                            Class = LodeClass.B,
+                            Size = 10,
+                            Radius = 250,
+                            Speed = 0.4f
                         },
                         new Lode
                         {
                             Mineral = GoodsId.Ferrum,
-                            Class = AsteroidClass.A,
-                            Size = 20,
-                            Radius = 10,
-                            Speed = -10,
-                            Quantity = 10,
+                            Class = LodeClass.A,
+                            Size = 8,
+                            Radius = 400,
+                            Speed = 0.6f
                         },
                         new Lode
                         {
                             Mineral = GoodsId.Titanium,
-                            Class = AsteroidClass.B,
+                            Class = LodeClass.B,
                             Size = 5,
-                            Radius = 12,
-                            Speed = 20,
-                            Quantity = 1,
+                            Radius = 350,
+                            Speed = 0.8f
                         },
                     }
                 }

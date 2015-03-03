@@ -5,15 +5,14 @@ using Assets.Scripts.Enums;
 
 namespace Assets.Scripts.Data
 {
-    public partial class MemoItem
+    public class MemoItem
     {
         public ProtectedValue Quantity = 0;
     }
 
     public partial class MemoAsteroid
     {
-        public string Name;
-        public List<int> EmptyParts;
+        public List<int> Extracted;
     }
 
     public partial class MemoGoods : MemoItem
