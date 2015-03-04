@@ -8,7 +8,9 @@ namespace Assets.Scripts.Data
         public DrillType Type;
         public float Power;
         public float Efficiency;
-        
+        public float Heating;
+        public float Cooling;
+
         //public float ReloadSecs = 1;
         ///// <summary>
         ///// Максимальная температура нагрева

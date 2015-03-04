@@ -18,22 +18,51 @@ namespace Assets.Scripts.Behaviour
         public UISprite Progress;
         public GameButton Button;
 
+        public static bool Overheating;
+
         private Lode _lode;
         private int _index;
-        private DrillParams _drill;
+        private Drill _drill;
         private float _structure;
         private long _rotation;
 
-        public void Initialize(Lode lode, int index, DrillParams drill)
+        public void Initialize(Lode lode, int index, Drill drill)
         {
             _lode = lode;
             _index = index;
             _drill = drill;
             _structure = _lode.Structure;
             _rotation = CRandom.GetRandom(100000);
-            
-            Button.Up += Mine;
-            Button.Enabled = _drill.Class >= _lode.Class;
+
+            const int taskId = 525;
+
+            Button.Down += () =>
+            {
+                TaskScheduler.Kill(taskId);
+
+                if (_drill.Overheating) return;
+
+                _drill.Active = true;
+
+                if (_drill.Params.Type == DrillType.Impulse)
+                {
+                    Mine(_drill.Params.Power, _drill.Params.Heating);
+                }
+            };
+
+            Button.Up += () =>
+            {
+                if (_drill.Params.Type == DrillType.Impulse)
+                {
+                    TaskScheduler.CreateTask(() => _drill.Active = false, taskId, 1);
+                }
+                else
+                {
+                    _drill.Active = false;
+                }
+            };
+
+            Button.Enabled = _drill.Params.Class >= _lode.Class;
 
             UpdateInfo();
             UpdateStructure();
@@ -42,14 +71,33 @@ namespace Assets.Scripts.Behaviour
         public void Update()
         {
             var angle = _lode.Speed * (Time.time + _rotation);
+            var rotation = 200 * _lode.Speed * Time.time * (_rotation % 2 == 0 ? 1 : -1);
 
             transform.localPosition = _lode.Radius * new Vector3(Mathf.Sin(angle), Mathf.Cos(angle));
+            Button.transform.localRotation = Quaternion.Euler(0, 0, rotation);
+
+            if (_drill.Params.Type == DrillType.Laser && _drill.Active && !_drill.Overheating)
+            {
+                Mine(_drill.Params.Power * Time.deltaTime, _drill.Params.Heating * Time.deltaTime);
+            }
         }
 
-        private void Mine()
+        private void Mine(float damage, float heading)
         {
-            _structure -= _drill.Power;
-            
+            if (_drill.Overheating)
+            {
+                return;
+            }
+
+            _drill.Heating += heading;
+
+            if (_drill.Heating > 1)
+            {
+                _drill.Overheating = true;
+            }
+
+            _structure -= damage;
+
             if (_structure > 0)
             {
                 UpdateStructure();
@@ -65,16 +113,16 @@ namespace Assets.Scripts.Behaviour
             var ship = new PlayerShip(Profile.Instance.Ship);
             var minerals = new List<GoodsId>();
 
-            Debug.Log(string.Format("Core chance = {0} * {1} = {2}", _lode.CoreChance, _drill.Efficiency, _lode.CoreChance * _drill.Efficiency));
+            Debug.Log(string.Format("Core chance = {0} * {1} = {2}", _lode.CoreChance, _drill.Params.Efficiency, _lode.CoreChance * _drill.Params.Efficiency));
 
-            if (MiningParams.Core.ContainsKey(_lode.Mineral) && CRandom.Chance(_lode.CoreChance * _drill.Efficiency))
+            if (MiningParams.Core.ContainsKey(_lode.Mineral) && CRandom.Chance(_lode.CoreChance * _drill.Params.Efficiency))
             {
                 minerals.Add(MiningParams.Core[_lode.Mineral]);
 
                 Debug.Log("Core extracted");
             }
 
-            for (var i = 0; i < _lode.Size * _drill.Efficiency; i++)
+            for (var i = 0; i < _lode.Size * _drill.Params.Efficiency; i++)
             {
                 minerals.Add(_lode.Mineral);
             }
@@ -123,7 +171,7 @@ namespace Assets.Scripts.Behaviour
         {
             var fillAmount = _structure / _lode.Structure;
 
-            Structure.SetText(_structure);
+            Structure.SetText((long) _structure);
             Progress.fillAmount = fillAmount;
 
             if (!Button.Enabled)

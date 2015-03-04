@@ -39,8 +39,7 @@ namespace Assets.Scripts.Common
             {
                 if (!collider2D.bounds.Contains(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
                 {
-                    Tween(false);
-                    _down = false;
+                    OnPress(false);
                 }
             }
         }

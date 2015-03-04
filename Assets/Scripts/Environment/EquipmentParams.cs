@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Common;
+﻿using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
 
@@ -26,35 +25,6 @@ namespace Assets.Scripts.Environment
             price += (price * Profile.Instance.Shops[station.Name].PriceDelta).RoundToLong();
 
             return price;
-        }
-
-        public static DrillParams GetDrillParams(EquipmentId equipmentId)
-        {
-            switch (equipmentId)
-            {
-                case EquipmentId.ImpulseDrill100:
-                    return new DrillParams
-                    {
-                        Class = LodeClass.A,
-                        Type = DrillType.Impulse,
-                        Power = 100,
-                        Efficiency = 0.5f,
-                        //ReloadSecs = 1
-                    };
-                case EquipmentId.LaserDrill100:
-                    return new DrillParams
-                    {
-                        Class = LodeClass.A,
-                        Type = DrillType.Laser,
-                        Power = 100,
-                        Efficiency = 0.5f,
-                        //HeatingRate = 10,
-                        //CoolingRate = 25,
-                        //HeatingTo = 30,
-                    };
-                default:
-                    throw new NotImplementedException();
-            }
         }
     }
 }

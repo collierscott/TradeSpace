@@ -11,7 +11,7 @@ namespace Assets.Scripts.Engine
         public void Awake()
         {
             Env.Initialize();
-            AwakeDefault();
+            AwakeAsteroid();
         }
 
         public void AwakeDefault()
