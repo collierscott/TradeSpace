@@ -74,8 +74,8 @@ namespace Assets.Scripts.Environment.Systems
                     Radiation = 0,
                     Equipment = new List<ShopEquipment>
                     {
-                        new ShopEquipment {Id = EquipmentId.MassKit100, Min = 2, Max = 4, Availability = 1},
-                        new ShopEquipment {Id = EquipmentId.JetEngine100, Min = 1, Max = 2, Availability = 1}
+                        new ShopEquipment {Id = EquipmentId.MassKit, Min = 2, Max = 4, Availability = 1},
+                        new ShopEquipment {Id = EquipmentId.JetEngine, Min = 1, Max = 2, Availability = 1}
                     },
                     Ships = new List<ShopShip>
                     {

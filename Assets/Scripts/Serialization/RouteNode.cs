@@ -2,7 +2,7 @@
 using SimpleJSON;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Data
 {
     public partial class RouteNode
     {

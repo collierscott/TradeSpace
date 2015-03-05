@@ -48,7 +48,7 @@ namespace Assets.Scripts.Behaviour
                     left = TimeSpan.FromSeconds(0);
                 }
 
-                Timer.SetText(string.Format("{0}:{1:D2}:{2:D2}", Math.Floor(left.TotalHours), left.Minutes, left.Seconds));
+                Timer.SetText(TimespanToString(left));
                 State.fillAmount = (float) (left.TotalSeconds / (arrival - departure).TotalSeconds);
             }
             else
@@ -59,8 +59,8 @@ namespace Assets.Scripts.Behaviour
 
             var playerShip = new PlayerShip(ship);
 
-            Mass.fillAmount = 0.5f + 0.5f * playerShip.CargoMass / playerShip.Mass;
-            Volume.fillAmount = 0.5f + 0.5f * playerShip.CargoVolume / playerShip.Volume;
+            Mass.fillAmount = 0.5f + 0.5f * playerShip.MassUsed / playerShip.Mass;
+            Volume.fillAmount = 0.5f + 0.5f * playerShip.VolumeUsed / playerShip.Volume;
         }
 
         private static void Focus()

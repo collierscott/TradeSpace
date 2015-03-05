@@ -20,6 +20,13 @@ namespace Assets.Scripts.Views
 
         protected override void Initialize()
         {
+            var locationButtons = FindObjectsOfType<LocationButton>();
+
+            foreach (var locationButton in locationButtons)
+            {
+                locationButton.ShowArrivalTime = 0;
+            }
+            
             foreach (var ship in Ships.ShipBehaviours.Values)
             {
                 if (ship.State == ShipState.Ready && ship.Trace.Count == 0)
@@ -53,6 +60,28 @@ namespace Assets.Scripts.Views
                     else if (polyline.Count > 2)
                     {
                         GetComponent<NativeRenderer>().DrawRouteLine(Panel, polyline);
+                    }
+
+                    var departure = route.First();
+                    var arrival = route.Last();
+                    var locationButton = locationButtons.Single(i => i.Name.text == arrival.LocationName);
+
+                    if (ship.State == ShipState.InFlight)
+                    {
+                        locationButton.ShowArrivalTime = 2;
+                        locationButton.ArrivalDateTime = arrival.Time;
+                    }
+                    else
+                    {
+                        if (ship.Location.Name == arrival.LocationName)
+                        {
+                            locationButton.ShowArrivalTime = 0;
+                        }
+                        else
+                        {
+                            locationButton.ShowArrivalTime = 1;
+                            locationButton.ArrivalTimeSpan = arrival.Time - departure.Time;
+                        }
                     }
                 }
                 else

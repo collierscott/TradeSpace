@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Common;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Environment;
 
 namespace Assets.Scripts.Behaviour
 {
@@ -21,7 +22,7 @@ namespace Assets.Scripts.Behaviour
         {
             Key = key;
             Id = id;
-            Image.spriteName = id.String;
+            Image.spriteName = GetImageById(id.String);
             CommonInitialize(action, quantity, price);
         }
 
@@ -39,6 +40,15 @@ namespace Assets.Scripts.Behaviour
             {
                 PriceText.SetText(price.Long + " $");
             }
+        }
+
+        private static string GetImageById(string id) // TODO: Fix me
+        {
+            try { return Env.GoodsDatabase[id.ToEnum<GoodsId>()].Image; } catch {}
+            try { return Env.EquipmentDatabase[id.ToEnum<EquipmentId>()].Image; } catch {}
+            try { return Env.ShipDatabase[id.ToEnum<ShipId>()].Image; } catch {}
+
+            throw new Exception(id);
         }
     }
 }

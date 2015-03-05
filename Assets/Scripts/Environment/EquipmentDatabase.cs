@@ -13,14 +13,33 @@ namespace Assets.Scripts.Environment
 
             new Equipment
             {
-                Id = EquipmentId.JetEngine100,
-                Name = "Реактивный двигатель J100",
+                Id = EquipmentId.JetEngine,
+                DisplayName = "Реактивный двигатель",
                 Description = "Недорогой и экономичный реактивный двигатель, которым оснащаются большинство кораблей начального уровня",
+                Energy = 40,
+                Fuel = 200,
                 Mass = 100,
                 Volume = 40,
                 Price = 10000,
                 Type = EquipmentType.Engine,
-                BonusAdd = 100
+                Bonus = 100
+            },
+
+            #endregion
+
+            #region Hyper accelerators
+
+            new Equipment
+            {
+                Id = EquipmentId.HyperAccelerator,
+                DisplayName = "Гиперпространственный ускоритель",
+                Description = "Гиперпространственный ускоритель начального уровня",
+                Energy = 20,
+                Mass = 20,
+                Volume = 10,
+                Price = 10000,
+                Type = EquipmentType.Hyper,
+                Bonus = 2
             },
 
             #endregion
@@ -29,14 +48,14 @@ namespace Assets.Scripts.Environment
 
             new Equipment
             {
-                Id = EquipmentId.MassKit100,
-                Name = "Комплект для увеличения грузоподъемности корабля",
+                Id = EquipmentId.MassKit,
+                DisplayName = "Комплект для увеличения грузоподъемности корабля",
                 Description = "Модернизация корабля с применением облегченных материалов позволяет увеличить грузоподъемность",
                 Mass = 50,
                 Volume = 20,
                 Price = 4000,
                 Type = EquipmentType.MassKit,
-                BonusAdd = 200
+                Bonus = 200
             },
 
             #endregion
@@ -45,14 +64,14 @@ namespace Assets.Scripts.Environment
 
             new Equipment
             {
-                Id = EquipmentId.VolumeKit100,
-                Name = "Комплект для увеличения вместительности грузового отсека",
+                Id = EquipmentId.VolumeKit,
+                DisplayName = "Комплект для увеличения вместительности грузового отсека",
                 Description = "Модернизация грузового отсека и улучшение эргономики позволяет увеличить вместительность грузового отсека",
                 Mass = 50,
                 Volume = 20,
                 Price = 4000,
                 Type = EquipmentType.VolumeKit,
-                BonusAdd = 200
+                Bonus = 200
             },
 
             #endregion
@@ -61,26 +80,28 @@ namespace Assets.Scripts.Environment
 
             new Equipment
             {
-                Id = EquipmentId.ImpulseDrill100,
-                Name = "Импульсный бур для астеройдов",
+                Id = EquipmentId.ImpulseDrill,
+                DisplayName = "Импульсный бур для астеройдов",
                 Description = "Описание ...",
+                Energy = 20,
                 Mass = 60,
                 Volume = 40,
                 Price = 7500,
                 Type = EquipmentType.Drill,
-                BonusAdd = 0
+                Bonus = 0
             },
 
             new Equipment
             {
-                Id = EquipmentId.LaserDrill100,
-                Name = "Лазерный бур для астеройдов",
+                Id = EquipmentId.LaserDrill,
+                DisplayName = "Лазерный бур для астеройдов",
                 Description = "Описание ...",
+                Energy = 35,
                 Mass = 75,
                 Volume = 40,
                 Price = 9000,
                 Type = EquipmentType.Drill,
-                BonusAdd = 0
+                Bonus = 0
             },
 
             #endregion

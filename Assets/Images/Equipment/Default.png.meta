@@ -1,8 +1,11 @@
 fileFormatVersion: 2
-guid: 64e8f4c8c9cef3045ac6155b6d6a0cc5
+guid: 4cab2291eab4a174f9459465edb822d2
 TextureImporter:
   fileIDToRecycleName:
-    21300000: VolumeKit100
+    21300000: JetEngine150
+    21300002: DefaultEngine
+    21300004: DefaultEquipment
+    21300006: Default
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

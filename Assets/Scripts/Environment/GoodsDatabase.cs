@@ -15,7 +15,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.Ferrum,
                 Type = GoodsType.Minerals,
-                Name = "Феррум",
+                DisplayName = "Феррум",
                 Description = "Ковкий металл серебристо-белого цвета с высокой химической реакционной способностью. На него приходится до 95 % мирового металлургического производства.",
                 TechLevel = 0,
                 Mass = 78,
@@ -26,7 +26,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.FerrumCore,
                 Type = GoodsType.Minerals,
-                Name = "Ферритовое ядро",
+                DisplayName = "Ферритовое ядро",
                 Description = "Минерал высочайшего качества, без примесей и структурных изменений.",
                 TechLevel = 0,
                 Mass = 78,
@@ -37,7 +37,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.Titanium,
                 Type = GoodsType.Minerals,
-                Name = "Титаниум",
+                DisplayName = "Титаниум",
                 Description = "Лёгкий прочный металл серебристо-белого цвета, используемый в качестве конструкционных материалов. Сложность технологического процесса обработки приводит к значительному росту цен на конечный продукт.",
                 TechLevel = 0,
                 Mass = 45,
@@ -48,7 +48,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.TitaniumCore,
                 Type = GoodsType.Minerals,
-                Name = "Титановое ядро",
+                DisplayName = "Титановое ядро",
                 Description = "Минерал высочайшего качества, без примесей и структурных изменений.",
                 TechLevel = 0,
                 Mass = 45,
@@ -112,7 +112,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.Catalyst,
                 Type = GoodsType.Substance,
-                Name = "Катализатор",
+                DisplayName = "Катализатор",
                 Description = "Катализатор используется в промышленности для получения сплавов и композитных материалов",
                 TechLevel = 0,
                 Mass = 2,
@@ -128,7 +128,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.Water,
                 Type = GoodsType.Food,
-                Name = "Питевая вода",
+                DisplayName = "Питевая вода",
                 Description = "Нехватка питьевой воды на планетах с высокой температурой делает торговлю ей весьма прибыльным бизнесом.",
                 TechLevel = 0,
                 Mass = 20,
@@ -139,7 +139,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.Grain,
                 Type = GoodsType.Food,
-                Name = "Зерно",
+                DisplayName = "Зерно",
                 Description = "",
                 TechLevel = 0,
                 Mass = 30,
@@ -150,7 +150,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.Fish,
                 Type = GoodsType.Food,
-                Name = "Рыба",
+                DisplayName = "Рыба",
                 Description = "",
                 TechLevel = 0,
                 Mass = 10,
@@ -161,7 +161,7 @@ namespace Assets.Scripts.Environment
             {
                 Id = GoodsId.Meat,
                 Type = GoodsType.Food,
-                Name = "Мясо",
+                DisplayName = "Мясо",
                 Description = "",
                 TechLevel = 0,
                 Mass = 15,
@@ -174,187 +174,187 @@ namespace Assets.Scripts.Environment
             #region Materials
 
             new Goods { Id = GoodsId.Leather, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Кожа", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Кожа", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Fur, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Мех", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Мех", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Wool, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Шерсть", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Шерсть", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Silk, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Шелк", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Шелк", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Paper, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Бумага", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Бумага", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Lumber, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Пиломатериалы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Пиломатериалы", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.ConstructionMaterials, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Стройматериалы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Стройматериалы", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.ReinforcedConcrete, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Железобетон", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Железобетон", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.SynteticFiber, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Синтетические волокна", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Синтетические волокна", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Plastics, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Пластик", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Пластик", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Carbon, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Карбон", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Карбон", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Fiberglass, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Фибергласовые волокна", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Фибергласовые волокна", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.CompositeAlloys, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Композитные сплавы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Композитные сплавы", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Ceramics, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Керамика", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Керамика", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Glass, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Стекло", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Стекло", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Clothes
 
             new Goods { Id = GoodsId.Boots, Type = GoodsType.Clothes, TechLevel = 0,
-                Name = "Ботинки", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Ботинки", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Jeans, Type = GoodsType.Clothes, TechLevel = 0,
-                Name = "Джинсы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Джинсы", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Coveralls, Type = GoodsType.Clothes, TechLevel = 0,
-                Name = "Спецодежда", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Спецодежда", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.LeatherJacket, Type = GoodsType.Clothes, TechLevel = 0,
-                Name = "Кожаные куртки", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Кожаные куртки", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region House
 
 			new Goods { Id = GoodsId.PlasticWare, Type = GoodsType.House, TechLevel = 0,
-                Name = "Пластиковая посуда", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Пластиковая посуда", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Porcelain, Type = GoodsType.House, TechLevel = 0,
-                Name = "Фарфор", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Фарфор", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Furniture, Type = GoodsType.House, TechLevel = 0,
-                Name = "Мебель", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Мебель", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Carpet, Type = GoodsType.House, TechLevel = 0,
-                Name = "Ковры", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Ковры", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Plumbing, Type = GoodsType.House, TechLevel = 0,
-                Name = "Сантехника", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Сантехника", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.WallScreen, Type = GoodsType.House, TechLevel = 0,
-                Name = "Настенный экран", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Настенный экран", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Health
 
             new Goods { Id = GoodsId.Shampoo, Type = GoodsType.Health, TechLevel = 0,
-                Name = "Шампунь", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Шампунь", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Cologne, Type = GoodsType.Health, TechLevel = 0,
-                Name = "Одеколон", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Одеколон", Description = "", Mass = 0, Volume = 0, Price = 0 },
             new Goods { Id = GoodsId.Cosmetics, Type = GoodsType.Health, TechLevel = 0,
-                Name = "Косметика", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Косметика", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Medicines
 
 			new Goods { Id = GoodsId.FirstAidKit, Type = GoodsType.Medicines, TechLevel = 0,
-                Name = "Аптечка", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Аптечка", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Antibiotics, Type = GoodsType.Medicines, TechLevel = 0,
-                Name = "Антиботики", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Антиботики", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Entertainment
 
 			new Goods { Id = GoodsId.Toys, Type = GoodsType.Entertainment, TechLevel = 0,
-                Name = "Игрушки", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Игрушки", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.PlayStation, Type = GoodsType.Entertainment, TechLevel = 0,
-                Name = "Игровые приставки", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Игровые приставки", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.PortableCinema, Type = GoodsType.Entertainment, TechLevel = 0,
-                Name = "Портативный кинотеатр", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Портативный кинотеатр", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Sports
 
             new Goods { Id = GoodsId.Hoverboard, Type = GoodsType.Sports, TechLevel = 0,
-                Name = "Ховерборд", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Ховерборд", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Gravitron, Type = GoodsType.Sports, TechLevel = 0,
-                Name = "Гравитрон", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Гравитрон", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Tobacco
 
 			new Goods { Id = GoodsId.Cigarettes, Type = GoodsType.Tobacco, TechLevel = 0,
-                Name = "Сигареты", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Сигареты", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Cigar, Type = GoodsType.Tobacco, TechLevel = 0,
-                Name = "Сигары", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Сигары", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Alcohol
 
     		new Goods { Id = GoodsId.Vine, Type = GoodsType.Alcohol, TechLevel = 0,
-                Name = "Вино", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Вино", Description = "", Mass = 0, Volume = 0, Price = 0 },
 		    new Goods { Id = GoodsId.Whiskey, Type = GoodsType.Alcohol, TechLevel = 0,
-                Name = "Виски", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Виски", Description = "", Mass = 0, Volume = 0, Price = 0 },
 		    new Goods { Id = GoodsId.Vodka, Type = GoodsType.Alcohol, TechLevel = 0,
-                Name = "Водка", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Водка", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Sex
 
 			new Goods { Id = GoodsId.Vibrator, Type = GoodsType.Sex, TechLevel = 0,
-                Name = "Вибраторы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Вибраторы", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.PleasureHelm, Type = GoodsType.Sex, TechLevel = 0,
-                Name = "Шлемы удовольствий", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Шлемы удовольствий", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Hardware
 
 			new Goods { Id = GoodsId.Diode, Type = GoodsType.Hardware, TechLevel = 0,
-                Name = "Диоды", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Диоды", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Semiconductor, Type = GoodsType.Hardware, TechLevel = 0,
-                Name = "Проводники", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Проводники", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.PrintedCircuitBoard, Type = GoodsType.Hardware, TechLevel = 0,
-                Name = "Печатные платы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Печатные платы", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Processor, Type = GoodsType.Hardware, TechLevel = 0,
-                Name = "Процессоры", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Процессоры", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.ByteStorage, Type = GoodsType.Hardware, TechLevel = 0,
-                Name = "Байт-хранилища", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Байт-хранилища", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Led, Type = GoodsType.Hardware, TechLevel = 0,
-                Name = "Дисплеи", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Дисплеи", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Electronics
 
             new Goods { Id = GoodsId.Smartphone, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "Смартфоны", Description = "", Mass = 1, Volume = 2, Price = 100 },
+                DisplayName = "Смартфоны", Description = "", Mass = 1, Volume = 2, Price = 100 },
 			new Goods { Id = GoodsId.SmartTv, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "SmartTV", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "SmartTV", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.VacuumCleaner, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "Дроиды-пылесосы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Дроиды-пылесосы", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.HandyToilet, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "Портативный туалет", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Портативный туалет", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Refrigerator, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "Холодильники", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Холодильники", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Heater, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "Обогреватели", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Обогреватели", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.AirConditioning, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "Кондиционеры", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Кондиционеры", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Fan, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "Вентиляторы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Вентиляторы", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.Spotlight, Type = GoodsType.Electronics, TechLevel = 0,
-                Name = "Фонари", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Фонари", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
 
             #region Nature
 
 			new Goods { Id = GoodsId.Pets, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Домашние животные", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Домашние животные", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.ExoticPlants, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Экзотические растения", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Экзотические растения", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.ExoticAnimals, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Экзотические животные", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Экзотические животные", Description = "", Mass = 0, Volume = 0, Price = 0 },
 			new Goods { Id = GoodsId.ExoticFish, Type = GoodsType.Materials, TechLevel = 0,
-                Name = "Экзотические рыбы", Description = "", Mass = 0, Volume = 0, Price = 0 },
+                DisplayName = "Экзотические рыбы", Description = "", Mass = 0, Volume = 0, Price = 0 },
 
             #endregion
             

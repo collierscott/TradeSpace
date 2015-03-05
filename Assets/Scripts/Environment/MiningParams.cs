@@ -36,7 +36,7 @@ namespace Assets.Scripts.Environment
         public static Dictionary<EquipmentId, DrillParams> DrillParams = new Dictionary<EquipmentId, DrillParams>
         {
             {
-                EquipmentId.ImpulseDrill100, new DrillParams
+                EquipmentId.ImpulseDrill, new DrillParams
                 {
                     Class = LodeClass.A,
                     Type = DrillType.Impulse,
@@ -47,7 +47,7 @@ namespace Assets.Scripts.Environment
                 }
             },
             {
-                EquipmentId.LaserDrill100, new DrillParams
+                EquipmentId.LaserDrill, new DrillParams
                 {
                     Class = LodeClass.A,
                     Type = DrillType.Laser,

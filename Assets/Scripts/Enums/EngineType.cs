@@ -5,6 +5,6 @@
         Jet,
         Impulse,
         Hybrid,
-        Hyper
+        Quantum
     }
 }

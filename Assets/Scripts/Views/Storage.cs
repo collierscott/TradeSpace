@@ -21,10 +21,10 @@ namespace Assets.Scripts.Views
             }
 
             var locationItems = Profile.Instance.Warehouses[location].Goods.Select(i => new GenericShopItem(i)).ToList();
-            var playerItems = Profile.Instance.Ship.Goods.Select(i => new GenericShopItem(i)).ToList();
+            var playerItems = Profile.Instance.MemoShip.Goods.Select(i => new GenericShopItem(i)).ToList();
 
             locationItems.AddRange(Profile.Instance.Warehouses[location].Equipment.Select(i => new GenericShopItem(i)));
-            playerItems.AddRange(Profile.Instance.Ship.Equipment.Select(i => new GenericShopItem(i)));
+            playerItems.AddRange(Profile.Instance.MemoShip.Equipment.Select(i => new GenericShopItem(i)));
 
             LocationItems = locationItems.ToDictionary(i => i.Id.String);
             PlayerItems = playerItems.ToDictionary(i => i.Id.String);
@@ -37,14 +37,14 @@ namespace Assets.Scripts.Views
             Profile.Instance.Warehouses[location].Goods = LocationItems.Values
                 .Where(i => i.Type == typeof(MemoGoods))
                 .Select(i => i.Extract<MemoGoods>()).ToList();
-            Profile.Instance.Ship.Goods = PlayerItems.Values
+            Profile.Instance.MemoShip.Goods = PlayerItems.Values
                 .Where(i => i.Type == typeof(MemoGoods))
                 .Select(i => i.Extract<MemoGoods>()).ToList();
 
             Profile.Instance.Warehouses[location].Equipment = LocationItems.Values
                 .Where(i => i.Type == typeof(MemoEquipment))
                 .Select(i => i.Extract<MemoEquipment>()).ToList();
-            Profile.Instance.Ship.Equipment = PlayerItems.Values
+            Profile.Instance.MemoShip.Equipment = PlayerItems.Values
                 .Where(i => i.Type == typeof(MemoEquipment))
                 .Select(i => i.Extract<MemoEquipment>()).ToList();
         }

@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Environment;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class PlayerShip
+    public class PlayerShip // TODO: Refact, extract
     {
         private readonly MemoShip _ship;
         private readonly Ship _params;
@@ -22,101 +24,64 @@ namespace Assets.Scripts
             get { return Env.ShipDatabase[_ship.Id].DisplayName; }
         }
 
-        public float Speed
+        public long Speed
         {
-            get
-            {
-                var engine = _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).SingleOrDefault(i => i.Type == EquipmentType.Engine);
-
-                if (engine == null)
-                {
-                    throw new Exception("engine == null");
-                }
-
-                return _params.Speed + engine.BonusAdd + (_params.Speed * engine.BonusMultiply);
-            }
+            get { return GetValue(_params.Speed, EquipmentType.Engine); }
         }
 
-        public float HyperSpeed
+        public float Hyper
         {
-            get
-            {
-                float speed = 0;
+            get { return Math.Max(1, GetValue(0, EquipmentType.Hyper)); }
+        }
 
-                foreach (var equipment in _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Where(i => i.Type == EquipmentType.Hyper))
-                {
-                    speed += equipment.BonusAdd;
-                }
-
-                return speed;
-            }
+        public long Energy
+        {
+            get { return GetValue(_params.Energy, EquipmentType.Generator); }
         }
 
         public long Mass
         {
-            get
-            {
-                var mass = _params.Mass;
-
-                foreach (var equipment in _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Where(i => i.Type == EquipmentType.MassKit))
-                {
-                    mass += equipment.BonusAdd + (_params.Mass * equipment.BonusMultiply);
-                }
-
-                return mass;
-            }
+            get { return GetValue(_params.Mass, EquipmentType.MassKit); }
         }
 
         public long Volume
         {
-            get
-            {
-                var volume = _params.Volume;
-
-                foreach (var equipment in _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Where(i => i.Type == EquipmentType.VolumeKit))
-                {
-                    volume += equipment.BonusAdd + (_params.Volume * equipment.BonusMultiply);
-                }
-
-                return volume;
-            }
+            get { return GetValue(_params.Volume, EquipmentType.VolumeKit); }
         }
 
-        public long EquipmentSlots
+        public long Equipment
         {
-            get
-            {
-                var slots = _params.EquipmentSlots;
-
-                foreach (var equipment in _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Where(i => i.Type == EquipmentType.Common))
-                {
-                    slots += equipment.BonusAdd;
-                }
-
-                return slots;
-            }
+            get { return GetValue(_params.Equipment, EquipmentType.EquipmentExtend); }
         }
 
-        public long CargoMass
+        public long FuelConsumption
         {
-            get { return _ship.Goods.Sum(i => i.Quantity.Long * Env.GoodsDatabase[i.Id].Mass)
-                + _ship.Equipment.Sum(i => i.Quantity.Long * Env.EquipmentDatabase[i.Id].Mass); }
+            get { return _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Sum(i => i.Fuel); }
         }
 
-        public long CargoVolume
+        public long MassUsed
         {
-            get { return _ship.Goods.Sum(i => i.Quantity.Long * Env.GoodsDatabase[i.Id].Volume)
-                + _ship.Equipment.Sum(i => i.Quantity.Long * Env.EquipmentDatabase[i.Id].Volume); }
+            get { return _ship.Goods.Sum(i => i.Quantity.Long * Env.GoodsDatabase[i.Id].Mass) + _ship.Equipment.Sum(i => i.Quantity.Long * Env.EquipmentDatabase[i.Id].Mass); }
+        }
+
+        public long VolumeUsed
+        {
+            get { return _ship.Goods.Sum(i => i.Quantity.Long * Env.GoodsDatabase[i.Id].Volume) + _ship.Equipment.Sum(i => i.Quantity.Long * Env.EquipmentDatabase[i.Id].Volume); }
+        }
+
+        public long EnergyUsed
+        {
+            get { return _ship.Equipment.Sum(i => i.Quantity.Long * Env.EquipmentDatabase[i.Id].Energy); }
         }
 
         public bool HasFreeSlot()
         {
-            return _ship.InstalledEquipment.Count < EquipmentSlots;
+            return _ship.InstalledEquipment.Count < Equipment;
         }
 
         public long FindFreeSlot()
         {
-            for (var i = 0; i < EquipmentSlots; i++)
+            for (var i = 0; i < Equipment; i++)
             {
                 if (_ship.InstalledEquipment.Any(j => j.Index == i)) continue;
 
@@ -129,14 +94,14 @@ namespace Assets.Scripts
         public CargoStatus GetCargoStatus(MemoGoods add)
         {
             var volume = Env.GoodsDatabase[add.Id].Volume * add.Quantity.Long;
-            var mass = Env.GoodsDatabase[add.Id].Mass*add.Quantity.Long;
+            var mass = Env.GoodsDatabase[add.Id].Mass * add.Quantity.Long;
 
-            if (volume > Volume - CargoVolume)
+            if (volume > Volume - VolumeUsed)
             {
                 return CargoStatus.NoVolume;
             }
 
-            return mass > Mass - CargoMass ? CargoStatus.NoMass : CargoStatus.Ready;
+            return mass > Mass - MassUsed ? CargoStatus.NoMass : CargoStatus.Ready;
         }
 
         public void AddGoods(MemoGoods goods)
@@ -170,6 +135,56 @@ namespace Assets.Scripts
             {
                 item.Quantity -= goods.Quantity;
             }
+        }
+
+        public bool CanInstallEquipment(EquipmentId equipment)
+        {
+            if (EnergyUsed + Env.EquipmentDatabase[equipment].Energy > Energy)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public long CalcRouteFuel(List<RouteNode> route)
+        {
+            double fuel = 0;
+            var fpm = FuelConsumption;
+
+            for (var i = 1; i < route.Count; i++)
+            {
+                var time = route[i].Time - route[i - 1].Time;
+
+                if (route[i].System == route[i - 1].System)
+                {
+                    fuel += fpm * time.TotalMinutes;
+                }
+            }
+
+            Debug.Log(string.Format("Fuel required: {0}", (long) fuel));
+
+            return (long) fuel;
+        }
+
+        public bool HasEngine()
+        {
+            return _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Any(i => i.Type == EquipmentType.Engine);
+        }
+
+        public bool HasHyper()
+        {
+            return _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Any(i => i.Type == EquipmentType.Hyper);
+        }
+
+        private long GetValue(long value, EquipmentType type)
+        {
+            foreach (var equipment in _ship.InstalledEquipment.Select(i => Env.EquipmentDatabase[i.Id]).Where(i => i.Type == type))
+            {
+                value += equipment.Bonus + (long) (_params.Mass * equipment.BonusM);
+            }
+
+            return value;
         }
     }
 }

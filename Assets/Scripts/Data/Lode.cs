@@ -11,12 +11,13 @@ namespace Assets.Scripts.Data
         public int Size;
         public float Radius;
         public float Speed;
+        public float Hardeness = 1;
         
         public float Structure
         {
             get
             {
-                return Size * MiningParams.Hardness[Class] * MiningParams.Structure[Mineral];
+                return Size * Hardeness * MiningParams.Hardness[Class] * MiningParams.Structure[Mineral];
             }
         }
 

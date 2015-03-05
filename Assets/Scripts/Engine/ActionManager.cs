@@ -43,15 +43,24 @@ namespace Assets.Scripts.Engine
             SelectManager.Ship.BuildTrace(location);
             GetComponent<Route>().Refresh();
             GetComponent<IngameMenu>().Reset();
+
+            var fuel = Profile.Instance.MemoShip.Fuel;
+            var required = Profile.Instance.PlayerShip.CalcRouteFuel(SelectManager.Ship.Trace);
+
+            if (required > fuel)
+            {
+                Get<Dialog>().Open("Warning", string.Format("Insufficient fuel for route {0}/{1}", fuel, required));
+            }
         }
 
         public void MoveShip(Location location)
         {
             SelectManager.Ship.Move(location);
+            GetComponent<Route>().Refresh();
             GetComponent<IngameMenu>().Reset();
         }
 
-        public void OpenView(string view)
+        public void OpenView(string view) // TODO: Remove?
         {
             ((UI) GetComponent(view)).Open();
         }

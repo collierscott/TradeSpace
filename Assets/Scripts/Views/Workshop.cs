@@ -39,9 +39,9 @@ namespace Assets.Scripts.Views
 
         protected override void Initialize()
         {
-            _installed = Profile.Instance.Ship.InstalledEquipment;
-            _equipment = Profile.Instance.Ship.Equipment;
-            _ship = new PlayerShip(Profile.Instance.Ship);
+            _installed = Profile.Instance.MemoShip.InstalledEquipment;
+            _equipment = Profile.Instance.MemoShip.Equipment;
+            _ship = Profile.Instance.PlayerShip;
             _index = _ship.HasFreeSlot() ? _ship.FindFreeSlot() : 0;
             _hangarAction = HangarAction.None;
             
@@ -91,6 +91,12 @@ namespace Assets.Scripts.Views
         public void Install()
         {
             var equipment = _equipment.Single(i => i.Id == _selectedEquipment);
+
+            if (!Profile.Instance.PlayerShip.CanInstallEquipment(_selectedEquipment)) // TODO: Disable and mark bad equipment, don't show error
+            {
+                Find<Dialog>().Open("Error", "Unable to install equipment");
+                return;
+            }
 
             if (equipment.Quantity.Long == 1)
             {
@@ -150,9 +156,9 @@ namespace Assets.Scripts.Views
 
         private void InitializeEquipmentCellButtons()
         {
-            for (var i = 0; i < _ship.EquipmentSlots; i++)
+            for (var i = 0; i < _ship.Equipment; i++)
             {
-                var position = new Vector3(-Step / 2 * (_ship.EquipmentSlots - 1) + Step * i, 0);
+                var position = new Vector3(-Step / 2 * (_ship.Equipment - 1) + Step * i, 0);
                 var cell = PrefabsHelper.InstantiateEquipmentSlotButton(InstalledTransform);
                 var index = i;
 
@@ -181,7 +187,7 @@ namespace Assets.Scripts.Views
                 if (buttons.Any(i => i.EquipmentId == installed.Id && i.Index == installed.Index)) continue;
 
                 var index = installed.Index;
-                var position = new Vector3(-Step / 2 * (_ship.EquipmentSlots - 1) + Step * index, 0);
+                var position = new Vector3(-Step / 2 * (_ship.Equipment - 1) + Step * index, 0);
                 var button = PrefabsHelper.InstantiateInstalledEquipmentButton(InstalledTransform).GetComponent<InstalledEquipmentButton>();
 
                 button.Initialize(installed.Id, index);

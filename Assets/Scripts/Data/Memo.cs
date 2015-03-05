@@ -58,6 +58,7 @@ namespace Assets.Scripts.Data
         public List<MemoGoods> Goods = new List<MemoGoods>();
         public List<MemoEquipment> Equipment = new List<MemoEquipment>();
         public List<MemoInstalledEquipment> InstalledEquipment = new List<MemoInstalledEquipment>();
+        public long Fuel;
 
         public MemoShip()
         {

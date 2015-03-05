@@ -180,7 +180,8 @@ namespace Assets.Scripts.Views
             get
             {
                 return SelectManager.Ship.State == ShipState.Ready && SelectManager.Ship.Trace.Count > 0
-                    && SelectManager.Ship.Trace.Last().LocationName == SelectManager.Location.Name;
+                    && SelectManager.Ship.Trace.Last().LocationName == SelectManager.Location.Name
+                    && Profile.Instance.PlayerShip.CalcRouteFuel(SelectManager.Ship.Trace) <= Profile.Instance.MemoShip.Fuel;
             }
         }
     }

@@ -40,7 +40,7 @@ namespace Assets.Scripts.Views
         protected override void Initialize()
         {
             var asteroid = (Data.Asteroid) Env.Systems[SelectManager.Location.System][SelectManager.Location.Name];
-            var equipment = Profile.Instance.Ship.InstalledEquipment.Single(i => Env.EquipmentDatabase[i.Id].Type == EquipmentType.Drill);
+            var equipment = Profile.Instance.MemoShip.InstalledEquipment.Single(i => Env.EquipmentDatabase[i.Id].Type == EquipmentType.Drill);
 
             _drill = new Drill { Params = MiningParams.DrillParams[equipment.Id] };
             _lodes = new List<LodeButton>();

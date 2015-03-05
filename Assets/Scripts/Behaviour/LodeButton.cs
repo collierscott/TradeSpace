@@ -110,7 +110,7 @@ namespace Assets.Scripts.Behaviour
 
         private void Extract()
         {
-            var ship = new PlayerShip(Profile.Instance.Ship);
+            var ship = new PlayerShip(Profile.Instance.MemoShip);
             var minerals = new List<GoodsId>();
 
             Debug.Log(string.Format("Core chance = {0} * {1} = {2}", _lode.CoreChance, _drill.Params.Efficiency, _lode.CoreChance * _drill.Params.Efficiency));

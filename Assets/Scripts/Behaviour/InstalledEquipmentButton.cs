@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Common;
 using Assets.Scripts.Enums;
+using Assets.Scripts.Environment;
 using Assets.Scripts.Views;
 
 namespace Assets.Scripts.Behaviour
@@ -17,7 +18,7 @@ namespace Assets.Scripts.Behaviour
         {
             EquipmentId = equipmentId;
             Index = index;
-            Image.spriteName = equipmentId.ToString();
+            Image.spriteName = Env.EquipmentDatabase[equipmentId].Image;
             //NameText.SetText(equipmentId.ToString());
             Button.Selected += () => Find<Workshop>().SelectEquipmentToRemove(equipmentId, index);
         }

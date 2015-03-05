@@ -67,21 +67,38 @@ namespace Assets.Scripts.Behaviour
             }
         }
 
-        public void Move(Location arrival)
+        public void BuildTrace(Location location)
         {
             var ship = new PlayerShip(_ship);
 
+            if (!ship.HasEngine())
+            {
+                Find<Dialog>().Open("Warning", "Engine not found");
+                return;
+            }
+
+            _ship.Trace = GetRoute(location);
+            _ship.State = ShipState.Ready;
+
+            var time = TimeSpan.FromSeconds(Math.Round((_ship.Trace.Last().Time - _ship.Trace.First().Time).TotalSeconds));
+
+            Debug.Log(time);
+        }
+
+        public void Move(Location location)
+        {
             _ship.Trace = new List<RouteNode>();
-            _ship.Route = RouteEngine.FindRoute(_ship.Route.Last(), arrival.ToRouteNode(), ship.Speed);
+            _ship.Route = GetRoute(location);
             _ship.State = ShipState.InFlight;
         }
 
-        public void BuildTrace(Location arrival)
+        private List<RouteNode> GetRoute(Location location)
         {
             var ship = new PlayerShip(_ship);
+            var departure = _ship.Route.Last();
+            var arrival = location.ToRouteNode();
 
-            _ship.Trace = RouteEngine.FindRoute(_ship.Route.Last(), arrival.ToRouteNode(), ship.Speed);
-            _ship.State = ShipState.Ready;
+            return RouteEngine.FindRoute(departure, arrival, ship.Speed, ship.Speed * ship.Hyper);
         }
 
         private void ShowStatic(Location location)

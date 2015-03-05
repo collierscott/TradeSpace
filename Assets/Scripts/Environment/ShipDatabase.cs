@@ -21,10 +21,11 @@ namespace Assets.Scripts.Environment
                     Speed = 60,
                     Armor = 0,
                     Shield = 0,
-                    EquipmentSlots = 5,
-                    FuelTankCapacity = 20,
-                    SupportedEngineTypes = new List<EngineType> { EngineType.Jet },
-                    SupportedEngineTopologies = new List<EngineTopology> { EngineTopology.X1 }
+                    Energy = 100,
+                    Equipment = 5,
+                    FuelTank = 100,
+                    EngineTypes = new List<EngineType> { EngineType.Jet },
+                    EngineTopologies = new List<EngineTopology> { EngineTopology.X1 }
                 }
             },
             {
@@ -40,10 +41,11 @@ namespace Assets.Scripts.Environment
                     Speed = 40,
                     Armor = 0,
                     Shield = 0,
-                    EquipmentSlots = 6,
-                    FuelTankCapacity = 20,
-                    SupportedEngineTypes = new List<EngineType> { EngineType.Jet },
-                    SupportedEngineTopologies = new List<EngineTopology> { EngineTopology.X1 }
+                    Energy = 100,
+                    Equipment = 6,
+                    FuelTank = 90,
+                    EngineTypes = new List<EngineType> { EngineType.Jet },
+                    EngineTopologies = new List<EngineTopology> { EngineTopology.X1 }
                 }
             },
             {
@@ -59,10 +61,10 @@ namespace Assets.Scripts.Environment
                     Speed = 70,
                     Armor = 0,
                     Shield = 0,
-                    EquipmentSlots = 6,
-                    FuelTankCapacity = 20,
-                    SupportedEngineTypes = new List<EngineType> { EngineType.Jet },
-                    SupportedEngineTopologies = new List<EngineTopology> { EngineTopology.X1 }
+                    Equipment = 6,
+                    FuelTank = 20,
+                    EngineTypes = new List<EngineType> { EngineType.Jet },
+                    EngineTopologies = new List<EngineTopology> { EngineTopology.X1 }
                 }
             },
         };

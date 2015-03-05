@@ -6,13 +6,13 @@ namespace Assets.Scripts.Data
     public class Ship : Item
     {
         public ShipId Id;
-        public string DisplayName;
         public long Speed;
         public long Armor;
         public long Shield;
-        public long EquipmentSlots;
-        public long FuelTankCapacity;
-        public List<EngineType> SupportedEngineTypes;
-        public List<EngineTopology> SupportedEngineTopologies;
+        public long Energy;
+        public long Equipment;
+        public long FuelTank;
+        public List<EngineType> EngineTypes;
+        public List<EngineTopology> EngineTopologies;
     }
 }

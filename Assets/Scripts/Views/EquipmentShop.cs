@@ -23,7 +23,7 @@ namespace Assets.Scripts.Views
             }
 
             LocationItems = Profile.Instance.Shops[station.Name].Equipment.Select(i => new GenericShopItem(i)).ToDictionary(i => i.Id.String);
-            PlayerItems = Profile.Instance.Ship.Equipment.Select(i => new GenericShopItem(i)).ToDictionary(i => i.Id.String);
+            PlayerItems = Profile.Instance.MemoShip.Equipment.Select(i => new GenericShopItem(i)).ToDictionary(i => i.Id.String);
         }
 
         protected override void ExtractItems(GenericShopItem item, bool sell)
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Views
             var station = (Data.Station)SelectManager.Location;
 
             Profile.Instance.Shops[station.Name].Equipment = LocationItems.Values.Select(i => i.Extract<MemoEquipment>()).ToList();
-            Profile.Instance.Ship.Equipment = PlayerItems.Values.Select(i => i.Extract<MemoEquipment>()).ToList();
+            Profile.Instance.MemoShip.Equipment = PlayerItems.Values.Select(i => i.Extract<MemoEquipment>()).ToList();
         }
 
         protected override long GetPrice(GenericShopItem item, bool sell)

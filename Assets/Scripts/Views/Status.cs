@@ -15,9 +15,7 @@ namespace Assets.Scripts.Views
             }
             else
             {
-                var ship = new PlayerShip(Profile.Instance.Ship);
-
-                ShipName.SetText(ship.DisplayName);
+                ShipName.SetText(Profile.Instance.PlayerShip.DisplayName);
             }
 
             Credits.SetText("{0} credits", Profile.Instance.Credits.Long);

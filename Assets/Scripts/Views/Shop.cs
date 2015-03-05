@@ -23,7 +23,7 @@ namespace Assets.Scripts.Views
             }
 
             LocationItems = Profile.Instance.Shops[planet.Name].Goods.Select(i => new GenericShopItem(i)).ToDictionary(i => i.Id.String);
-            PlayerItems = Profile.Instance.Ship.Goods.Select(i => new GenericShopItem(i)).ToDictionary(i => i.Id.String);
+            PlayerItems = Profile.Instance.MemoShip.Goods.Select(i => new GenericShopItem(i)).ToDictionary(i => i.Id.String);
         }
 
         protected override void ExtractItems(GenericShopItem item, bool sell)
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Views
             var planet = (Data.Planet) SelectManager.Location;
 
             Profile.Instance.Shops[planet.Name].Goods = LocationItems.Values.Select(i => i.Extract<MemoGoods>()).ToList();
-            Profile.Instance.Ship.Goods = PlayerItems.Values.Select(i => i.Extract<MemoGoods>()).ToList();
+            Profile.Instance.MemoShip.Goods = PlayerItems.Values.Select(i => i.Extract<MemoGoods>()).ToList();
         }
 
         protected override long GetPrice(GenericShopItem item, bool sell)

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Common;
+﻿using System;
+using Assets.Scripts.Common;
 using Assets.Scripts.Data;
 using Assets.Scripts.Engine;
 using UnityEngine;
@@ -10,6 +11,29 @@ namespace Assets.Scripts.Behaviour
         public UILabel Name;
         public UISprite Image;
         public SelectButton Button;
+        public UILabel ArrivalTime;
+
+        [HideInInspector] public int ShowArrivalTime;
+        [HideInInspector] public TimeSpan ArrivalTimeSpan;
+        [HideInInspector] public DateTime ArrivalDateTime;
+
+        public void Update()
+        {
+            if (ArrivalTime == null) return;
+
+            switch (ShowArrivalTime)
+            {
+                case 0:
+                    ArrivalTime.SetText(null);
+                    break;
+                case 1:
+                    ArrivalTime.SetText(TimespanToString(ArrivalTimeSpan));
+                    break;
+                case 2:
+                    ArrivalTime.SetText(TimespanToString(ArrivalDateTime - DateTime.UtcNow));
+                    break;
+            }
+        }
 
         public virtual void Initialize(Location location)
         {
@@ -40,7 +64,7 @@ namespace Assets.Scripts.Behaviour
                 Button.Pressed = true;
             }
         }
-    
+   
         private void Subscribe(Location location)
         {
             Button.Selected += () => SelectManager.SelectLocation(location);

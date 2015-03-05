@@ -17,7 +17,7 @@ namespace Assets.Scripts
             public long Distance;
         }
 
-        public static List<RouteNode> FindRoute(RouteNode departure, RouteNode arrival, float speed)
+        public static List<RouteNode> FindRoute(RouteNode departure, RouteNode arrival, float speed, float hyperSpeed = 0)
         {
             departure.Time = DateTime.UtcNow;
 
@@ -27,7 +27,7 @@ namespace Assets.Scripts
             }
 
             var route = new List<RouteNode>();
-            var galaxyRoute = FindRoute(departure.System, arrival.System, 99999);
+            var galaxyRoute = FindGalaxyRoute(departure.System, arrival.System, 99999);
 
             for (var j = 0; j < galaxyRoute.Count; j++)
             {
@@ -37,7 +37,7 @@ namespace Assets.Scripts
                 {
                     arv = FindGates(departure.System, galaxyRoute[1]);
                     arv.Time = departure.Time.AddSeconds((departure.Position - arv.Position).magnitude / speed);
-                    
+
                     route.AddRange(FindSystemRoute(departure, arv, speed));
                     
                     continue;
@@ -54,7 +54,10 @@ namespace Assets.Scripts
                     arv = arrival;
                 }
 
-                dpt.Time = route.Last().Time.AddSeconds((Env.Galaxy[galaxyRoute[j - 1]].Position - Env.Galaxy[galaxyRoute[j]].Position).magnitude / speed);
+                var galaxyFrom = Env.Galaxy[galaxyRoute[j - 1]];
+                var galaxyTo = Env.Galaxy[galaxyRoute[j]];
+
+                dpt.Time = route.Last().Time.AddSeconds(Settings.HyperScale * (galaxyFrom.Position - galaxyTo.Position).magnitude / hyperSpeed);
                 arv.Time = dpt.Time.AddSeconds((dpt.Position - arv.Position).magnitude / speed);
 
                 route.AddRange(FindSystemRoute(dpt, arv, speed));
@@ -129,7 +132,7 @@ namespace Assets.Scripts
         private static List<Node> _nodes;
         private static long _maxDistance;
 
-        private static List<string> FindRoute(string departure, string arrival, long maxDistance)
+        private static List<string> FindGalaxyRoute(string departure, string arrival, long maxDistance)
         {
             var node = new Node { System = departure };
 

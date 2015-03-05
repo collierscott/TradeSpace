@@ -36,9 +36,14 @@ namespace Assets.Scripts
             }
         }
 
-        public MemoShip Ship
+        public MemoShip MemoShip // TODO: Join with player ship
         {
             get { return Ships[SelectedShip.String]; }
+        }
+
+        public PlayerShip PlayerShip
+        {
+            get { return new PlayerShip(Ships[SelectedShip.String]); }
         }
 
         private Profile()
@@ -121,20 +126,20 @@ namespace Assets.Scripts
             };
             instance.Ships["0"].Equipment = new List<MemoEquipment>
             {
-                new MemoEquipment { Id = EquipmentId.MassKit100, Quantity = 5 }
+                new MemoEquipment { Id = EquipmentId.MassKit, Quantity = 5 }
             };
             instance.Ships["0"].InstalledEquipment = new List<MemoInstalledEquipment>
             {
-                new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
-                new MemoInstalledEquipment { Id = EquipmentId.MassKit100, Index = 1 },
-                new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 3 },
-                new MemoInstalledEquipment { Id = EquipmentId.LaserDrill100, Index = 2 }
+                new MemoInstalledEquipment { Id = EquipmentId.JetEngine, Index = 0 },
+                new MemoInstalledEquipment { Id = EquipmentId.MassKit, Index = 1 },
+                new MemoInstalledEquipment { Id = EquipmentId.VolumeKit, Index = 3 },
+                new MemoInstalledEquipment { Id = EquipmentId.LaserDrill, Index = 2 }
             };
 
             instance.Ships["1"].Route = new List<RouteNode> { Env.Systems[Env.SystemNames.Alpha]["Ketania"].ToRouteNode() };
             instance.Ships["1"].InstalledEquipment = new List<MemoInstalledEquipment>
             {
-                new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 }
+                new MemoInstalledEquipment { Id = EquipmentId.JetEngine, Index = 0 }
             };
             instance.Ships["1"].Goods = new List<MemoGoods>
             {
@@ -158,6 +163,11 @@ namespace Assets.Scripts
             //    new MemoInstalledEquipment { Id = EquipmentId.JetEngine100, Index = 0 },
             //    new MemoInstalledEquipment { Id = EquipmentId.VolumeKit100, Index = 1 }
             //};
+
+            foreach (var ship in instance.Ships.Values)
+            {
+                ship.Fuel = Env.ShipDatabase[ship.Id].FuelTank;
+            }
 
             return instance;
         }

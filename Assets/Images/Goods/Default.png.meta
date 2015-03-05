@@ -1,8 +1,12 @@
 fileFormatVersion: 2
-guid: 4cab2291eab4a174f9459465edb822d2
+guid: 64e8f4c8c9cef3045ac6155b6d6a0cc5
 TextureImporter:
   fileIDToRecycleName:
-    21300000: JetEngine150
+    21300000: VolumeKit100
+    21300002: DefaultVolumeKit
+    21300004: DefaultEquipment
+    21300006: DefaultGoods
+    21300008: Default
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -26,9 +30,9 @@ TextureImporter:
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 1
     mipBias: -1
-    wrapMode: -1
+    wrapMode: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50

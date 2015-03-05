@@ -4,8 +4,10 @@
     {
         Engine,
         Hyper,
+        Generator,
         MassKit,
         VolumeKit,
+        EquipmentExtend,
         Drill,
         Armor,
         Shield,

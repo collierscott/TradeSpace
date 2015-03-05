@@ -106,7 +106,7 @@ namespace Assets.Scripts.Views
 
         private void RefreshWorkflow()
         {
-            var ship = new PlayerShip(Profile.Instance.Ship);
+            var ship = new PlayerShip(Profile.Instance.MemoShip);
 
             if (Key == null || SelectManager.Ship.Location.Name != SelectManager.Location.Name)
             {
@@ -120,8 +120,8 @@ namespace Assets.Scripts.Views
 
             SellButton.Enabled = shipItem != null && shipItem.Quantity > 0;
             BuyButton.Enabled = shopItem != null && shopItem.Quantity > 0
-                                && ship.CargoMass + item.Mass <= ship.Mass
-                                && ship.CargoVolume + item.Volume <= ship.Volume
+                                && ship.MassUsed + item.Mass <= ship.Mass
+                                && ship.VolumeUsed + item.Volume <= ship.Volume
                                 && LocationItems.ContainsKey(Key.String)
                                 && Profile.Instance.Credits >= LocationItems[Key.String].Price;
 

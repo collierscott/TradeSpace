@@ -2,8 +2,8 @@
 {
     public abstract class Item
     {
-        public string Name;
-        public string Image;
+        public string DisplayName;
+        public string Image = "Default";
         public string Description;
         public long Mass;
         public long Volume;
